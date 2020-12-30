@@ -1,0 +1,71 @@
+.root{
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-translate-z: -150.0000076293945454;
+}
+
+.label{
+    /*-fx-text-fill: #00ffff;*/
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+}
+
+/*系统logo*/
+#SystemLogo{
+    -fx-font-size: 7;
+    -fx-font-family: "Microsoft YaHei UI";
+    -fx-fill: deepskyblue;
+}
+
+/*cpu图表css*/
+#cpuChart{
+    -fx-background:transparent;
+}
+
+.default-color0.chart-series-line {
+    -fx-stroke:#00FFFF;
+    -fx-stroke-width:2;
+}
+
+.default-color0.chart-series-area-line {
+    /*-fx-stroke: #00FFFF;*/
+    -fx-stroke-width:2;
+}
+
+.default-color0.chart-series-area-fill {
+    /*-fx-fill: #00FFFF33;*/
+}
+
+.default-color0.chart-line-symbol {
+    -fx-background-color: transparent;
+}
+
+.default-color0.chart-area-symbol {
+    -fx-background-color: transparent;
+}
+
+/*内存图表css*/
+#ramChart{
+    -fx-background:transparent;
+}
+
+.default-color1.chart-series-area-line {
+    -fx-stroke: #00FFFF;
+    /*-fx-background-color: #eae70a;*/
+    -fx-stroke-width:2;
+}
+
+.default-color1.chart-series-area-fill {
+    -fx-fill: rgba(0, 255, 255, 0.2);
+}
+
+.default-color1.chart-line-symbol {
+    -fx-background-color: transparent;
+}
+
+.default-color1.chart-area-symbol {
+    -fx-background-color: transparent;
+}
+
+
+
+

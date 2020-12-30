@@ -1,0 +1,36 @@
+.root{
+    -fx-background-color: rgb(0, 0, 0);
+}
+
+
+/*按钮样式*/
+.button {
+    -fx-background-color: darkturquoise;
+    -fx-text-fill: white;
+}
+
+.button:hover {
+    -fx-background-color: lightskyblue;
+}
+
+/*颜色选择器样式*/
+.color-picker{
+    -fx-background-color: darkturquoise;
+    -fx-color-label-visible:true;
+}
+
+.color-picker .label{
+    -fx-text-fill: white;
+}
+
+
+#themeLabel{
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14;
+    /*-fx-font-weight: bold;*/
+}
+
+
+
+
+

@@ -1,0 +1,42 @@
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<GridPane fx:controller="cn.chenc.performs.controller.AppController"
+          stylesheets="App.css"
+          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+    <VBox prefHeight="40">
+<!--        <Text fx:id="SystemLogo" id="SystemLogo" />-->
+        <ImageView fx:id="SystemLogo" fitHeight="150.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+<!--                <Image url="@images/win-logo.png" />-->
+            </image>
+        </ImageView>
+        <Label fx:id="SystemInfo"></Label>
+        <Label fx:id="CPU" />
+        <AreaChart fx:id="cpuChart" id="cpuChart" >
+            <xAxis >
+                <NumberAxis side="BOTTOM" />
+            </xAxis>
+            <yAxis>
+                <NumberAxis side="LEFT"/>
+            </yAxis>
+        </AreaChart>
+        <Label fx:id="RAM" />
+        <AreaChart fx:id="ramChart" id="ramChart" >
+            <xAxis>
+                <NumberAxis side="BOTTOM" />
+            </xAxis>
+            <yAxis>
+                <NumberAxis side="LEFT"/>
+            </yAxis>
+        </AreaChart>
+    </VBox>
+
+</GridPane>
