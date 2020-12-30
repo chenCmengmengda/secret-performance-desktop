@@ -33,4 +33,4 @@ secret-performance-desktop(桌面性能监控)
 
 本项目有参考他人的代码，感谢各位大神的付出！
 * 广大的开源爱好者
-* [Oshi](https://github.com/oshi/oshi) 一个简洁美观、功能强大并且自适应的Java博客。
+* [Oshi](https://github.com/oshi/oshi) OSHI是Java的免费的基于JNA的（本机）操作系统和硬件信息库。
