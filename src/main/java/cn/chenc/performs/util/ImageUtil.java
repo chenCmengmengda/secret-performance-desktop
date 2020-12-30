@@ -6,6 +6,7 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 /**
@@ -92,6 +93,7 @@ public class ImageUtil {
             return true;
         });
         new Thread(futureTask3, "第三个透明度渲染线程").start();
+
 //		 // 单线程更改透明度，得到每个坐标像素点的color，并重新设值，赋予透明度，最后将新color设给新的image对象(wImage的pixelWriter)
 //		 for (int readY = 0; readY < image.getHeight(); readY++) {
 //		 for (int readX = 0; readX < image.getWidth(); readX++) {
@@ -117,16 +119,17 @@ public class ImageUtil {
 //		 }
 //		 }
 
-//这部分代码可以自主选用。用了可以保证全部图片全部刷新完再展示，不然图片是先渲染上部分，再是中下部分
-//		try {
-//			// 等待三个线程全部执行完毕
-//			if (futureTask1.get() && futureTask2.get() && futureTask3.get()) {
-//				backGroundImg = wImage;
-//			}
-//		} catch (InterruptedException | ExecutionException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+        //这部分代码可以自主选用。用了可以保证全部图片全部刷新完再展示，不然图片是先渲染上部分，再是中下部分
+		try {
+			// 等待三个线程全部执行完毕
+			if (futureTask1.get() && futureTask2.get() && futureTask3.get()) {
+				backGroundImg = wImage;
+                return wImage;
+			}
+		} catch (InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
         return wImage;
     }

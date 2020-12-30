@@ -33,7 +33,7 @@ public class MySystemTray {
     private static MouseListener mouseListener;
 
     private static String autoStartPath=System.getProperty("user.home")+"\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\";
-    private static String exeName="performance-desktop";//exe程序名
+    private static String exeName="secret-performance-desktop";//exe程序名
 
 
     //右小角,最小化.

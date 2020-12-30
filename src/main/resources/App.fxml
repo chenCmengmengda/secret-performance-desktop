@@ -14,9 +14,9 @@
     <VBox prefHeight="40">
 <!--        <Text fx:id="SystemLogo" id="SystemLogo" />-->
         <ImageView fx:id="SystemLogo" fitHeight="150.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
-            <image>
+<!--            <image>-->
 <!--                <Image url="@images/win-logo.png" />-->
-            </image>
+<!--            </image>-->
         </ImageView>
         <Label fx:id="SystemInfo"></Label>
         <Label fx:id="CPU" />
