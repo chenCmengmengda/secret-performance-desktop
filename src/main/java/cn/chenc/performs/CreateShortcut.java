@@ -1,10 +1,13 @@
 package cn.chenc.performs;
 
+import cn.chenc.performs.consts.CommonConst;
+
 import javax.swing.filechooser.FileSystemView;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 　@description: 创建开机启动
@@ -63,9 +66,11 @@ public class CreateShortcut {
     byte[] fixedValueTwo={
             0x3A ,0x5C ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00
             ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00
-            ,0x00 ,0x54 ,0x00 ,0x32 ,0x00 ,0x04
-            ,0x00 ,0x00 ,0x00 ,0x67 ,0x50 ,(byte)0x91 ,0x3C ,0x20 ,0x00
+            ,0x00,0x54,0x00,0x32,0x00,0x04,0x00,0x00,0x00
+            ,0x67,0x50,(byte)0x91,0x3C ,0x20,0x00
     };
+
+
 
     /**
      * @param prefixFile 需要生成的快捷方式的文件前缀路径
@@ -98,8 +103,10 @@ public class CreateShortcut {
             fos.write(headFile);
             fos.write(fileAttributes);
             fos.write(fixedValueOne);
+//            byte[] b0=(target.toCharArray()[0]+"").getBytes();
             fos.write((target.toCharArray()[0]+"").getBytes());
             fos.write(fixedValueTwo);
+            byte[] b=target.substring(3).getBytes("gbk");
             fos.write(target.substring(3).getBytes("gbk"));
             fos.flush();
         } catch (Exception e) {
@@ -137,6 +144,62 @@ public class CreateShortcut {
         return f;
     }
 
+    /**
+     * @description: 创建开机启动快捷方式，通过脚本方式
+     * @param
+     * @return void
+     * @throws
+     * @author secret
+     * @date 2020/12/31 secret
+     */
+    public void createAutoStart(String path){
+        try {
+            for (String k : pathAndName.keySet()) {
+                String v = pathAndName.get(k);
+//                start0(path + k, prefixFile + v);
+                //myshortcut.vbs /target:TargetName /shortcut:ShortcutName
+                List<String> commend = new ArrayList<String>();
+                commend.add("wscript");
+                String winVbsPath = new File("").getCanonicalPath()+ CommonConst.WINSTARTUPSCRIPT;
+                commend.add(winVbsPath);
+                commend.add("/target:"+prefixFile + v);
+                commend.add("/shortcut:"+ CommonConst.WINSTARTUPPATH+k);
+                String commonStr=String.valueOf(commend);
+//                System.out.println(commonStr);
+//                Runtime.getRuntime().exec(String.valueOf(commend));
+                ProcessBuilder pb = new ProcessBuilder(commend);
+                Process process = pb.start();
+                readProcessOutput(process.getInputStream(), System.out);
+                int state = process.exitValue();
+                System.out.println(state);
+                System.out.println("ok");
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    private static void readProcessOutput(InputStream inputStream, PrintStream out) {
+        try {
+            //GBK防止乱码
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, Charset.forName("GBK")));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+            System.out.println("-end");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void main(String[] args) {
 //        String fileName="D:\\软件\\本地软件\\";
 //        HashMap<String,String> hashMap=new HashMap<String,String>();
@@ -169,10 +232,13 @@ public class CreateShortcut {
 //        hashMap.put("天若OCR文字识别.lnk","天若OCR文字识别\\天若OCR文字识别.exe");
 //        shortcut=new CreateShortcut(fileName,hashMap);
 //        shortcut.start(CreateShortcut.startup);
-        String fileName="C:\\Users\\secret\\Desktop\\exe_out\\";
+        String fileName="C:\\Users\\secret\\Desktop\\secret-performance-desktop\\";
+
+//        String fileName="C:\\Users\\secret\\Desktop\\exe-outaaaaaaaaaa\\";
         HashMap<String,String> hashMap=new HashMap<String,String>();
-        hashMap.put("performance-desktop.lnk","performance-desktop.exe");
+        hashMap.put("secret-performance-desktop.lnk","secret-performance-desktop.exe");
         CreateShortcut shortcut=new CreateShortcut(fileName,hashMap);
-        shortcut.start(CreateShortcut.startup);
+//        shortcut.start(CreateShortcut.startup);
+        shortcut.createAutoStart(CommonConst.WINSTARTUPPATH);
     }
 }

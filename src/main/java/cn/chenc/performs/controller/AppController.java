@@ -368,6 +368,10 @@ public class AppController {
         String codeName="";
         if(operatingSystem.getVersionInfo().getCodeName().equals("Home")){
             codeName="家庭版";
+        } else if(operatingSystem.getVersionInfo().getCodeName().contains("Pro")){
+            codeName="专业版";
+        } else if(operatingSystem.getVersionInfo().getCodeName().equals("Enterprise")){
+            codeName="企业版";
         }
         String buildNumber=operatingSystem.getVersionInfo().getBuildNumber();//内部版本号
         String osArch = System.getProperty("os.arch"); //系统架构

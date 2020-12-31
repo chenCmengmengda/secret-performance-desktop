@@ -135,9 +135,9 @@ public class MySystemTray {
                     String exeRunPath = new File("").getCanonicalPath();
 
                     System.out.println(exeRunPath);
-                    hashMap.put(exeName+".lnk",exeName+".exe");
+                    hashMap.put(exeName,exeName+".exe");
                     CreateShortcut shortcut=new CreateShortcut(exeRunPath+File.separator,hashMap);
-                    shortcut.start(CreateShortcut.startup);
+                    shortcut.createAutoStart(CreateShortcut.startup);
                 } else {
                     CreateShortcut.delete(CreateShortcut.startup,exeName+".lnk");
                 }
