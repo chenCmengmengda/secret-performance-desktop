@@ -16,8 +16,12 @@ secret-performance-desktop(桌面性能监控)
 
 #### 使用方法
 下载可执行文件:
-* [点击下载windows版本]()
-* [更多发行版本下载](https://gitee.com/SecretOpen/secret-performance-desktop/releases)
+
+**目前版本:v1.0.2**
+
+* [点击下载windows最新版本](https://gitee.com/SecretOpen/secret-performance-desktop/attach_files/572805/download/secret-performance-desktop.rar)
+
+* [更多历史发行版本下载](https://gitee.com/SecretOpen/secret-performance-desktop/releases)
 
 
 #### 核心依赖
