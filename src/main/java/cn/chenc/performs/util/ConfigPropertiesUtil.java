@@ -58,6 +58,11 @@ public class ConfigPropertiesUtil {
         return null == value ? null : Integer.valueOf(value);
     }
 
+    public static double getDouble(String key){
+        String value = get(key);
+        return StringUtil.isEmpty(value) ? -1 : Double.parseDouble(value);
+    }
+
     /**
      * 获取Boolean类型的值
      * @param key

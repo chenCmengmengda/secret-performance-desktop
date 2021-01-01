@@ -8,7 +8,10 @@ package cn.chenc.performs.enums;
  */
 public enum ConfigEnum {
     LOGOURL("logo-url"),
-    THEMECOLOR("theme-color")
+    LOGOOPACITY("logo-opacity"),
+    THEMECOLOR("theme-color"),
+    SCENEX("scene-x"),
+    SCENEY("scene-y"),
     ;
 
     private String key;

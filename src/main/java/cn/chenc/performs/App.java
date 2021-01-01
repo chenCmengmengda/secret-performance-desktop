@@ -1,7 +1,10 @@
 package cn.chenc.performs;
 
+import cn.chenc.performs.consts.CommonConst;
 import cn.chenc.performs.controller.AppController;
+import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.task.AppTask;
+import cn.chenc.performs.util.ConfigPropertiesUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,7 +14,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-import java.awt.*;
 import java.net.URL;
 import java.util.concurrent.Executors;
 
@@ -41,19 +43,26 @@ public class App extends Application {
         url=new URL(urlStr);
         FXMLLoader fxmlLoader = new FXMLLoader(url);
         Parent root = fxmlLoader.load();
-        int sceneWidth=350;
-        int sceneHeight=650;
-        Scene scene=new Scene(root, 350, 650);
+
+        Scene scene=new Scene(root, CommonConst.MAINSCENEWIDTH, CommonConst.MAINSCENEHEIGHT);
         scene.setFill(null);//scene要透明
         VBox box=new VBox();
         box.setStyle("-fx-background:transparent;");//vbox透明
         mainStage.initStyle(StageStyle.TRANSPARENT);//取消窗口装饰
         mainStage.setTitle("performance-desktop");
-        //获取屏幕宽度
-        Dimension screensize   =   Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int)screensize.getWidth();
-        mainStage.setX(width-sceneWidth);
-        mainStage.setY(0);
+        //设置窗口横纵坐标，默认自适应屏幕宽度,且支持从设置获取
+        double sceneX = ConfigPropertiesUtil.getDouble(ConfigEnum.SCENEX.getKey());
+        double sceneY = ConfigPropertiesUtil.getDouble(ConfigEnum.SCENEY.getKey());
+        if(sceneX==-1) {
+            mainStage.setX(CommonConst.SCENEX);
+        } else {
+            mainStage.setX(sceneX);
+        }
+        if(sceneY==-1) {
+            mainStage.setY(CommonConst.SCENEY);
+        } else {
+            mainStage.setY(sceneY);
+        }
         mainStage.setScene(scene);
 
         AppController controller=fxmlLoader.getController();

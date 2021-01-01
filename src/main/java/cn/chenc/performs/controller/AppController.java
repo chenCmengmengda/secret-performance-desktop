@@ -1,6 +1,8 @@
 package cn.chenc.performs.controller;
 
+import cn.chenc.performs.consts.CommonConst;
 import cn.chenc.performs.enums.ConfigEnum;
+import cn.chenc.performs.listener.DragListener;
 import cn.chenc.performs.model.AppModel;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
 import cn.chenc.performs.util.ImageUtil;
@@ -15,7 +17,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.GlobalMemory;
@@ -30,6 +34,10 @@ import java.util.Calendar;
 public class AppController {
 
     public  static AppModel model = new AppModel();
+    //鼠标拖动监听
+    public static DragListener dragListener;
+    @FXML
+    private GridPane rootGridPane;
     @FXML
     private ImageView SystemLogo;
     @FXML
@@ -54,6 +62,7 @@ public class AppController {
     XYChart.Series<Number, Number> series1 = new XYChart.Series<>();//cpu图表数据
     XYChart.Series<Number, Number> series2 = new XYChart.Series<>();//内存图表数据
 
+    //oshi相关
     private static  SystemInfo systemInfo;
     private static CentralProcessor processor;
     private static Sensors sensors;
@@ -79,6 +88,7 @@ public class AppController {
      */
     @FXML
     private void initialize() {
+
         //初始化cpu信息
         startGetSystemInfo(null);
         //监听绑定的数据模型
@@ -92,6 +102,15 @@ public class AppController {
                 }
             });
         });
+        //logo透明度
+        model.getLogoOpacityProperty().addListener((obs, oldVal, newVal) -> {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    setSystemLogoOpacity(Double.parseDouble(String.valueOf(newVal)));
+                }
+            });
+        });
         //theme
         model.getThemeColorProperty().addListener((obs, oldText, newText) -> {
 //            setThemeColor(newText);
@@ -102,6 +121,14 @@ public class AppController {
                 }
             });
         });
+        //drag
+        model.getDragProperty().addListener((obs, oldVal, newVal) -> {
+            if(newVal){
+                dragListener.enableDrag(rootGridPane);//开启监听
+            } else{
+                dragListener.closeDrag(rootGridPane);//关闭监听
+            }
+        });
         //从配置文件读取配置
         //logo-url
         if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.LOGOURL.getKey()))) {
@@ -109,22 +136,38 @@ public class AppController {
         } else {
             printlnSystemInfo();
         }
+        //logo-opacity
+        if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.LOGOOPACITY.getKey()))) {
+            model.setLogoOpacity(ConfigPropertiesUtil.getDouble(ConfigEnum.LOGOOPACITY.getKey()));
+        } else {
+            setSystemLogoOpacity(0);
+        }
         //theme-color
+        if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.THEMECOLOR.getKey()))) {
+            model.setThemeColor(ConfigPropertiesUtil.get(ConfigEnum.THEMECOLOR.getKey()));
+        } else {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    setThemeColor(null);
+                }
+            });
+        }
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                setThemeColor(null);
+                //鼠标拖拽
+                Stage stage= (Stage) rootGridPane.getScene().getWindow();
+                dragListener=new DragListener(stage);
             }
         });
     }
 
 
     public void setThemeColor(String color){
-        if(StringUtil.isEmpty(color)) {//如果是初始化颜色
-            String themeColor = ConfigPropertiesUtil.get(ConfigEnum.THEMECOLOR.getKey());
-            if (StringUtil.isEmpty(themeColor)) {
-                themeColor="#00ffff";
-            }
+        if(StringUtil.isEmpty(color)) {//传入颜色为空，直接取默认配置
+            String themeColor = CommonConst.THEMECOLOR;
             SystemInfo.setTextFill(Color.valueOf(themeColor));
             CPU.setTextFill(Color.valueOf(themeColor));
             RAM.setTextFill(Color.valueOf(themeColor));
@@ -382,11 +425,11 @@ public class AppController {
     public void setSystemLogo(String url) {
         if(StringUtil.isEmpty(url)){//空则使用默认配置
             try {
-                URL logoUrl=getClass().getResource("/images/win-logo.png");
+                URL logoUrl=getClass().getResource(CommonConst.WINLOGOPATH);
                 String urlStr = java.net.URLDecoder.decode(String.valueOf(logoUrl),"utf-8");
                 Image image = new Image(urlStr, SystemLogo.getFitWidth(), SystemLogo.getFitHeight(), true, true);
                 //改变图片透明度
-                WritableImage wImage = new ImageUtil().imgOpacity(image, 0.3);
+                WritableImage wImage = new ImageUtil().imgOpacity(image, CommonConst.LOGOOPACITY);
                 SystemLogo.setImage(wImage);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -395,6 +438,18 @@ public class AppController {
             Image image = new Image(url, SystemLogo.getFitWidth(), SystemLogo.getFitHeight(), true, true);
             //改变图片透明度
             WritableImage wImage = new ImageUtil().imgOpacity(image, 0.3);
+            SystemLogo.setImage(wImage);
+        }
+    }
+
+    public void setSystemLogoOpacity(double opacity) {
+        Image image = SystemLogo.getImage();
+        if(opacity==0){//使用默认配置
+            WritableImage wImage = new ImageUtil().imgOpacity(image, CommonConst.LOGOOPACITY);
+            SystemLogo.setImage(wImage);
+        } else {
+            //改变图片透明度
+            WritableImage wImage = new ImageUtil().imgOpacity(image, opacity);
             SystemLogo.setImage(wImage);
         }
     }

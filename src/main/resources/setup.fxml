@@ -12,16 +12,26 @@
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
     <VBox>
         <HBox minHeight="30">
-            <Button fx:id="checkLogo" id="checkLogo" onAction="#checkLogoAction" text="logo图片" minWidth="80"></Button>
-            <TextField fx:id="logoPath" minWidth="100" maxWidth="150" disable="true"></TextField>
+            <Button fx:id="checkLogo" id="checkLogo" onAction="#checkLogoAction" text="logo图片" minWidth="100"></Button>
+            <TextField fx:id="logoPath" minWidth="150" maxWidth="150" prefWidth="30" disable="true"></TextField>
             <Button fx:id="resetLogo" id="checkLogo" onAction="#resetLogoAction" text="清空" minWidth="40"></Button>
         </HBox>
         <HBox minHeight="30">
-            <Label fx:id="themeLabel" text="主题色" minWidth="80" alignment="CENTER" ></Label>
+            <Label fx:id="logoOpacityLabel" text="logo透明度" minWidth="100" alignment="CENTER" ></Label>
+            <Slider fx:id="logoOpacitySlider" min="0" max="1" blockIncrement="0.1" minWidth="150"></Slider>
+        </HBox>
+        <HBox minHeight="30">
+            <Label fx:id="themeLabel" text="主题色" minWidth="100" alignment="CENTER" ></Label>
            <ColorPicker fx:id="themeChoose" onAction="#themeChooseAction" minWidth="150" maxWidth="200"></ColorPicker>
         </HBox>
+        <HBox minHeight="30">
+            <Label fx:id="dragLabel" text="开启鼠标拖拽" minWidth="100" alignment="CENTER" ></Label>
+            <AnchorPane minWidth="130"></AnchorPane>
+            <CheckBox fx:id="dragCheckBox" prefWidth="5"  alignment="CENTER_RIGHT"></CheckBox>
+            <Button fx:id="resetDrag" id="checkLogo" onAction="#resetDragAction" text="默认位置" minWidth="40"  alignment="CENTER_RIGHT"></Button>
+        </HBox>
         <HBox minHeight="50"  alignment="BOTTOM_LEFT">
-            <Button fx:id="resetConfig" onAction="#resetConfigAction" text="重置" minWidth="80"></Button>
+            <Button fx:id="resetConfig" onAction="#resetConfigAction" text="重置" minWidth="100"></Button>
         </HBox>
     </VBox>
 

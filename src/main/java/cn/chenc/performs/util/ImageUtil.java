@@ -81,7 +81,7 @@ public class ImageUtil {
             for (int readY = (int) (2 * tempHeight); readY < imgHeight; readY++) {
                 for (int readX = 0; readX < image.getWidth(); readX++) {
                     Color color = pixelReader.getColor(readX, readY);
-                    if(color.getOpacity() == 0){//如果是透明的，就不改变
+                    if( color.getOpacity() == 0){//如果是rgb为0且透明的，就不改变
                         continue;
                     }
                     Color c1 = new Color(color.getRed(), color.getGreen(), color.getBlue(),

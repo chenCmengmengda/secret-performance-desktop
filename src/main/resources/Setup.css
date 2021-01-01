@@ -24,13 +24,34 @@
 }
 
 
-#themeLabel{
+#themeLabel,#logoOpacityLabel,#dragLabel{
     -fx-text-fill: #ffffff;
     -fx-font-size: 14;
     /*-fx-font-weight: bold;*/
 }
 
+/*滑块样式*/
+.slider{
+    -fx-show-tick-labels: true;
+}
 
+.slider .track{
+    -progress : 0.2;
+    -fx-background-color: linear-gradient(to right, #00CED1, #00CED1 );
 
+}
 
+.slider .axis{
+    -fx-tick-label-fill: #fff;
+}
 
+.check-box{
+}
+
+.check-box:determinate .box{
+    -fx-background-color: #00CED1;
+}
+
+.check-box:selected .mark{
+    -fx-background-color: #fff;
+}

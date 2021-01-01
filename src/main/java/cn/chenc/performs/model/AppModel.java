@@ -1,7 +1,6 @@
 package cn.chenc.performs.model;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 
 /**
  * 　@description: TODO
@@ -11,7 +10,9 @@ import javafx.beans.property.StringProperty;
  */
 public class AppModel {
     private StringProperty imageProperty = new SimpleStringProperty();
+    private DoubleProperty logoOpacityProperty = new SimpleDoubleProperty();
     private StringProperty themeColorProperty = new SimpleStringProperty();
+    private BooleanProperty dragProperty = new SimpleBooleanProperty();
 
     public StringProperty getImageProperty(){
         return imageProperty;
@@ -19,6 +20,14 @@ public class AppModel {
 
     public StringProperty getThemeColorProperty(){
         return themeColorProperty;
+    }
+
+    public DoubleProperty getLogoOpacityProperty(){
+        return logoOpacityProperty;
+    }
+
+    public BooleanProperty getDragProperty(){
+        return dragProperty;
     }
 
     public final void setImageUrl(String value){
@@ -29,12 +38,28 @@ public class AppModel {
         return getImageProperty().get();
     }
 
+    public final void setLogoOpacity(double value){
+        getLogoOpacityProperty().set(value);
+    }
+
+    public final double getLogoOpacity(){
+        return getLogoOpacityProperty().get();
+    }
+
     public final void setThemeColor(String value){
         getThemeColorProperty().set(value);
     }
 
-    public final String getThemeColor(String value){
+    public final String getThemeColor(){
         return getThemeColorProperty().get();
+    }
+
+    public final void setDrag(boolean value){
+        getDragProperty().set(value);
+    }
+
+    public final boolean getDrag(){
+        return getDragProperty().get();
     }
 
 }

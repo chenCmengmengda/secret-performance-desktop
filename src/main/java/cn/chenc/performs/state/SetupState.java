@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.net.URL;
 
@@ -31,7 +32,8 @@ public class SetupState extends Application {
         stage.setTitle("设置");
         stage.getIcons().add(new Image(
                 SetupState.class.getResourceAsStream("/images/icon.png")));
-        Scene scene=new Scene(root, 300, 200);
+        Scene scene=new Scene(root, 350, 250);
+        scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
         stage.setScene(scene);
         SetupController setupController=fxmlLoader.getController();
         stage.show();
