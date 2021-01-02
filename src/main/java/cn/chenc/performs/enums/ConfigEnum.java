@@ -12,6 +12,7 @@ public enum ConfigEnum {
     THEMECOLOR("theme-color"),
     SCENEX("scene-x"),
     SCENEY("scene-y"),
+    LAYOUTTYPE("layout-type"),
     ;
 
     private String key;

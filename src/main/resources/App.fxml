@@ -8,35 +8,62 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<GridPane fx:id="rootGridPane" fx:controller="cn.chenc.performs.controller.AppController"
+<FlowPane fx:id="rootFlowPane" fx:controller="cn.chenc.performs.controller.AppController"
           stylesheets="App.css"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
-    <VBox prefHeight="40">
-<!--        <Text fx:id="SystemLogo" id="SystemLogo" />-->
-        <ImageView fx:id="SystemLogo" fitHeight="150.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
-<!--            <image>-->
-<!--                <Image url="@images/win-logo.png" />-->
-<!--            </image>-->
-        </ImageView>
-        <Label fx:id="SystemInfo"></Label>
-        <Label fx:id="CPU" />
-        <AreaChart fx:id="cpuChart" id="cpuChart" >
-            <xAxis >
-                <NumberAxis side="BOTTOM" />
-            </xAxis>
-            <yAxis>
-                <NumberAxis side="LEFT"/>
-            </yAxis>
-        </AreaChart>
-        <Label fx:id="RAM" />
-        <AreaChart fx:id="ramChart" id="ramChart" >
-            <xAxis>
-                <NumberAxis side="BOTTOM" />
-            </xAxis>
-            <yAxis>
-                <NumberAxis side="LEFT"/>
-            </yAxis>
-        </AreaChart>
-    </VBox>
+<!--    <VBox prefHeight="40">-->
+<!--        <ImageView fx:id="SystemLogo" fitHeight="150.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">-->
 
-</GridPane>
+<!--        </ImageView>-->
+<!--        <Label fx:id="SystemInfo"></Label>-->
+<!--        <Label fx:id="CPU" />-->
+<!--        <AreaChart fx:id="cpuChart" id="cpuChart" >-->
+<!--            <xAxis >-->
+<!--                <NumberAxis side="BOTTOM" />-->
+<!--            </xAxis>-->
+<!--            <yAxis>-->
+<!--                <NumberAxis side="LEFT"/>-->
+<!--            </yAxis>-->
+<!--        </AreaChart>-->
+<!--        <Label fx:id="RAM" />-->
+<!--        <AreaChart fx:id="ramChart" id="ramChart" >-->
+<!--            <xAxis>-->
+<!--                <NumberAxis side="BOTTOM" />-->
+<!--            </xAxis>-->
+<!--            <yAxis>-->
+<!--                <NumberAxis side="LEFT"/>-->
+<!--            </yAxis>-->
+<!--        </AreaChart>-->
+<!--    </VBox>-->
+
+
+        <HBox maxHeight="150" alignment="CENTER">
+            <ImageView fx:id="SystemLogo" fitHeight="150.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+
+            </ImageView>
+            <Label fx:id="SystemInfo" alignment="CENTER"></Label>
+        </HBox>
+        <VBox maxHeight="250">
+            <Label fx:id="CPU" />
+            <AreaChart fx:id="cpuChart" id="cpuChart" maxWidth="350" maxHeight="200" >
+                <xAxis >
+                    <NumberAxis side="BOTTOM" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis side="LEFT"/>
+                </yAxis>
+            </AreaChart>
+        </VBox>
+        <VBox maxHeight="250">
+            <Label fx:id="RAM" />
+            <AreaChart fx:id="ramChart" id="ramChart"  maxWidth="350" maxHeight="200" >
+                <xAxis>
+                    <NumberAxis side="BOTTOM" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis side="LEFT"/>
+                </yAxis>
+            </AreaChart>
+        </VBox>
+
+</FlowPane>

@@ -1,6 +1,7 @@
 package cn.chenc.performs.controller;
 
 import cn.chenc.performs.consts.CommonConst;
+import cn.chenc.performs.consts.LayoutConst;
 import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.util.ColorUtil;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
@@ -47,6 +48,12 @@ public class SetupController {
     private ColorPicker themeChoose;
     @FXML
     private CheckBox dragCheckBox;
+    @FXML
+    private ToggleGroup layoutToggleGroup;
+    @FXML
+    private RadioButton layoutRadio1;
+    @FXML
+    private RadioButton layoutRadio2;
 
     @FXML
     private void initialize(){
@@ -69,6 +76,7 @@ public class SetupController {
         setThemeChoose();
         setLogoOpacitySlider();
         setdragCheckBox();
+        setLayoutToggleGroup();
     }
 
     public void setLogoPath() {
@@ -121,6 +129,32 @@ public class SetupController {
         });
     }
 
+    //初始化样式单选
+    public void setLayoutToggleGroup(){
+        layoutRadio1.setUserData(0);
+        layoutRadio2.setUserData(1);
+        if(StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.LAYOUTTYPE.getKey())) ||
+                ConfigPropertiesUtil.get(ConfigEnum.LAYOUTTYPE.getKey()).equals("0")){
+            layoutRadio1.setSelected(true);
+        } else if(ConfigPropertiesUtil.get(ConfigEnum.LAYOUTTYPE.getKey()).equals("1")){
+            layoutRadio2.setSelected(true);
+        }
+
+        //注册监听
+        layoutToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> ov,
+                                Toggle old_toggle, Toggle new_toggle) {
+                if (layoutToggleGroup.getSelectedToggle() != null) {
+                    String newVal=layoutToggleGroup.getSelectedToggle().getUserData().toString();
+                    AppController.model.setLayout(newVal);
+                    ConfigPropertiesUtil.set(ConfigEnum.LAYOUTTYPE.getKey(),newVal);
+                }
+            }
+        });
+
+    }
+
     @FXML
     public void checkLogoAction(ActionEvent event){
 
@@ -159,7 +193,7 @@ public class SetupController {
     private void resetDragAction(){
         ConfigPropertiesUtil.set(ConfigEnum.SCENEX.getKey(),"");
         ConfigPropertiesUtil.set(ConfigEnum.SCENEY.getKey(),"");
-        AppController.dragListener.setXY(CommonConst.SCENEX,CommonConst.SCENEY);
+        AppController.dragListener.setXY(LayoutConst.SCENEX1,LayoutConst.SCENEY1);
     }
 
 
@@ -184,7 +218,10 @@ public class SetupController {
         themeChoose.setValue(Color.web(CommonConst.THEMECOLOR));
         AppController.model.setThemeColor(null);
         //重置主窗口位置
-        AppController.dragListener.setXY(CommonConst.SCENEX,CommonConst.SCENEY);
+        AppController.dragListener.setXY(LayoutConst.SCENEX1,LayoutConst.SCENEY1);
+        //重置布局
+        layoutRadio1.setSelected(true);
+        AppController.model.setLayout("0");
     }
 
 

@@ -4,6 +4,7 @@ import cn.chenc.performs.consts.CommonConst;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.*;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -161,6 +162,7 @@ public class CreateShortcut {
                 List<String> commend = new ArrayList<String>();
                 commend.add("wscript");
                 String winVbsPath = new File("").getCanonicalPath()+ CommonConst.WINSTARTUPSCRIPT;
+                URL winVbsUrl=CreateShortcut.class.getResource(CommonConst.WINSTARTUPSCRIPT);
                 commend.add(winVbsPath);
                 commend.add("/target:"+prefixFile + v);
                 commend.add("/shortcut:"+ CommonConst.WINSTARTUPPATH+k);

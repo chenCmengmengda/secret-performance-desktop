@@ -1,6 +1,6 @@
 package cn.chenc.performs;
 
-import cn.chenc.performs.consts.CommonConst;
+import cn.chenc.performs.consts.LayoutConst;
 import cn.chenc.performs.controller.AppController;
 import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.task.AppTask;
@@ -44,22 +44,23 @@ public class App extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(url);
         Parent root = fxmlLoader.load();
 
-        Scene scene=new Scene(root, CommonConst.MAINSCENEWIDTH, CommonConst.MAINSCENEHEIGHT);
+        Scene scene=new Scene(root, LayoutConst.MAINSCENEWIDTH1, LayoutConst.MAINSCENEHEIGHT1);
         scene.setFill(null);//scene要透明
         VBox box=new VBox();
         box.setStyle("-fx-background:transparent;");//vbox透明
         mainStage.initStyle(StageStyle.TRANSPARENT);//取消窗口装饰
+//        mainStage.initStyle(StageStyle.DECORATED);
         mainStage.setTitle("performance-desktop");
         //设置窗口横纵坐标，默认自适应屏幕宽度,且支持从设置获取
         double sceneX = ConfigPropertiesUtil.getDouble(ConfigEnum.SCENEX.getKey());
         double sceneY = ConfigPropertiesUtil.getDouble(ConfigEnum.SCENEY.getKey());
         if(sceneX==-1) {
-            mainStage.setX(CommonConst.SCENEX);
+            mainStage.setX(LayoutConst.SCENEX1);
         } else {
             mainStage.setX(sceneX);
         }
         if(sceneY==-1) {
-            mainStage.setY(CommonConst.SCENEY);
+            mainStage.setY(LayoutConst.SCENEY1);
         } else {
             mainStage.setY(sceneY);
         }

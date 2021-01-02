@@ -30,6 +30,14 @@
             <CheckBox fx:id="dragCheckBox" prefWidth="5"  alignment="CENTER_RIGHT"></CheckBox>
             <Button fx:id="resetDrag" id="checkLogo" onAction="#resetDragAction" text="默认位置" minWidth="40"  alignment="CENTER_RIGHT"></Button>
         </HBox>
+        <HBox minHeight="30">
+            <Label fx:id="layoutLabel" text="布局样式" minWidth="100" alignment="CENTER" ></Label>
+            <fx:define>
+                <ToggleGroup fx:id="layoutToggleGroup" />
+            </fx:define>
+            <RadioButton fx:id="layoutRadio1" text="纵向" prefWidth="100" toggleGroup="$layoutToggleGroup" ></RadioButton>
+            <RadioButton fx:id="layoutRadio2" text="横向" toggleGroup="$layoutToggleGroup" ></RadioButton>
+        </HBox>
         <HBox minHeight="50"  alignment="BOTTOM_LEFT">
             <Button fx:id="resetConfig" onAction="#resetConfigAction" text="重置" minWidth="100"></Button>
         </HBox>

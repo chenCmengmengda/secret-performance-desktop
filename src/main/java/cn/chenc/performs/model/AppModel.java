@@ -13,6 +13,7 @@ public class AppModel {
     private DoubleProperty logoOpacityProperty = new SimpleDoubleProperty();
     private StringProperty themeColorProperty = new SimpleStringProperty();
     private BooleanProperty dragProperty = new SimpleBooleanProperty();
+    private StringProperty layoutProperty = new SimpleStringProperty();
 
     public StringProperty getImageProperty(){
         return imageProperty;
@@ -28,6 +29,10 @@ public class AppModel {
 
     public BooleanProperty getDragProperty(){
         return dragProperty;
+    }
+
+    public StringProperty getLayoutProperty(){
+        return layoutProperty;
     }
 
     public final void setImageUrl(String value){
@@ -60,6 +65,14 @@ public class AppModel {
 
     public final boolean getDrag(){
         return getDragProperty().get();
+    }
+
+    public final void setLayout(String value){
+        getLayoutProperty().set(value);
+    }
+
+    public final String getLayout(){
+        return getLayoutProperty().get();
     }
 
 }

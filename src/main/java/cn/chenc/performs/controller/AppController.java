@@ -1,6 +1,7 @@
 package cn.chenc.performs.controller;
 
 import cn.chenc.performs.consts.CommonConst;
+import cn.chenc.performs.consts.LayoutConst;
 import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.listener.DragListener;
 import cn.chenc.performs.model.AppModel;
@@ -17,7 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import oshi.SystemInfo;
@@ -36,8 +37,10 @@ public class AppController {
     public  static AppModel model = new AppModel();
     //鼠标拖动监听
     public static DragListener dragListener;
+    //主窗口
+    private static Stage stage;
     @FXML
-    private GridPane rootGridPane;
+    private FlowPane rootFlowPane;
     @FXML
     private ImageView SystemLogo;
     @FXML
@@ -88,7 +91,15 @@ public class AppController {
      */
     @FXML
     private void initialize() {
-
+        //窗口初始化
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                //鼠标拖拽
+                stage= (Stage) rootFlowPane.getScene().getWindow();
+                dragListener=new DragListener(stage);
+            }
+        });
         //初始化cpu信息
         startGetSystemInfo(null);
         //监听绑定的数据模型
@@ -124,10 +135,19 @@ public class AppController {
         //drag
         model.getDragProperty().addListener((obs, oldVal, newVal) -> {
             if(newVal){
-                dragListener.enableDrag(rootGridPane);//开启监听
+                dragListener.enableDrag(rootFlowPane);//开启监听
             } else{
-                dragListener.closeDrag(rootGridPane);//关闭监听
+                dragListener.closeDrag(rootFlowPane);//关闭监听
             }
+        });
+        //layout-type
+        model.getLayoutProperty().addListener((obs, oldVal, newVal) -> {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    setLayout(newVal);
+                }
+            });
         });
         //从配置文件读取配置
         //logo-url
@@ -153,15 +173,19 @@ public class AppController {
                 }
             });
         }
+        //layout-type
+        if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.LAYOUTTYPE.getKey()))) {
+            model.setLayout(ConfigPropertiesUtil.get(ConfigEnum.LAYOUTTYPE.getKey()));
+        } else {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    setLayout(null);
+                }
+            });
+        }
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                //鼠标拖拽
-                Stage stage= (Stage) rootGridPane.getScene().getWindow();
-                dragListener=new DragListener(stage);
-            }
-        });
+
     }
 
 
@@ -408,6 +432,7 @@ public class AppController {
         OperatingSystem operatingSystem=systemInfo.getOperatingSystem();
         String manufacturer=operatingSystem.getManufacturer();//供应商
         String family=operatingSystem.getFamily();//操作系统名称
+        String version = operatingSystem.getVersionInfo().getVersion();
         String codeName="";
         if(operatingSystem.getVersionInfo().getCodeName().equals("Home")){
             codeName="家庭版";
@@ -418,7 +443,9 @@ public class AppController {
         }
         String buildNumber=operatingSystem.getVersionInfo().getBuildNumber();//内部版本号
         String osArch = System.getProperty("os.arch"); //系统架构
-        String systemInfo=manufacturer+" "+family+" "+codeName+" "+buildNumber+" "+osArch;
+        String systemInfo=family+version+" "+codeName+"\n"
+                +"版本号:"+buildNumber+"\n"
+                +"系统架构:"+osArch;
         SystemInfo.setText(systemInfo);
     }
 
@@ -451,6 +478,17 @@ public class AppController {
             //改变图片透明度
             WritableImage wImage = new ImageUtil().imgOpacity(image, opacity);
             SystemLogo.setImage(wImage);
+        }
+    }
+
+    //设置布局款式
+    public void setLayout(String type){
+        if(StringUtil.isEmpty(type) || type.equals(LayoutConst.DEFAULTTYPE)){//默认款式
+            stage.setWidth(LayoutConst.MAINSCENEWIDTH1);
+            stage.setHeight(LayoutConst.MAINSCENEHEIGHT1);
+        } else {//款式2
+            stage.setWidth(LayoutConst.MAINSCENEWIDTH2);
+            stage.setHeight(LayoutConst.MAINSCENEHEIGHT2);
         }
     }
 

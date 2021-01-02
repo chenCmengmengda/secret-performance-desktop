@@ -24,7 +24,7 @@
 }
 
 
-#themeLabel,#logoOpacityLabel,#dragLabel{
+#themeLabel,#logoOpacityLabel,#dragLabel,#layoutLabel{
     -fx-text-fill: #ffffff;
     -fx-font-size: 14;
     /*-fx-font-weight: bold;*/
@@ -55,3 +55,13 @@
 .check-box:selected .mark{
     -fx-background-color: #fff;
 }
+
+/*radio样式*/
+.radio-button{
+    -fx-text-fill: #fff;
+}
+
+.radio-button .radio{
+    -fx-background-color: #00CED1;
+}
+
