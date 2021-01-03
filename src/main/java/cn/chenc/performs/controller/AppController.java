@@ -464,7 +464,7 @@ public class AppController {
         } else { //使用用户配置
             Image image = new Image(url, SystemLogo.getFitWidth(), SystemLogo.getFitHeight(), true, true);
             //改变图片透明度
-            WritableImage wImage = new ImageUtil().imgOpacity(image, 0.3);
+            WritableImage wImage = new ImageUtil().imgOpacity(image, model.getLogoOpacity());
             SystemLogo.setImage(wImage);
         }
     }
