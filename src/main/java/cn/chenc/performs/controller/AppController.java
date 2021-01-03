@@ -456,7 +456,7 @@ public class AppController {
                 String urlStr = java.net.URLDecoder.decode(String.valueOf(logoUrl),"utf-8");
                 Image image = new Image(urlStr, SystemLogo.getFitWidth(), SystemLogo.getFitHeight(), true, true);
                 //改变图片透明度
-                WritableImage wImage = new ImageUtil().imgOpacity(image, CommonConst.LOGOOPACITY);
+                WritableImage wImage = ImageUtil.imgOpacity(image, CommonConst.LOGOOPACITY);
                 SystemLogo.setImage(wImage);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -464,19 +464,20 @@ public class AppController {
         } else { //使用用户配置
             Image image = new Image(url, SystemLogo.getFitWidth(), SystemLogo.getFitHeight(), true, true);
             //改变图片透明度
-            WritableImage wImage = new ImageUtil().imgOpacity(image, model.getLogoOpacity());
+            WritableImage wImage = ImageUtil.imgOpacity(image, model.getLogoOpacity());
             SystemLogo.setImage(wImage);
         }
     }
 
     public void setSystemLogoOpacity(double opacity) {
+        setSystemLogo(model.getImageUrl());//重新设置图片,防止丢失精度
         Image image = SystemLogo.getImage();
         if(opacity==0){//使用默认配置
-            WritableImage wImage = new ImageUtil().imgOpacity(image, CommonConst.LOGOOPACITY);
+            WritableImage wImage = ImageUtil.imgOpacity(image, CommonConst.LOGOOPACITY);
             SystemLogo.setImage(wImage);
         } else {
             //改变图片透明度
-            WritableImage wImage = new ImageUtil().imgOpacity(image, opacity);
+            WritableImage wImage = ImageUtil.imgOpacity(image, opacity);
             SystemLogo.setImage(wImage);
         }
     }

@@ -27,7 +27,7 @@ public class ImageUtil {
      * @return 新的可写的image对象
      * @author LIu Mingyao
      */
-    public WritableImage imgOpacity(Image image, double opacity) {
+    public static WritableImage imgOpacity(Image image, double opacity) {
 
         if (opacity < 0 || opacity > 1) {
             throw new RuntimeException("透明度需要介于0-1之间,请重新设置透明度!");
@@ -97,7 +97,7 @@ public class ImageUtil {
         });
         new Thread(futureTask3, "第三个透明度渲染线程").start();
 
-//		 // 单线程更改透明度，得到每个坐标像素点的color，并重新设值，赋予透明度，最后将新color设给新的image对象(wImage的pixelWriter)
+		 // 单线程更改透明度，得到每个坐标像素点的color，并重新设值，赋予透明度，最后将新color设给新的image对象(wImage的pixelWriter)
 //		 for (int readY = 0; readY < image.getHeight(); readY++) {
 //		 	for (int readX = 0; readX < image.getWidth(); readX++) {
 //				 Color color = pixelReader.getColor(readX, readY);
@@ -110,23 +110,23 @@ public class ImageUtil {
 //				 System.out.println("Saturation = " + color.getSaturation());
 //
 //				 // 现在写入一个更为明亮的颜色到PixelWriter中
-//		//		  color = color.brighter();
+////				  color = color.brighter();
 //
 //				 // 更暗
-//		//		color=color.darker();
+//				color=color.darker();
 //
-//		 // 最后一个参数是透明设置。需要设置透明不能改变原来的，只能重新创建对象赋值，
-//		 Color c1 = new Color(color.getRed(), color.getGreen(), color.getBlue(), opacity);
+//                 // 最后一个参数是透明设置。需要设置透明不能改变原来的，只能重新创建对象赋值，
+//                 Color c1 = new Color(color.getRed(), color.getGreen(), color.getBlue(), opacity);
 //
-//		 pixelWriter.setColor(readX, readY, c1.brighter());
-//		 }
+//                 pixelWriter.setColor(readX, readY, c1.brighter());
+//		 	}
 //		 }
 
         //这部分代码可以自主选用。用了可以保证全部图片全部刷新完再展示，不然图片是先渲染上部分，再是中下部分
 		try {
 			// 等待三个线程全部执行完毕
 			if (futureTask1.get() && futureTask2.get() && futureTask3.get()) {
-				backGroundImg = wImage;
+//				backGroundImg = wImage;
                 return wImage;
 			}
 		} catch (InterruptedException | ExecutionException e) {

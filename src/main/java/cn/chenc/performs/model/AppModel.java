@@ -39,7 +39,7 @@ public class AppModel {
         getImageProperty().set(value);
     }
 
-    public final String getImageUrl(String value){
+    public final String getImageUrl(){
         return getImageProperty().get();
     }
 
