@@ -173,8 +173,6 @@ public class CreateShortcut {
                 Process process = pb.start();
                 readProcessOutput(process.getInputStream(), System.out);
                 int state = process.exitValue();
-                System.out.println(state);
-                System.out.println("ok");
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -188,9 +186,9 @@ public class CreateShortcut {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, Charset.forName("GBK")));
             String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+//                System.out.println(line);
             }
-            System.out.println("-end");
+//            System.out.println("-end");
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

@@ -40,5 +40,22 @@ public class CommonConst {
     public static final String THEMECOLOR="#00ffff";
 
 
+    /**
+     * 时钟边框颜色
+     */
+    public static final String CLOCKBORDERCOLOR="#FFFFFF";
+
+    //时钟背景颜色
+    public static final String CLOCKBACKGROUND="#000000";
+
+    /**
+     * 时钟背景透明度
+     */
+    public static final double CLOCKBACKGROUNDOPACITY=0.7;
+
+    //时钟其他部分透明度
+    public static final double CLOCKOTHEROPACITY=0.7;
+
+
 
 }

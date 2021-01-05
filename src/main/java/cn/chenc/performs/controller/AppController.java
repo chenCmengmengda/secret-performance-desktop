@@ -5,6 +5,8 @@ import cn.chenc.performs.consts.LayoutConst;
 import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.listener.DragListener;
 import cn.chenc.performs.model.AppModel;
+import cn.chenc.performs.state.ClockState;
+import cn.chenc.performs.state.CodeRainState;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
 import cn.chenc.performs.util.ImageUtil;
 import cn.chenc.performs.util.StringUtil;
@@ -184,7 +186,13 @@ public class AppController {
                 }
             });
         }
+        //clock
+        ClockState clockState=new ClockState();
+        clockState.start(new Stage());
 
+        //桌面动画
+        CodeRainState codeRainState=new CodeRainState();
+        codeRainState.start(new Stage());
 
     }
 
@@ -252,12 +260,12 @@ public class AppController {
         long idle = ticks[CentralProcessor.TickType.IDLE.getIndex()] - prevTicks[CentralProcessor.TickType.IDLE.getIndex()];
         long totalCpu = user + nice + cSys + idle + iowait + irq + softirq + steal;
         prevTicks=ticks;//把当前cpu信息保存下来
-        System.out.println("----------------cpu信息----------------");
+//        System.out.println("----------------cpu信息----------------");
 
         long currentTimeMillis=System.currentTimeMillis();
         double cpuDouble = 1.0 - (idle * 1.0 / totalCpu);
         String totalCpuStr = new DecimalFormat("#.##%").format(cpuDouble);
-        System.out.println("cpu当前使用率:" + totalCpuStr);
+//        System.out.println("cpu当前使用率:" + totalCpuStr);
         //无法监测cpu温度
 //        String cpuTemperature=String.format("%.1f°C",sensors.getCpuTemperature());
 //        System.out.println("cpu当前温度:"+cpuTemperature);
@@ -333,10 +341,10 @@ public class AppController {
         //使用率
         double ramDouble=(totalByte-acaliableByte)*1.0/totalByte;
         String useRamDecimal = new DecimalFormat("#.##%").format((totalByte-acaliableByte)*1.0/totalByte);
-        System.out.println("总内存 = " + totalByteStr);
-        System.out.println("使用" + formatByte(totalByte-acaliableByte));
-        System.out.println("剩余内存 = " + useRamTotal);
-        System.out.println("使用率：" + useRamDecimal);
+//        System.out.println("总内存 = " + totalByteStr);
+//        System.out.println("使用" + formatByte(totalByte-acaliableByte));
+//        System.out.println("剩余内存 = " + useRamTotal);
+//        System.out.println("使用率：" + useRamDecimal);
 
         RAM.setText("内存("+useRamDecimal+")");
 
