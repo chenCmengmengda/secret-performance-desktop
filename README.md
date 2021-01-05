@@ -15,6 +15,9 @@ secret-performance-desktop(桌面性能监控)
 * 自定义主题颜色
 * 鼠标拖拽
 * 设置纵向或横向布局
+* 桌面时钟
+* 黑客帝国代码雨
+* 雪花飘落
 
 #### 使用方法
 下载可执行文件:
@@ -35,6 +38,8 @@ secret-performance-desktop(桌面性能监控)
 #### 截图
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img1.png)
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img2.png)
+![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img3.png)
+
 
 
 ### 致谢
