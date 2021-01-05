@@ -1,8 +1,9 @@
 package cn.chenc.performs.state;
 
+import cn.chenc.performs.factory.BaseStage;
+import cn.chenc.performs.factory.SingletonFactory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -24,8 +25,11 @@ import java.util.Random;
  * 　@date 2021/1/5 8:38
  *
  */
-public class CodeRainState extends Application {
+public class CodeRainState {
 
+    private static CodeRainState instance = null;
+    private Stage mainStage;
+    Timeline timeLine;
     private Random random = new Random();
     //行高,列宽
     private final static int gap = 10;
@@ -37,14 +41,21 @@ public class CodeRainState extends Application {
     //列数
     private int columns;
 
+    //调用单例工厂
+    public static CodeRainState getInstance() {
+        if (instance == null) {
+            instance = SingletonFactory.getWeakInstace(CodeRainState.class);
+        }
+        return instance;
+    }
 
-    @Override
-    public void start(Stage stage) {
+    public void start() {
+        Stage stage=BaseStage.getStage();
         // 设置风格为 UTILITY
-        stage.initStyle(StageStyle.UTILITY);
+//        stage.initStyle(StageStyle.DECORATED);
         // 设置父级透明度为0
-        stage.setOpacity(0);
-        Stage mainStage = new Stage();
+//        stage.setOpacity(0);
+        mainStage = new Stage();
         mainStage.initOwner(stage);
         //透明窗口
         mainStage.initStyle(StageStyle.TRANSPARENT);
@@ -73,7 +84,7 @@ public class CodeRainState extends Application {
         // 获取画板对象
         GraphicsContext gc = canvas.getGraphicsContext2D();
         // 创建时间轴
-        Timeline timeLine = new Timeline();
+        timeLine = new Timeline();
         // 获取时间轴的帧列表
         ObservableList<KeyFrame> keyFrames = timeLine.getKeyFrames();
         // 添加关键帧
@@ -143,6 +154,20 @@ public class CodeRainState extends Application {
         gc.restore();
     }
 
+    public void close() {
+        mainStage.close();
+        //隐藏就停止动画，节省性能
+        timeLine.stop();
+    }
+
+    public void show(){
+        if(mainStage!=null) {
+            mainStage.show();
+            timeLine.play();
+        } else{
+            getInstance().start();
+        }
+    }
 
 
 }

@@ -21,13 +21,19 @@
 
 .color-picker .label{
     -fx-text-fill: white;
+    -fx-font-size: 10px;
 }
 
 
-#themeLabel,#logoOpacityLabel,#dragLabel,#layoutLabel{
+/*#themeLabel,#logoOpacityLabel,#dragLabel,#layoutLabel{*/
+/*    -fx-text-fill: #ffffff;*/
+/*    -fx-font-size: 14;*/
+/*    !*-fx-font-weight: bold;*!*/
+/*}*/
+
+.label{
     -fx-text-fill: #ffffff;
     -fx-font-size: 14;
-    /*-fx-font-weight: bold;*/
 }
 
 /*滑块样式*/

@@ -13,10 +13,12 @@ module cn.chenc.performs {
 
     opens cn.chenc.performs to javafx.fxml;
     opens cn.chenc.performs.controller to javafx.fxml;
+    opens cn.chenc.performs.state;
     exports cn.chenc.performs;
     exports cn.chenc.performs.controller;
     exports cn.chenc.performs.state;
     exports cn.chenc.performs.task;
     exports cn.chenc.performs.util;
+    exports cn.chenc.performs.factory;
 
 }

@@ -1,9 +1,10 @@
 package cn.chenc.performs.state;
 
+import cn.chenc.performs.factory.BaseStage;
+import cn.chenc.performs.factory.SingletonFactory;
 import cn.chenc.performs.util.ColorUtil;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -24,14 +25,17 @@ import java.time.format.DateTimeFormatter;
  * 　@date 2021/1/4 21:39
  *
  */
-public class ClockState extends Application {
+public class ClockState {
 
+    private static ClockState instance = null;
+    private Stage mainStage;
+    private Timeline timeLine;
     //时钟边框颜色
     public static String CLOCKBORDERCOLOR="#ffffff";
     //时钟背景颜色
     public static String CLOCKBACKGROUND="#000000";
     //时钟背景透明度
-    public static double CLOCKBACKGROUNDOPACITY=0.0;
+    public static double CLOCKBACKGROUNDOPACITY=0.3;
     //时钟其他部分透明度
     public static double CLOCKOTHEROPACITY=0.8;
     //秒针颜色
@@ -41,13 +45,26 @@ public class ClockState extends Application {
     //时针颜色
     public static String HOURCOLOR="#808080";
 
-    @Override
-    public void start(Stage stage) {
+
+    public ClockState() {
+
+    }
+
+    //调用单例工厂
+    public static ClockState getInstance() {
+        if (instance == null) {
+            instance = SingletonFactory.getWeakInstace(ClockState.class);
+        }
+        return instance;
+    }
+
+    public void start() {
+        Stage stage=BaseStage.getStage();
         // 设置风格为 UTILITY
-        stage.initStyle(StageStyle.UTILITY);
+//        stage.initStyle(StageStyle.UTILITY);
         // 设置父级透明度为0
-        stage.setOpacity(0);
-        Stage mainStage = new Stage();
+//        stage.setOpacity(0);
+        mainStage = new Stage();
         mainStage.initOwner(stage);
         mainStage.initStyle(StageStyle.TRANSPARENT);
         AnchorPane root = new AnchorPane();
@@ -63,7 +80,7 @@ public class ClockState extends Application {
         // 获取画板对象
         GraphicsContext gc = canvas.getGraphicsContext2D();
         // 创建时间轴
-        Timeline timeLine = new Timeline();
+        timeLine = new Timeline();
         // 获取时间轴的帧列表
         ObservableList<KeyFrame> keyFrames = timeLine.getKeyFrames();
         // 添加关键帧
@@ -201,6 +218,20 @@ public class ClockState extends Application {
         // 恢复现场
         gc.restore();
 
+    }
+
+    public void close() {
+        mainStage.close();
+        timeLine.stop();
+    }
+
+    public void show(){
+        if(mainStage!=null) {
+            mainStage.show();
+            timeLine.play();
+        } else{
+            getInstance().start();
+        }
     }
 
 }

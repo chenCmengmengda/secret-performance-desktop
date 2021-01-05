@@ -32,7 +32,7 @@ public class SetupState extends Application {
         stage.setTitle("设置");
         stage.getIcons().add(new Image(
                 SetupState.class.getResourceAsStream("/images/icon.png")));
-        Scene scene=new Scene(root, 350, 250);
+        Scene scene=new Scene(root, 350, 350);
         scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
         stage.setScene(scene);
         SetupController setupController=fxmlLoader.getController();

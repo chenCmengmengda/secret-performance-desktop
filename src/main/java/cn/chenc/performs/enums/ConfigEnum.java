@@ -13,6 +13,8 @@ public enum ConfigEnum {
     SCENEX("scene-x"),
     SCENEY("scene-y"),
     LAYOUTTYPE("layout-type"),
+    CLOCKOPEN("clock-open"),
+    ANIMATIONOPEN("animation-open")
     ;
 
     private String key;

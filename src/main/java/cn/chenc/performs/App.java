@@ -3,6 +3,7 @@ package cn.chenc.performs;
 import cn.chenc.performs.consts.LayoutConst;
 import cn.chenc.performs.controller.AppController;
 import cn.chenc.performs.enums.ConfigEnum;
+import cn.chenc.performs.factory.BaseStage;
 import cn.chenc.performs.task.AppTask;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
 import javafx.application.Application;
@@ -28,6 +29,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        //存储单例主stage
+        BaseStage.setStage(primaryStage);
         // 设置风格为 UTILITY
         primaryStage.initStyle(StageStyle.UTILITY);
         // 设置父级透明度为0

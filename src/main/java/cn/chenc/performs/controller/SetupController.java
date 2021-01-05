@@ -3,6 +3,8 @@ package cn.chenc.performs.controller;
 import cn.chenc.performs.consts.CommonConst;
 import cn.chenc.performs.consts.LayoutConst;
 import cn.chenc.performs.enums.ConfigEnum;
+import cn.chenc.performs.state.ClockState;
+import cn.chenc.performs.state.CodeRainState;
 import cn.chenc.performs.util.ColorUtil;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
 import cn.chenc.performs.util.StringUtil;
@@ -54,6 +56,10 @@ public class SetupController {
     private RadioButton layoutRadio1;
     @FXML
     private RadioButton layoutRadio2;
+    @FXML
+    private CheckBox clockOpenCheckBox;
+    @FXML
+    private CheckBox animationOpenCheckBox;
 
     @FXML
     private void initialize(){
@@ -77,6 +83,8 @@ public class SetupController {
         setLogoOpacitySlider();
         setdragCheckBox();
         setLayoutToggleGroup();
+        setClockOpenCheckBox();
+        setAnimationOpenCheckBox();
     }
 
     public void setLogoPath() {
@@ -129,6 +137,8 @@ public class SetupController {
         });
     }
 
+
+
     //初始化样式单选
     public void setLayoutToggleGroup(){
         layoutRadio1.setUserData(0);
@@ -153,6 +163,49 @@ public class SetupController {
             }
         });
 
+    }
+
+    //是否开启时钟
+    public void setClockOpenCheckBox(){
+        Boolean b=ConfigPropertiesUtil.getBoolean(ConfigEnum.CLOCKOPEN.getKey());
+        if(b!=null && b){
+            clockOpenCheckBox.setSelected(true);
+        }
+        clockOpenCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> ov,
+                                Boolean old_val, Boolean new_val) {
+                ClockState clockState=ClockState.getInstance();
+                if(new_val) {//设置是否开启时钟监听
+//                    clockState.start(BaseStage.getStage());
+                    clockState.show();
+                } else {
+                    clockState.close();
+                }
+                ConfigPropertiesUtil.set(ConfigEnum.CLOCKOPEN.getKey(),new_val.toString());
+            }
+        });
+    }
+
+    //是否开启动画
+    public void setAnimationOpenCheckBox(){
+        Boolean b=ConfigPropertiesUtil.getBoolean(ConfigEnum.ANIMATIONOPEN.getKey());
+        if(b!=null && b){
+            animationOpenCheckBox.setSelected(true);
+        }
+        animationOpenCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> ov,
+                                Boolean old_val, Boolean new_val) {
+                CodeRainState codeRainState = CodeRainState.getInstance();
+                if(new_val) {//设置是否开启动画监听
+                    codeRainState.show();
+                } else {
+                    codeRainState.close();
+                }
+                ConfigPropertiesUtil.set(ConfigEnum.ANIMATIONOPEN.getKey(),new_val.toString());
+            }
+        });
     }
 
     @FXML
@@ -222,6 +275,9 @@ public class SetupController {
         //重置布局
         layoutRadio1.setSelected(true);
         AppController.model.setLayout("0");
+        //重置时钟和动画开启
+        clockOpenCheckBox.setSelected(true);
+        animationOpenCheckBox.setSelected(true);
     }
 
 

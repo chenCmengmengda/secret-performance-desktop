@@ -6,7 +6,7 @@ import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.listener.DragListener;
 import cn.chenc.performs.model.AppModel;
 import cn.chenc.performs.state.ClockState;
-import cn.chenc.performs.state.CodeRainState;
+import cn.chenc.performs.state.SnowState;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
 import cn.chenc.performs.util.ImageUtil;
 import cn.chenc.performs.util.StringUtil;
@@ -187,12 +187,21 @@ public class AppController {
             });
         }
         //clock
-        ClockState clockState=new ClockState();
-        clockState.start(new Stage());
+        Boolean clockopen=ConfigPropertiesUtil.getBoolean(ConfigEnum.CLOCKOPEN.getKey());
+        if(clockopen!=null && clockopen) {
+            ClockState clockState = ClockState.getInstance();
+            clockState.show();
+        }
+        //animation
+        Boolean animationopen=ConfigPropertiesUtil.getBoolean(ConfigEnum.ANIMATIONOPEN.getKey());
+        if(animationopen!=null && animationopen) {
+//            CodeRainState codeRainState = CodeRainState.getInstance();
+//            codeRainState.show();
+        }
+        //snow
+        SnowState snowState=SnowState.getInstance();
+        snowState.show();
 
-        //桌面动画
-        CodeRainState codeRainState=new CodeRainState();
-        codeRainState.start(new Stage());
 
     }
 

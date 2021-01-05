@@ -38,6 +38,18 @@
             <RadioButton fx:id="layoutRadio1" text="纵向" prefWidth="100" toggleGroup="$layoutToggleGroup" ></RadioButton>
             <RadioButton fx:id="layoutRadio2" text="横向" toggleGroup="$layoutToggleGroup" ></RadioButton>
         </HBox>
+        <Label text="时钟设置"></Label>
+        <HBox minHeight="30">
+            <Label fx:id="clockOpenLabel" text="开启时钟" minWidth="100" alignment="CENTER" ></Label>
+            <AnchorPane minWidth="130"></AnchorPane>
+            <CheckBox fx:id="clockOpenCheckBox" prefWidth="5"  alignment="CENTER_RIGHT"></CheckBox>
+        </HBox>
+        <Label text="动画设置"></Label>
+        <HBox minHeight="30">
+            <Label fx:id="animationOpenLabel" text="开启动画" minWidth="100" alignment="CENTER" ></Label>
+            <AnchorPane minWidth="130"></AnchorPane>
+            <CheckBox fx:id="animationOpenCheckBox" prefWidth="5"  alignment="CENTER_RIGHT"></CheckBox>
+        </HBox>
         <HBox minHeight="50"  alignment="BOTTOM_LEFT">
             <Button fx:id="resetConfig" onAction="#resetConfigAction" text="重置" minWidth="100"></Button>
         </HBox>
