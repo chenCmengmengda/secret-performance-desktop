@@ -24,7 +24,7 @@ secret-performance-desktop(桌面性能监控)
 
 ***目前版本:v1.1.2***
 
-* [点击下载windows最新版本](https://gitee.com/SecretOpen/secret-performance-desktop/attach_files/573027/download/secret-performance-desktop.rar)
+* [点击下载windows最新版本](https://gitee.com/SecretOpen/secret-performance-desktop/attach_files/576389/download/secret-performance-desktop.rar)
 
 * [更多历史发行版本下载](https://gitee.com/SecretOpen/secret-performance-desktop/releases)
 
