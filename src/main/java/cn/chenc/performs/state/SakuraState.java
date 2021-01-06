@@ -31,10 +31,14 @@ public class SakuraState extends BaseStage{
     private static SakuraState instance = null;
     private Stage mainStage;
     private Timeline timeLine;
-    int[] xx = new int[100];
-    int[] yy = new int[100];
-    int[] size = new int[100];
-    int[] r=new int[100];
+    int[] xx = new int[100];//x轴
+    int[] yy = new int[100];//yz轴
+    double[] size = new double[100];//大小
+    int[] r=new int[100];//初始化角度
+    int[] rv=new int[100];//初始化角度增量
+    int[] vx=new int[100];//x轴移动速度
+    int[] vy=new int[100];//y轴下落速度
+    int[] imageIndex=new int[100];//每个樱花图片下标
     List<Image> imageList=new ArrayList<Image>();
     private Dimension screenSize;
 
@@ -70,7 +74,12 @@ public class SakuraState extends BaseStage{
         for(int i = 0; i < 100; ++i) {
             this.xx[i] = (int)(Math.random() * screenSize.getWidth());
             this.yy[i] = (int)(Math.random() * screenSize.getHeight());
-            this.size[i] = 10;
+            this.size[i] = (int)(Math.random() * 10);
+            this.vx[i]= 5-(int)(Math.random() * 10);
+            this.vy[i] = 1+(int)(Math.random() * 10);//下落速度 [1,11)
+            this.imageIndex[i]=(int)(Math.random()*3);
+            this.r[i]=360-(int)(Math.random() * 720);//初始化角度 [-360 ,360)
+            this.rv[i]=5-(int)(Math.random() * 10);//角度改变 [-5,5)
         }
         //初始化樱花图片
         for(int i=1;i<4;i++){
@@ -106,31 +115,24 @@ public class SakuraState extends BaseStage{
         gc.save();
         for(int i = 0; i < 100; ++i) {
             //x轴随机左右移动
-            this.xx[i]=xx[i]+1-(int)(Math.random() * 2);
-            //超过屏幕宽度，随机生成一个x位置
-            if(xx[i]>screenSize.getWidth() || xx[i]<0){
-                xx[i]=(int)(Math.random() * screenSize.getWidth());
-            }
+            this.xx[i]=xx[i]+vx[i];
             //y轴下落
-            this.yy[i]++;
-            if (this.yy[i] > screenSize.height) {
+            this.yy[i]+=vy[i];
+            if (this.yy[i] > screenSize.height) {//超过屏幕重新计算部分初始值
                 this.yy[i] = 0;
+                this.vy[i]=(int)(Math.random()*10);
+                this.r[i]=360-(int)(Math.random() * 720);
+                this.size[i]=(int)(Math.random()*10);
             }
             //旋转角度
-            r[i]+=5;
-            //获取图片下标
-            int imgIndex=0;
-            if (this.yy[i] > 0 && this.yy[i] < 150) {
-                imgIndex=0;
-            } else if (this.yy[i] > 150 && this.yy[i] < 500) {
-                imgIndex=1;
-            } else {
-                imgIndex=2;
-            }
+            r[i]+=rv[i];
+            //大小
+            size[i]+=0.02;
+
             Rotate rotate=new Rotate(r[i],xx[i]+size[i]/2.0,yy[i]+size[i]/2.0);
             gc.setTransform(rotate.getMxx(),rotate.getMyx(),rotate.getMxy(),rotate.getMyy(),
                     rotate.getTx(),rotate.getTy());
-            gc.drawImage(imageList.get(imgIndex),(double)xx[i],(double)yy[i],size[i],size[i]);
+            gc.drawImage(imageList.get(imageIndex[i]),(double)xx[i],(double)yy[i],size[i],size[i]);
         }
         // 恢复现场
         gc.restore();

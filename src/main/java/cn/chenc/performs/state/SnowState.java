@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -30,7 +31,11 @@ public class SnowState extends BaseStage{
     private Timeline timeLine;
     int[] xx = new int[100];
     int[] yy = new int[100];
-    int[] fonts = new int[100];
+    int[] vx=new int[100];//x轴移动速度
+    int[] vy=new int[100];//y轴下落速度
+    int[] r=new int[100];//初始化角度
+    int[] rv=new int[100];//初始化角度增量
+    double[] fonts = new double[100];
     private Dimension screenSize;
 
     //调用单例工厂
@@ -64,6 +69,11 @@ public class SnowState extends BaseStage{
         for(int i = 0; i < 100; ++i) {
             this.xx[i] = (int)(Math.random() * screenSize.getWidth());
             this.yy[i] = (int)(Math.random() * screenSize.getHeight());
+            this.vx[i]= 5-(int)(Math.random() * 10);
+            this.vy[i] = 1+(int)(Math.random() * 10);//下落速度 [1,11)
+            this.r[i]=360-(int)(Math.random() * 720);//初始化角度 [-360 ,360)
+            this.rv[i]=5-(int)(Math.random() * 10);//角度改变 [-5,5)
+            this.fonts[i]=10+(int)(Math.random() * 8);//字体大小[10,18)
         }
         // 获取画板对象
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -90,24 +100,29 @@ public class SnowState extends BaseStage{
         gc.setFill(Color.WHITE);
         for(int i = 0; i < 100; ++i) {
             //x轴随机左右移动
-            this.xx[i]=xx[i]+1-(int)(Math.random() * 2);
+            this.xx[i]=xx[i]+vx[i];
             //超过屏幕宽度，随机生成一个x位置
-            if(xx[i]>screenSize.getWidth() || xx[i]<0){
-                xx[i]=(int)(Math.random() * screenSize.getWidth());
-            }
+
             //y轴下落
-            this.yy[i]++;
+            this.yy[i]+=vy[i];
             if (this.yy[i] > screenSize.height) {
                 this.yy[i] = 0;
+                this.vy[i]=(int)(Math.random()*10);
+                this.r[i]=360-(int)(Math.random() * 720);
+                this.fonts[i]=10+(int)(Math.random() * 8);
             }
 
-            if (this.yy[i] > 0 && this.yy[i] < 150) {
-                this.fonts[i] = 18;
-            } else if (this.yy[i] > 150 && this.yy[i] < 500) {
-                this.fonts[i] = 22;
-            } else {
-                this.fonts[i] = 32;
-            }
+//            if (this.yy[i] > 0 && this.yy[i] < 150) {
+//                this.fonts[i] = 18;
+//            } else if (this.yy[i] > 150 && this.yy[i] < 500) {
+//                this.fonts[i] = 22;
+//            } else {
+//                this.fonts[i] = 32;
+//            }
+            this.fonts[i]+=0.1;
+            Rotate rotate=new Rotate(r[i],xx[i]+fonts[i]/2.0,yy[i]+fonts[i]/2.0);
+            gc.setTransform(rotate.getMxx(),rotate.getMyx(),rotate.getMxy(),rotate.getMyy(),
+                    rotate.getTx(),rotate.getTy());
             gc.setFont(Font.font("微软雅黑", FontWeight.findByWeight(1),fonts[i]));
             gc.fillText("*", this.xx[i], this.yy[i]);
         }
