@@ -2,10 +2,14 @@ package cn.chenc.performs.controller;
 
 import cn.chenc.performs.consts.CommonConst;
 import cn.chenc.performs.consts.LayoutConst;
+import cn.chenc.performs.enums.AnimationEnum;
 import cn.chenc.performs.enums.ConfigEnum;
+import cn.chenc.performs.factory.StageInterface;
 import cn.chenc.performs.listener.DragListener;
 import cn.chenc.performs.model.AppModel;
 import cn.chenc.performs.state.ClockState;
+import cn.chenc.performs.state.CodeRainState;
+import cn.chenc.performs.state.SakuraState;
 import cn.chenc.performs.state.SnowState;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
 import cn.chenc.performs.util.ImageUtil;
@@ -195,13 +199,21 @@ public class AppController {
         //animation
         Boolean animationopen=ConfigPropertiesUtil.getBoolean(ConfigEnum.ANIMATIONOPEN.getKey());
         if(animationopen!=null && animationopen) {
-//            CodeRainState codeRainState = CodeRainState.getInstance();
-//            codeRainState.show();
+            String animationType=ConfigPropertiesUtil.get(ConfigEnum.ANIMATIONTYPE.getKey());
+            if(StringUtil.isEmpty(animationType)){
+                StageInterface stageInterface= CodeRainState.getInstance();
+                stageInterface.show();
+            } else if(animationType.equals(AnimationEnum.CODERAIN.getKey())){
+                StageInterface stageInterface= CodeRainState.getInstance();
+                stageInterface.show();
+            } else if(animationType.equals(AnimationEnum.SNOW.getKey())){
+                StageInterface stageInterface= SnowState.getInstance();
+                stageInterface.show();
+            } else if(animationType.equals(AnimationEnum.SAKURA.getKey())){
+                StageInterface stageInterface= SakuraState.getInstance();
+                stageInterface.show();
+            }
         }
-        //snow
-        SnowState snowState=SnowState.getInstance();
-        snowState.show();
-
 
     }
 

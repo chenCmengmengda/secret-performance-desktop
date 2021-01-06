@@ -14,7 +14,8 @@ public enum ConfigEnum {
     SCENEY("scene-y"),
     LAYOUTTYPE("layout-type"),
     CLOCKOPEN("clock-open"),
-    ANIMATIONOPEN("animation-open")
+    ANIMATIONOPEN("animation-open"),
+    ANIMATIONTYPE("animation-type")
     ;
 
     private String key;

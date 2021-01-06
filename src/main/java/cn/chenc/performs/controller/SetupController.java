@@ -2,9 +2,13 @@ package cn.chenc.performs.controller;
 
 import cn.chenc.performs.consts.CommonConst;
 import cn.chenc.performs.consts.LayoutConst;
+import cn.chenc.performs.enums.AnimationEnum;
 import cn.chenc.performs.enums.ConfigEnum;
+import cn.chenc.performs.factory.StageInterface;
 import cn.chenc.performs.state.ClockState;
 import cn.chenc.performs.state.CodeRainState;
+import cn.chenc.performs.state.SakuraState;
+import cn.chenc.performs.state.SnowState;
 import cn.chenc.performs.util.ColorUtil;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
 import cn.chenc.performs.util.StringUtil;
@@ -34,6 +38,8 @@ public class SetupController {
 
     //stage对象
     private static  Stage stage;
+    //动画stage
+    private static StageInterface animationStage;
     @FXML
     private GridPane rootGridPane;
     @FXML
@@ -60,6 +66,8 @@ public class SetupController {
     private CheckBox clockOpenCheckBox;
     @FXML
     private CheckBox animationOpenCheckBox;
+    @FXML
+    private ChoiceBox animationTypeChoiceBox;
 
     @FXML
     private void initialize(){
@@ -85,6 +93,7 @@ public class SetupController {
         setLayoutToggleGroup();
         setClockOpenCheckBox();
         setAnimationOpenCheckBox();
+        setAnimationTypeChoiceBox();
     }
 
     public void setLogoPath() {
@@ -197,15 +206,59 @@ public class SetupController {
             @Override
             public void changed(ObservableValue<? extends Boolean> ov,
                                 Boolean old_val, Boolean new_val) {
-                CodeRainState codeRainState = CodeRainState.getInstance();
+                animationStage.close();
+                if(animationTypeChoiceBox.getValue().equals(AnimationEnum.CODERAIN.getValue())){
+                    animationStage = CodeRainState.getInstance();
+                } else if(animationTypeChoiceBox.getValue().equals(AnimationEnum.SNOW.getValue())){
+                    animationStage = SnowState.getInstance();
+                } else if(animationTypeChoiceBox.getValue().equals(AnimationEnum.SAKURA.getValue())){
+                    animationStage = SnowState.getInstance();
+                }
                 if(new_val) {//设置是否开启动画监听
-                    codeRainState.show();
+                    animationStage.show();
                 } else {
-                    codeRainState.close();
+                    animationStage.close();
                 }
                 ConfigPropertiesUtil.set(ConfigEnum.ANIMATIONOPEN.getKey(),new_val.toString());
             }
         });
+    }
+
+    //设置动画类型
+    public void setAnimationTypeChoiceBox(){
+        animationTypeChoiceBox.getItems().addAll(AnimationEnum.getValues());
+        String animationType=ConfigPropertiesUtil.get(ConfigEnum.ANIMATIONTYPE.getKey());
+        if(!StringUtil.isEmpty(animationType)) {
+            animationTypeChoiceBox.setValue(AnimationEnum.getEnumByKey(animationType).getValue());
+            if(animationType.equals(AnimationEnum.CODERAIN.getKey())){
+                animationStage = CodeRainState.getInstance();
+            } else if(animationType.equals(AnimationEnum.SNOW.getKey())){
+                animationStage = SnowState.getInstance();
+            } else if(animationType.equals(AnimationEnum.SAKURA.getKey())){
+                animationStage = SakuraState.getInstance();
+            }
+        } else{//默认代码雨
+            animationTypeChoiceBox.setValue(AnimationEnum.CODERAIN.getValue());
+            animationStage = CodeRainState.getInstance();
+        }
+
+        //监听select
+        animationTypeChoiceBox.getSelectionModel().selectedIndexProperty()
+            .addListener(new ChangeListener<Number>() {
+                @Override
+                public void changed(ObservableValue ov, Number value, Number new_value) {
+                    animationStage.close();
+                    if(new_value.intValue()==0){//代码雨
+                        animationStage=CodeRainState.getInstance();
+                    } else if(new_value.intValue()==1){//雪花
+                        animationStage= SnowState.getInstance();
+                    } else if(new_value.intValue()==2){//樱花
+                        animationStage= SakuraState.getInstance();
+                    }
+                    animationStage.show();
+                    ConfigPropertiesUtil.set(ConfigEnum.ANIMATIONTYPE.getKey(),AnimationEnum.getKey(new_value.intValue()));
+                }
+            });
     }
 
     @FXML

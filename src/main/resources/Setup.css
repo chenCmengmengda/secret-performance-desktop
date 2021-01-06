@@ -71,3 +71,21 @@
     -fx-background-color: #00CED1;
 }
 
+/*choice样式*/
+.choice-box{
+    /*-fx-fill: #00CED1;*/
+    -fx-background-color: #00CED1;
+}
+
+/*.choice-box .open-button {*/
+/*    -fx-fill: #00CED1;*/
+/*    -fx-text-fill: #000;*/
+/*    -fx-background-color: #00CED1;*/
+/*}*/
+
+.choice-box .context-menu{
+    -fx-background-color: #00CED1;
+}
+.choice-box .open-button .arrow {
+    -fx-background-color: white;
+}

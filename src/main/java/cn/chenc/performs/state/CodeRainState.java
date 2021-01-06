@@ -25,7 +25,7 @@ import java.util.Random;
  * 　@date 2021/1/5 8:38
  *
  */
-public class CodeRainState {
+public class CodeRainState extends BaseStage{
 
     private static CodeRainState instance = null;
     private Stage mainStage;
@@ -154,12 +154,16 @@ public class CodeRainState {
         gc.restore();
     }
 
+    @Override
     public void close() {
-        mainStage.close();
-        //隐藏就停止动画，节省性能
-        timeLine.stop();
+        if(mainStage!=null) {
+            mainStage.close();
+            //隐藏就停止动画，节省性能
+            timeLine.stop();
+        }
     }
 
+    @Override
     public void show(){
         if(mainStage!=null) {
             mainStage.show();

@@ -8,35 +8,41 @@ import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.awt.*;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 　@description: TODO
  * 　@author secret
- * 　@date 2021/1/5 21:37
+ * 　@date 2021/1/6 8:52
  *
  */
-public class SnowState extends BaseStage{
-    private static SnowState instance = null;
+public class SakuraState extends BaseStage{
+    private static SakuraState instance = null;
     private Stage mainStage;
     private Timeline timeLine;
     int[] xx = new int[100];
     int[] yy = new int[100];
-    int[] fonts = new int[100];
+    int[] size = new int[100];
+    int[] r=new int[100];
+    List<Image> imageList=new ArrayList<Image>();
     private Dimension screenSize;
 
+
     //调用单例工厂
-    public static SnowState getInstance() {
+    public static SakuraState getInstance() {
         if (instance == null) {
-            instance = SingletonFactory.getWeakInstace(SnowState.class);
+            instance = SingletonFactory.getWeakInstace(SakuraState.class);
         }
         return instance;
     }
@@ -60,10 +66,22 @@ public class SnowState extends BaseStage{
         stage.show();
         mainStage.show();
 
-        //初始化雪花坐标
+        //初始化樱花坐标，大小
         for(int i = 0; i < 100; ++i) {
             this.xx[i] = (int)(Math.random() * screenSize.getWidth());
             this.yy[i] = (int)(Math.random() * screenSize.getHeight());
+            this.size[i] = 10;
+        }
+        //初始化樱花图片
+        for(int i=1;i<4;i++){
+            try {
+                URL sakuraUrl=getClass().getResource("/images/sakura"+i+".png");
+                String  sakuraUrlStr = java.net.URLDecoder.decode(String.valueOf(sakuraUrl),"utf-8");
+                Image image=new Image(sakuraUrlStr);
+                imageList.add(image);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
         // 获取画板对象
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -75,19 +93,17 @@ public class SnowState extends BaseStage{
         keyFrames.add(new KeyFrame(Duration.seconds(0.1), e->{
             // 刷新操作
             gc.clearRect(0,0,screenSize.getWidth(),screenSize.getHeight());
-            snow(gc);
+            sakura(gc);
         }));
         // 设置时间轴播放次数为无限
         timeLine.setCycleCount(-1);
         // 播放时间轴
         timeLine.play();
-
     }
 
-    public void snow(GraphicsContext gc){
+    public void sakura(GraphicsContext gc){
         // 保存现场
         gc.save();
-        gc.setFill(Color.WHITE);
         for(int i = 0; i < 100; ++i) {
             //x轴随机左右移动
             this.xx[i]=xx[i]+1-(int)(Math.random() * 2);
@@ -100,16 +116,21 @@ public class SnowState extends BaseStage{
             if (this.yy[i] > screenSize.height) {
                 this.yy[i] = 0;
             }
-
+            //旋转角度
+            r[i]+=5;
+            //获取图片下标
+            int imgIndex=0;
             if (this.yy[i] > 0 && this.yy[i] < 150) {
-                this.fonts[i] = 18;
+                imgIndex=0;
             } else if (this.yy[i] > 150 && this.yy[i] < 500) {
-                this.fonts[i] = 22;
+                imgIndex=1;
             } else {
-                this.fonts[i] = 32;
+                imgIndex=2;
             }
-            gc.setFont(Font.font("微软雅黑", FontWeight.findByWeight(1),fonts[i]));
-            gc.fillText("*", this.xx[i], this.yy[i]);
+            Rotate rotate=new Rotate(r[i],xx[i]+size[i]/2.0,yy[i]+size[i]/2.0);
+            gc.setTransform(rotate.getMxx(),rotate.getMyx(),rotate.getMxy(),rotate.getMyy(),
+                    rotate.getTx(),rotate.getTy());
+            gc.drawImage(imageList.get(imgIndex),(double)xx[i],(double)yy[i],size[i],size[i]);
         }
         // 恢复现场
         gc.restore();

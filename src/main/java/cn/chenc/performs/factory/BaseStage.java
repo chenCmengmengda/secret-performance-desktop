@@ -8,7 +8,7 @@ import javafx.stage.Stage;
  * 　@date 2021/1/5 17:27
  *
  */
-public class BaseStage {
+public class BaseStage implements StageInterface{
 
     private static Stage stage;
 
@@ -18,5 +18,17 @@ public class BaseStage {
 
     public static void setStage(Stage stage) {
         BaseStage.stage = stage;
+    }
+
+    @Override
+    public void close() {
+        if(stage!=null) {
+            stage.close();
+        }
+    }
+
+    @Override
+    public void show() {
+        stage.show();
     }
 }
