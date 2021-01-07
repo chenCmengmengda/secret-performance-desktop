@@ -41,7 +41,6 @@ secret-performance-desktop(桌面性能监控)
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img2.png)
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img3.png)
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img4.png)
-![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img5.png)
 
 
 

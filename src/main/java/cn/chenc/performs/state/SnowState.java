@@ -106,8 +106,9 @@ public class SnowState extends BaseStage{
             //y轴下落
             this.yy[i]+=vy[i];
             if (this.yy[i] > screenSize.height) {
+                this.xx[i]=(int)(Math.random() * screenSize.getWidth());
                 this.yy[i] = 0;
-                this.vy[i]=(int)(Math.random()*10);
+                this.vy[i]=1+(int)(Math.random()*10);
                 this.r[i]=360-(int)(Math.random() * 720);
                 this.fonts[i]=10+(int)(Math.random() * 8);
             }

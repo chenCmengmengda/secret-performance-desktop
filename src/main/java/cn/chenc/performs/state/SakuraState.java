@@ -119,8 +119,9 @@ public class SakuraState extends BaseStage{
             //y轴下落
             this.yy[i]+=vy[i];
             if (this.yy[i] > screenSize.height) {//超过屏幕重新计算部分初始值
+                this.xx[i]=(int)(Math.random() * screenSize.getWidth());
                 this.yy[i] = 0;
-                this.vy[i]=(int)(Math.random()*10);
+                this.vy[i]=1+(int)(Math.random()*10);
                 this.r[i]=360-(int)(Math.random() * 720);
                 this.size[i]=(int)(Math.random()*10);
             }
