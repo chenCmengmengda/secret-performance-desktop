@@ -147,14 +147,14 @@ public class MySystemTray {
         };
         //行为事件，打开设置窗口
         setupListener = e -> {
-            SetupState setupState=new SetupState();
+            SetupState setupState= SetupState.getInstance();
 
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
                     //更新JavaFX的主线程的代码放在此处
                     try {
-                        setupState.start(new Stage());
+                       setupState.show();
                     } catch (Exception exception) {
                         exception.printStackTrace();
                     }

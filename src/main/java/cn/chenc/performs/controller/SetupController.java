@@ -43,6 +43,8 @@ public class SetupController {
     @FXML
     private GridPane rootGridPane;
     @FXML
+    private ScrollPane scrollPane;
+    @FXML
     private Button checkLogo;
     @FXML
     private TextField logoPath;
@@ -65,12 +67,29 @@ public class SetupController {
     @FXML
     private CheckBox clockOpenCheckBox;
     @FXML
+    private ColorPicker clockBorderColor;
+    @FXML
+    private ColorPicker clockBackgroundColor;
+    @FXML
+    private Slider clockBackgroundOpacitySlider;
+    @FXML
+    private ColorPicker clockHourColor;
+    @FXML
+    private ColorPicker clockMinuteColor;
+    @FXML
+    private ColorPicker clockSecondColor;
+    @FXML
+    private ColorPicker clockTimeColor;
+    @FXML
     private CheckBox animationOpenCheckBox;
     @FXML
     private ChoiceBox animationTypeChoiceBox;
 
     @FXML
     private void initialize(){
+        //绑定父级宽高
+        scrollPane.prefWidthProperty().bind(rootGridPane.widthProperty());
+        scrollPane.prefViewportHeightProperty().bind(rootGridPane.heightProperty());
         //监听窗口关闭
         Platform.runLater(new Runnable() {
             @Override
@@ -92,8 +111,9 @@ public class SetupController {
         setdragCheckBox();
         setLayoutToggleGroup();
         setClockOpenCheckBox();
+        initClockConfig();
         setAnimationOpenCheckBox();
-        setAnimationTypeChoiceBox();
+        initAnimationConfig();
     }
 
     public void setLogoPath() {
@@ -196,6 +216,85 @@ public class SetupController {
         });
     }
 
+    /**
+     * 初始化时钟配置
+     */
+    public void initClockConfig(){
+        initClockColor();
+        //监听
+        clockBorderColor.valueProperty().addListener(new ChangeListener<Color>() {
+            @Override
+            public void changed(ObservableValue<? extends Color> observable, Color oldValue, Color newValue) {
+                String color=ColorUtil.parse(newValue.toString());
+                ClockState.setClockBorderColor(color);
+                ConfigPropertiesUtil.set(ConfigEnum.CLOCKBORDERCOLOR.getKey(), color);
+            }
+        });
+        clockBackgroundColor.valueProperty().addListener(new ChangeListener<Color>() {
+            @Override
+            public void changed(ObservableValue<? extends Color> observable, Color oldValue, Color newValue) {
+                String color=ColorUtil.parse(newValue.toString());
+                ClockState.setClockBackground(color);
+                ConfigPropertiesUtil.set(ConfigEnum.CLOCKBACKGROUND.getKey(), color);
+            }
+        });
+        clockBackgroundOpacitySlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> ov,
+                                Number old_val, Number new_val) {
+                String oldValStr=String.format("%.2f",old_val);
+                String newValStr=String.format("%.2f",new_val);
+                //防止新旧值频繁更新以及有色图片完全透明和原图片本身透明部分混合导致最后不渲染
+                if(!oldValStr.equals(newValStr) && !newValStr.equals("1.00")) {
+                    ClockState.setClockBackgroundOpacity(Double.valueOf(newValStr));
+                    ConfigPropertiesUtil.set(ConfigEnum.CLOCKBACKGROUNDOPACITY.getKey(),newValStr);
+                }
+            }
+        });
+        clockSecondColor.valueProperty().addListener(new ChangeListener<Color>() {
+            @Override
+            public void changed(ObservableValue<? extends Color> observable, Color oldValue, Color newValue) {
+                String color=ColorUtil.parse(newValue.toString());
+                ClockState.setSecondColor(color);
+                ConfigPropertiesUtil.set(ConfigEnum.SECONDCOLOR.getKey(), color);
+            }
+        });
+        clockMinuteColor.valueProperty().addListener(new ChangeListener<Color>() {
+            @Override
+            public void changed(ObservableValue<? extends Color> observable, Color oldValue, Color newValue) {
+                String color=ColorUtil.parse(newValue.toString());
+                ClockState.setMinuteColor(color);
+                ConfigPropertiesUtil.set(ConfigEnum.MINUTECOLOR.getKey(), color);
+            }
+        });
+        clockHourColor.valueProperty().addListener(new ChangeListener<Color>() {
+            @Override
+            public void changed(ObservableValue<? extends Color> observable, Color oldValue, Color newValue) {
+                String color=ColorUtil.parse(newValue.toString());
+                ClockState.setHourColor(color);
+                ConfigPropertiesUtil.set(ConfigEnum.HOURCOLOR.getKey(), color);
+            }
+        });
+        clockTimeColor.valueProperty().addListener(new ChangeListener<Color>() {
+            @Override
+            public void changed(ObservableValue<? extends Color> observable, Color oldValue, Color newValue) {
+                String color=ColorUtil.parse(newValue.toString());
+                ClockState.setTimeColor(color);
+                ConfigPropertiesUtil.set(ConfigEnum.TIMECOLOR.getKey(), color);
+            }
+        });
+    }
+
+    private void initClockColor(){
+        clockBorderColor.setValue(Color.valueOf(ClockState.getClockBorderColor()));
+        clockBackgroundColor.setValue(Color.valueOf(ClockState.getClockBackground()));
+        clockBackgroundOpacitySlider.setValue(ClockState.getClockBackgroundOpacity());
+        clockSecondColor.setValue(Color.valueOf(ClockState.getSecondColor()));
+        clockMinuteColor.setValue(Color.valueOf(ClockState.getMinuteColor()));
+        clockHourColor.setValue(Color.valueOf(ClockState.getHourColor()));
+        clockTimeColor.setValue(Color.valueOf(ClockState.getTimeColor()));
+    }
+
     //是否开启动画
     public void setAnimationOpenCheckBox(){
         Boolean b=ConfigPropertiesUtil.getBoolean(ConfigEnum.ANIMATIONOPEN.getKey());
@@ -224,23 +323,13 @@ public class SetupController {
         });
     }
 
-    //设置动画类型
-    public void setAnimationTypeChoiceBox(){
-        animationTypeChoiceBox.getItems().addAll(AnimationEnum.getValues());
-        String animationType=ConfigPropertiesUtil.get(ConfigEnum.ANIMATIONTYPE.getKey());
-        if(!StringUtil.isEmpty(animationType)) {
-            animationTypeChoiceBox.setValue(AnimationEnum.getEnumByKey(animationType).getValue());
-            if(animationType.equals(AnimationEnum.CODERAIN.getKey())){
-                animationStage = CodeRainState.getInstance();
-            } else if(animationType.equals(AnimationEnum.SNOW.getKey())){
-                animationStage = SnowState.getInstance();
-            } else if(animationType.equals(AnimationEnum.SAKURA.getKey())){
-                animationStage = SakuraState.getInstance();
-            }
-        } else{//默认代码雨
-            animationTypeChoiceBox.setValue(AnimationEnum.CODERAIN.getValue());
-            animationStage = CodeRainState.getInstance();
-        }
+    //初始化动画设置
+    public void initAnimationConfig(){
+        //动画类型初始化
+        initAnimationType();
+        //代码雨初始化配置
+        //雪花飘落初始化
+        //樱花初始化
 
         //监听select
         animationTypeChoiceBox.getSelectionModel().selectedIndexProperty()
@@ -259,6 +348,26 @@ public class SetupController {
                     ConfigPropertiesUtil.set(ConfigEnum.ANIMATIONTYPE.getKey(),AnimationEnum.getKey(new_value.intValue()));
                 }
             });
+    }
+
+    private void initAnimationType(){
+        if(animationTypeChoiceBox.getItems().size()==0) {
+            animationTypeChoiceBox.getItems().addAll(AnimationEnum.getValues());
+        }
+        String animationType=ConfigPropertiesUtil.get(ConfigEnum.ANIMATIONTYPE.getKey());
+        if(!StringUtil.isEmpty(animationType)) {
+            animationTypeChoiceBox.setValue(AnimationEnum.getEnumByKey(animationType).getValue());
+            if(animationType.equals(AnimationEnum.CODERAIN.getKey())){
+                animationStage = CodeRainState.getInstance();
+            } else if(animationType.equals(AnimationEnum.SNOW.getKey())){
+                animationStage = SnowState.getInstance();
+            } else if(animationType.equals(AnimationEnum.SAKURA.getKey())){
+                animationStage = SakuraState.getInstance();
+            }
+        } else{//默认代码雨
+            animationTypeChoiceBox.setValue(AnimationEnum.CODERAIN.getValue());
+            animationStage = CodeRainState.getInstance();
+        }
     }
 
     @FXML
@@ -328,8 +437,13 @@ public class SetupController {
         //重置布局
         layoutRadio1.setSelected(true);
         AppController.model.setLayout("0");
-        //重置时钟和动画开启
+        //重置时钟
         clockOpenCheckBox.setSelected(true);
+        ClockState clockState=ClockState.getInstance();
+        clockState.reset();
+        initClockColor();
+        //重置动画
+        initAnimationType();
         animationOpenCheckBox.setSelected(true);
     }
 

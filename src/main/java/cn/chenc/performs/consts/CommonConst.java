@@ -51,10 +51,19 @@ public class CommonConst {
     /**
      * 时钟背景透明度
      */
-    public static final double CLOCKBACKGROUNDOPACITY=0.7;
+    public static final double CLOCKBACKGROUNDOPACITY=0.3;
 
     //时钟其他部分透明度
     public static final double CLOCKOTHEROPACITY=0.7;
+
+    //秒针颜色
+    public static final String SECONDCOLOR="#ff0000";
+    //分针颜色
+    public static final String MINUTECOLOR="#0000ff";
+    //时针颜色
+    public static final String HOURCOLOR="#808080";
+    //时间颜色
+    public static final String TIMECOLOR="#F5F5F5";
 
 
 

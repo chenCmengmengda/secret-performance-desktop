@@ -119,30 +119,22 @@ public class CodeRainState extends BaseStage{
         int currentColumn = 0;
         for (int x = 0; x < screenSize.width; x += 5*gap) {
             int endPos = posArr[currentColumn];
-            gc.setFill(Color.CYAN);
+            gc.setFill(Color.GREEN);
             gc.setFont(Font.font(null, FontWeight.BOLD,9));
             gc.fillText(String.valueOf(getChr()), x, endPos * gap);
             int cg=0;
-            double opa=100;
             for (int j = endPos - 15; j < endPos; j++) {
                 //颜色渐变
                 cg += 20;
                 if (cg > 255) {
                     cg = 255;
                 }
-                //透明渐变
-                opa -= 10;
-                if(opa<0){
-                    opa=0;
-                }
                 gc.setFill(Color.rgb(0,cg, 0));
                 gc.fillText(String.valueOf(getChr()), x, j * gap);
-
             }
             //每放完一帧，当前列上雨点的位置随机下移1~5行
 //            posArr[currentColumn] += random.nextInt(5);
             posArr[currentColumn] += 1;
-//            posArr[currentColumn]+=lines;
             //当雨点位置超过屏幕高度时，重新产生一个随机位置
             if (posArr[currentColumn] * gap > screenSize.height) {
                 posArr[currentColumn] = random.nextInt(lines);

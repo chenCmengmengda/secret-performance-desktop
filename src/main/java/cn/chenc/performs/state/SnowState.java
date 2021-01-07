@@ -112,13 +112,6 @@ public class SnowState extends BaseStage{
                 this.fonts[i]=10+(int)(Math.random() * 8);
             }
 
-//            if (this.yy[i] > 0 && this.yy[i] < 150) {
-//                this.fonts[i] = 18;
-//            } else if (this.yy[i] > 150 && this.yy[i] < 500) {
-//                this.fonts[i] = 22;
-//            } else {
-//                this.fonts[i] = 32;
-//            }
             this.fonts[i]+=0.1;
             Rotate rotate=new Rotate(r[i],xx[i]+fonts[i]/2.0,yy[i]+fonts[i]/2.0);
             gc.setTransform(rotate.getMxx(),rotate.getMyx(),rotate.getMxy(),rotate.getMyy(),

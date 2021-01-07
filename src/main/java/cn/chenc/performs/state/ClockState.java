@@ -1,8 +1,12 @@
 package cn.chenc.performs.state;
 
+import cn.chenc.performs.consts.CommonConst;
+import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.factory.BaseStage;
 import cn.chenc.performs.factory.SingletonFactory;
 import cn.chenc.performs.util.ColorUtil;
+import cn.chenc.performs.util.ConfigPropertiesUtil;
+import cn.chenc.performs.util.StringUtil;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
@@ -31,20 +35,61 @@ public class ClockState {
     private Stage mainStage;
     private Timeline timeLine;
     //时钟边框颜色
-    public static String CLOCKBORDERCOLOR="#ffffff";
+    private static String clockBorderColor ="#ffffff";
     //时钟背景颜色
-    public static String CLOCKBACKGROUND="#000000";
+    private static String clockBackground ="#000000";
     //时钟背景透明度
-    public static double CLOCKBACKGROUNDOPACITY=0.3;
+    private static double clockBackgroundOpacity =0.3;
     //时钟其他部分透明度
-    public static double CLOCKOTHEROPACITY=0.8;
+    private static double clockOtherOopcity =0.8;
     //秒针颜色
-    public static String SECONDCOLOR="#ff0000";
+    private static String secondColor ="#ff0000";
     //分针颜色
-    public static String MINUTECOLOR="#0000ff";
+    private static String minuteColor ="#0000ff";
     //时针颜色
-    public static String HOURCOLOR="#808080";
+    private static String hourColor ="#808080";
+    //时间颜色
+    private static String timeColor ="#F5F5F5";
 
+
+    static {
+        //获取配置
+        //边框色
+        String borderColorConf=ConfigPropertiesUtil.get(ConfigEnum.CLOCKBORDERCOLOR.getKey());
+        if(!StringUtil.isEmpty(borderColorConf)){
+            clockBorderColor=borderColorConf;
+        }
+        //背景色
+        String backgroundColorConf=ConfigPropertiesUtil.get(ConfigEnum.CLOCKBACKGROUND.getKey());
+        if(!StringUtil.isEmpty(backgroundColorConf)){
+            clockBackground=backgroundColorConf;
+        }
+        //背景透明度
+        String backgroundOpacityConf=ConfigPropertiesUtil.get(ConfigEnum.CLOCKBACKGROUNDOPACITY.getKey());
+        if(!StringUtil.isEmpty(backgroundOpacityConf)){
+            clockBackgroundOpacity=Double.parseDouble(backgroundOpacityConf);
+        }
+        //秒针颜色
+        String secondColorConf=ConfigPropertiesUtil.get(ConfigEnum.SECONDCOLOR.getKey());
+        if(!StringUtil.isEmpty(secondColorConf)){
+            secondColor=secondColorConf;
+        }
+        //分针颜色
+        String minuteColorConf=ConfigPropertiesUtil.get(ConfigEnum.MINUTECOLOR.getKey());
+        if(!StringUtil.isEmpty(minuteColorConf)){
+            minuteColor=minuteColorConf;
+        }
+        //时针颜色
+        String hourColorConf=ConfigPropertiesUtil.get(ConfigEnum.HOURCOLOR.getKey());
+        if(!StringUtil.isEmpty(hourColorConf)){
+            hourColor=hourColorConf;
+        }
+        //时间颜色
+        String timeColorConf=ConfigPropertiesUtil.get(ConfigEnum.TIMECOLOR.getKey());
+        if(!StringUtil.isEmpty(timeColorConf)){
+            timeColor=timeColorConf;
+        }
+    }
 
     public ClockState() {
 
@@ -56,6 +101,26 @@ public class ClockState {
             instance = SingletonFactory.getWeakInstace(ClockState.class);
         }
         return instance;
+    }
+
+    /**
+     * 重置
+     */
+    public void reset(){
+        //边框色
+        clockBorderColor = CommonConst.CLOCKBORDERCOLOR;
+        //背景色
+        clockBackground = CommonConst.CLOCKBACKGROUND;
+        //背景透明度
+        clockBackgroundOpacity = CommonConst.CLOCKBACKGROUNDOPACITY;
+        //秒针颜色
+        secondColor = CommonConst.SECONDCOLOR;
+        //分针颜色
+        minuteColor = CommonConst.MINUTECOLOR;
+        //时针颜色
+        hourColor = CommonConst.HOURCOLOR;
+        //时间颜色
+        timeColor = CommonConst.TIMECOLOR;
     }
 
     public void start() {
@@ -110,10 +175,10 @@ public class ClockState {
         gc.translate(100,25);
         gc.setLineWidth(4);
         //时钟边框颜色
-        gc.setStroke(ColorUtil.setOpacity(CLOCKBORDERCOLOR, CLOCKOTHEROPACITY));
+        gc.setStroke(ColorUtil.setOpacity(clockBorderColor, clockOtherOopcity));
         gc.strokeOval(0, 0, 400, 400);
         //时钟填充颜色
-        gc.setFill(ColorUtil.setOpacity(CLOCKBACKGROUND,  CLOCKBACKGROUNDOPACITY));
+        gc.setFill(ColorUtil.setOpacity(clockBackground, clockBackgroundOpacity));
         gc.fillOval(0,0,400,400);
         gc.restore();
         gc.getFill();
@@ -132,7 +197,7 @@ public class ClockState {
         gc.rotate(-90);
         // 设置字体大小
         gc.setFont(Font.font(16));
-        gc.setFill(ColorUtil.setOpacity(CLOCKBORDERCOLOR,CLOCKOTHEROPACITY));
+        gc.setFill(ColorUtil.setOpacity(clockBorderColor, clockOtherOopcity));
         for(int i = 1 ; i < 61 ; i++) {
             // 每一个刻度角度为6度
             gc.rotate(6);
@@ -177,11 +242,11 @@ public class ClockState {
         // 时间数字
         {
             String timeText1 = time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            gc.setFill(Color.WHITESMOKE);
+            gc.setFill(Color.valueOf(timeColor));
             gc.setFont(Font.font(30));
             gc.fillText(timeText1,-70,-80);
             String timeText2 = time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-            gc.setFill(Color.WHITESMOKE);
+            gc.setFill(Color.valueOf(timeColor));
             gc.setFont(Font.font(60));
             gc.fillText(timeText2,-120,20);
         }
@@ -189,7 +254,7 @@ public class ClockState {
         {
             gc.save();
             gc.rotate(-90);
-            gc.setFill(ColorUtil.setOpacity(SECONDCOLOR,CLOCKOTHEROPACITY));
+            gc.setFill(ColorUtil.setOpacity(secondColor, clockOtherOopcity));
             gc.rotate(seconds*6);
             // 四边形秒钟
             gc.fillPolygon(pointX1,pointY1, 4);
@@ -199,7 +264,7 @@ public class ClockState {
         {
             gc.save();
             gc.rotate(-90);
-            gc.setFill(ColorUtil.setOpacity(MINUTECOLOR,CLOCKOTHEROPACITY));
+            gc.setFill(ColorUtil.setOpacity(minuteColor, clockOtherOopcity));
             gc.rotate(minutes*6+0.1*seconds);
             // 四边形分钟
             gc.fillPolygon(pointX2,pointY2, 4);
@@ -209,7 +274,7 @@ public class ClockState {
         {
             gc.save();
             gc.rotate(-90);
-            gc.setFill(ColorUtil.setOpacity(HOURCOLOR,CLOCKOTHEROPACITY));
+            gc.setFill(ColorUtil.setOpacity(hourColor, clockOtherOopcity));
             gc.rotate(hours*30+minutes*0.5+seconds*(0.5/60));
             // 四边形时钟
             gc.fillPolygon(pointX3,pointY3, 4);
@@ -234,5 +299,68 @@ public class ClockState {
         }
     }
 
+    public static String getClockBorderColor() {
+        return clockBorderColor;
+    }
+
+    public static void setClockBorderColor(String clockBorderColor) {
+        ClockState.clockBorderColor = clockBorderColor;
+    }
+
+    public static String getClockBackground() {
+        return clockBackground;
+    }
+
+    public static void setClockBackground(String clockBackground) {
+        ClockState.clockBackground = clockBackground;
+    }
+
+    public static double getClockBackgroundOpacity() {
+        return clockBackgroundOpacity;
+    }
+
+    public static void setClockBackgroundOpacity(double clockBackgroundOpacity) {
+        ClockState.clockBackgroundOpacity = clockBackgroundOpacity;
+    }
+
+    public static double getClockOtherOopcity() {
+        return clockOtherOopcity;
+    }
+
+    public static void setClockOtherOopcity(double clockOtherOopcity) {
+        ClockState.clockOtherOopcity = clockOtherOopcity;
+    }
+
+    public static String getSecondColor() {
+        return secondColor;
+    }
+
+    public static void setSecondColor(String secondColor) {
+        ClockState.secondColor = secondColor;
+    }
+
+    public static String getMinuteColor() {
+        return minuteColor;
+    }
+
+    public static void setMinuteColor(String minuteColor) {
+        ClockState.minuteColor = minuteColor;
+    }
+
+    public static String getHourColor() {
+        return hourColor;
+    }
+
+    public static void setHourColor(String hourColor) {
+        ClockState.hourColor = hourColor;
+    }
+
+    public static String getTimeColor() {
+        return timeColor;
+    }
+
+    public static void setTimeColor(String timeColor) {
+        ClockState.timeColor = timeColor;
+    }
 }
 

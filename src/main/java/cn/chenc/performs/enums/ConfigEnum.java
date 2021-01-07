@@ -14,6 +14,13 @@ public enum ConfigEnum {
     SCENEY("scene-y"),
     LAYOUTTYPE("layout-type"),
     CLOCKOPEN("clock-open"),
+    CLOCKBORDERCOLOR("clock-border-color"),
+    CLOCKBACKGROUND("clock-background"),
+    CLOCKBACKGROUNDOPACITY("clock-background-opacity"),
+    SECONDCOLOR("second-color"),
+    MINUTECOLOR("minute-color"),
+    HOURCOLOR("hour-color"),
+    TIMECOLOR("time-color"),
     ANIMATIONOPEN("animation-open"),
     ANIMATIONTYPE("animation-type")
     ;

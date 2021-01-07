@@ -10,13 +10,15 @@ import javafx.scene.paint.Color;
  */
 public class ColorUtil {
 
+    /**
+     * 16进制色号转化为 #开头色号，只取6位
+     * @param color
+     * @return
+     */
     public static String parse(String color){
         return "#"+color.substring(2,8);
     }
 
-    public static String setOpacity(Color color,int opacity){
-        return parse(color.toString())+opacity;
-    }
 
     public static Color setOpacity(String s,double opacity){
         return Color.web(s,opacity);
