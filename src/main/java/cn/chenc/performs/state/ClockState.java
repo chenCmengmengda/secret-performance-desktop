@@ -4,6 +4,7 @@ import cn.chenc.performs.consts.CommonConst;
 import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.factory.BaseStage;
 import cn.chenc.performs.factory.SingletonFactory;
+import cn.chenc.performs.listener.DragListener;
 import cn.chenc.performs.util.ColorUtil;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
 import cn.chenc.performs.util.StringUtil;
@@ -20,6 +21,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -34,6 +36,49 @@ public class ClockState {
     private static ClockState instance = null;
     private Stage mainStage;
     private Timeline timeLine;
+    private Canvas canvas;
+    private DragListener dragListener;
+    //时钟位置
+    private static double clockX;
+    private static double clockY;
+    //时钟宽高
+    private static int clockSize=450;
+    //直径
+    private static int clockd=400;
+    //圆心
+    private static int clockCenter=225;
+    //粗刻度线与圆心距离
+    private static int clockBRange=175;
+    //粗刻度线宽高
+    private static int clockBWidth=25;
+    private static int clockBHeight=10;
+    //细刻度线与圆心距离
+    private static int clockLRange=185;
+    //细刻度线宽高
+    private static int clockLWidth=15;
+    private static int clockLHeight=5;
+    //刻度数字距离
+    private static int clockTextRange=165;
+    //刻度数字大小
+    private static int clockTextSize=16;
+    //秒针
+    private static double[] clockPointX1 = new double[]{0,50,180,50};
+    private static double[] clockPointY1 = new double[]{0,5,0,-5};
+    //分针
+    private static double[] clockPointX2 = new double[]{0,30,150,30};
+    private static double[] clockPointY2 = new double[]{0,10,0,-10};
+    //时针
+    private static double[] clockPointX3 = new double[]{0,20,120,20};
+    private static double[] clockPointY3 = new double[]{0,12,0,-12};
+    //日期
+    private static int dateSize=30;
+    private static int dateX=-60;
+    private static int dateY=80;
+    //时间
+    private static int timeSize=60;
+    private static int timeX=-120;
+    private static int timeY=20;
+
     //时钟边框颜色
     private static String clockBorderColor ="#ffffff";
     //时钟背景颜色
@@ -54,6 +99,14 @@ public class ClockState {
 
     static {
         //获取配置
+        //位置
+        clockX= ConfigPropertiesUtil.getDouble(ConfigEnum.CLOCKX.getKey());
+        clockY= ConfigPropertiesUtil.getDouble(ConfigEnum.CLOCKY.getKey());
+        //大小
+        String sizeConf=ConfigPropertiesUtil.get(ConfigEnum.CLOCKSIZE.getKey());
+        if(!StringUtil.isEmpty(sizeConf)){
+            setClockSize(Integer.parseInt(sizeConf));
+        }
         //边框色
         String borderColorConf=ConfigPropertiesUtil.get(ConfigEnum.CLOCKBORDERCOLOR.getKey());
         if(!StringUtil.isEmpty(borderColorConf)){
@@ -107,6 +160,8 @@ public class ClockState {
      * 重置
      */
     public void reset(){
+        //大小
+        clockSize = CommonConst.CLOCKSIZE;
         //边框色
         clockBorderColor = CommonConst.CLOCKBORDERCOLOR;
         //背景色
@@ -130,16 +185,24 @@ public class ClockState {
         // 设置父级透明度为0
 //        stage.setOpacity(0);
         mainStage = new Stage();
+        //设置窗口位置
+        if(clockX != -1){
+            mainStage.setX(clockX);
+        }
+        if(clockY != -1){
+            mainStage.setY(clockY);
+        }
         mainStage.initOwner(stage);
         mainStage.initStyle(StageStyle.TRANSPARENT);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();//获取屏幕
         AnchorPane root = new AnchorPane();
         root.setStyle("-fx-fill: null;-fx-background-color: rgba(0,0,0,0)");
-        Canvas canvas = new Canvas(600,450);
+        canvas = new Canvas(clockSize,clockSize);
         root.getChildren().add(canvas);
-        Scene scene  = new Scene(root,600,450);
+        Scene scene  = new Scene(root,clockSize,clockSize);
         scene.setFill(null);
         mainStage.setScene(scene);
-        mainStage.setResizable(false);
+//        mainStage.setResizable(false);
         stage.show();
         mainStage.show();
         // 获取画板对象
@@ -151,7 +214,7 @@ public class ClockState {
         // 添加关键帧
         keyFrames.add(new KeyFrame(Duration.seconds(0.1), e->{
             // 刷新操作
-            gc.clearRect(0,0,600,450);
+            gc.clearRect(0,0,screenSize.getWidth(),screenSize.getHeight());
             // 绘制表盘
             dials(gc);
             // 绘制刻度
@@ -172,14 +235,14 @@ public class ClockState {
         // 保存现场
         gc.save();
         // 变换坐标到外切圆矩形左上角坐标
-        gc.translate(100,25);
+        gc.translate(25,25);
         gc.setLineWidth(4);
         //时钟边框颜色
         gc.setStroke(ColorUtil.setOpacity(clockBorderColor, clockOtherOopcity));
-        gc.strokeOval(0, 0, 400, 400);
+        gc.strokeOval(0, 0, clockd, clockd);
         //时钟填充颜色
         gc.setFill(ColorUtil.setOpacity(clockBackground, clockBackgroundOpacity));
-        gc.fillOval(0,0,400,400);
+        gc.fillOval(0,0,clockd, clockd);
         gc.restore();
         gc.getFill();
     }
@@ -192,27 +255,27 @@ public class ClockState {
         // 保存现场
         gc.save();
         // 变换坐标系原点到表盘中心
-        gc.translate(300,225);
+        gc.translate(clockCenter,clockCenter);
         // 坐标逆时针旋转角度-90
         gc.rotate(-90);
         // 设置字体大小
-        gc.setFont(Font.font(16));
+        gc.setFont(Font.font(clockTextSize));
         gc.setFill(ColorUtil.setOpacity(clockBorderColor, clockOtherOopcity));
         for(int i = 1 ; i < 61 ; i++) {
             // 每一个刻度角度为6度
             gc.rotate(6);
             if(i % 5 == 0) {
                 gc.save();
-                // 当前坐标切换到 (250,0) 即刻度左边界位置
-                gc.translate(165,0);
+                // 当前坐标切换到 刻度左边界位置,相对圆心的坐标
+                gc.translate(clockTextRange,0);
                 // 设置表格数字位置 相对于桌面应该是竖直
                 gc.rotate(90-i/5*30);
                 gc.fillText(i/5+"",0,0);
                 gc.restore();
-                gc.fillRect(175,0,22,10);
+                gc.fillRect(clockBRange,0,clockBWidth,clockBHeight);
             }
             else{
-                gc.fillRect(185,0,12,5);
+                gc.fillRect(clockLRange,0,clockLWidth,clockLHeight);
             }
         }
         // 恢复现场
@@ -228,27 +291,27 @@ public class ClockState {
         int minutes = time.getMinute();
         int hours = time.getHour();
         //秒针
-        double[] pointX1 = new double[]{0,50,180,50};
-        double[] pointY1 = new double[]{0,5,0,-5};
+        double[] pointX1 = clockPointX1;
+        double[] pointY1 = clockPointY1;
         //分针
-        double[] pointX2 = new double[]{0,30,150,30};
-        double[] pointY2 = new double[]{0,10,0,-10};
+        double[] pointX2 = clockPointX2;
+        double[] pointY2 = clockPointY2;
         //时针
-        double[] pointX3 = new double[]{0,20,120,20};
-        double[] pointY3 = new double[]{0,12,0,-12};
+        double[] pointX3 = clockPointX3;
+        double[] pointY3 = clockPointY3;
         gc.save();
         // 坐标移动至圆心
-        gc.translate(300, 225);
+        gc.translate(clockCenter, clockCenter);
         // 时间数字
         {
             String timeText1 = time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             gc.setFill(Color.valueOf(timeColor));
-            gc.setFont(Font.font(30));
-            gc.fillText(timeText1,-70,-80);
+            gc.setFont(Font.font(dateSize));
+            gc.fillText(timeText1,dateX,-dateY);
             String timeText2 = time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
             gc.setFill(Color.valueOf(timeColor));
-            gc.setFont(Font.font(60));
-            gc.fillText(timeText2,-120,20);
+            gc.setFont(Font.font(timeSize));
+            gc.fillText(timeText2,timeX,timeY);
         }
         // 秒钟
         {
@@ -297,6 +360,137 @@ public class ClockState {
         } else{
             getInstance().start();
         }
+    }
+
+    public void openDrag(){
+        if(dragListener==null) {
+            dragListener = new DragListener(mainStage,ConfigEnum.CLOCKX,ConfigEnum.CLOCKY);
+            dragListener.enableDrag(mainStage.getScene().getRoot());
+        }
+    }
+
+    public void closeDrag(){
+        if(dragListener!=null){
+            dragListener.closeDrag(mainStage.getScene().getRoot());
+        }
+    }
+
+    public static void setClockSize(int size){
+        if(size<150){
+            return;
+        }
+        //调整窗口大小
+        if(getInstance().mainStage!=null) {
+            getInstance().mainStage.setWidth(size);
+            getInstance().mainStage.setHeight(size);
+            getInstance().canvas.setWidth(size);
+            getInstance().canvas.setHeight(size);
+        }
+        //大小
+        clockSize=size;
+        //直径
+        clockd=size-50;
+        //半径
+        int clockr=clockd/2;
+        //圆心
+        clockCenter=clockSize/2;
+        //粗刻度线宽高
+        if(size>=400) {
+            clockBWidth = 25;
+            clockBHeight=10;
+        } else if(size>=300) {
+            clockBWidth = 15;
+            clockBHeight=7;
+        } else {
+            clockBWidth = 8;
+            clockBHeight=4;
+        }
+        //粗刻度线与圆心距离
+        clockBRange=clockr-clockBWidth;
+        //细刻度线宽高
+        if(size>=400) {
+            clockLWidth = 15;
+            clockLHeight = 5;
+        } else if(size>=300) {
+            clockLWidth = 7;
+            clockLHeight = 3;
+        } else {
+            clockLWidth = 4;
+            clockLHeight = 2;
+        }
+        //细刻度线与圆心距离
+        clockLRange=clockr-clockLWidth;
+        //刻度数字大小与圆心距离
+        if(size>=400){
+            clockTextRange=clockBRange-10;
+            clockTextSize=16;
+        } else if(size>=300){
+            clockTextRange=clockBRange-10;
+            clockTextSize=12;
+        } else {
+            clockTextRange=clockBRange-5;
+            clockTextSize=8;
+        }
+        //秒针
+        if(size>=400) {
+            clockPointX1 = new double[]{0, 50, clockr - clockBWidth + 5, 50};
+            clockPointY1 = new double[]{0, 5, 0, -5};
+        } else if(size >= 300) {
+            clockPointX1 = new double[]{0, 30, clockr - clockBWidth + 5, 30};
+            clockPointY1 = new double[]{0, 3, 0, -3};
+        } else {
+            clockPointX1 = new double[]{0, 15, clockr - clockBWidth + 5, 15};
+            clockPointY1 = new double[]{0, 1, 0, -1};
+        }
+        //分针
+        if(size>=400) {
+            clockPointX2 = new double[]{0, 30, clockr-(int)(clockBWidth*2.5), 30};
+            clockPointY2 = new double[]{0, 10, 0, -10};
+        } else if(size>=300){
+            clockPointX2 = new double[]{0, 20, clockr-(int)(clockBWidth*2.5), 20};
+            clockPointY2 = new double[]{0, 5, 0, -5};
+        } else{
+            clockPointX2 = new double[]{0, 10, clockr-(int)(clockBWidth*2.5), 10};
+            clockPointY2 = new double[]{0, 2, 0, -2};
+        }
+        //时针
+        if(size>=400) {
+            clockPointX3 = new double[]{0, 20, clockr - (int) (clockBWidth * 3), 20};
+            clockPointY3 = new double[]{0, 12, 0, -12};
+        } else if(size>=300) {
+            clockPointX3 = new double[]{0, 10, clockr - (int) (clockBWidth * 3), 10};
+            clockPointY3 = new double[]{0, 6, 0, -6};
+        } else {
+            clockPointX3 = new double[]{0, 5, clockr - (int) (clockBWidth * 3), 5};
+            clockPointY3 = new double[]{0, 3, 0, -3};
+        }
+        //数字时间
+        if(size>=400){
+            dateSize=30;
+            dateX=-(dateSize*2);
+            dateY=clockr/2-20;
+            timeSize=60;
+            timeX=-(timeSize*2);
+        } else if(size>=300) {
+            dateSize=15;
+            dateX=-(dateSize*2);
+            dateY=clockr/2-10;
+            timeSize=30;
+            timeX=-(timeSize*2);
+            timeY=10;
+        } else {
+            dateSize=9;
+            dateX=-(dateSize*2);
+            dateY=clockr/2-5;
+            timeSize=15;
+            timeX=-(timeSize*2);
+            timeY=5;
+        }
+
+    }
+
+    public static int getClockSize(){
+        return clockSize;
     }
 
     public static String getClockBorderColor() {

@@ -1,7 +1,10 @@
 package cn.chenc.performs.state;
 
+import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.factory.BaseStage;
 import cn.chenc.performs.factory.SingletonFactory;
+import cn.chenc.performs.util.ConfigPropertiesUtil;
+import cn.chenc.performs.util.StringUtil;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
@@ -40,6 +43,17 @@ public class CodeRainState extends BaseStage{
     private int lines;
     //列数
     private int columns;
+    //文字颜色
+    private static String textColor="#00ff00";
+
+    static{
+        //获取配置
+        //文字颜色
+        String textColorConf= ConfigPropertiesUtil.get(ConfigEnum.CODERAINTEXTCOLOR.getKey());
+        if(!StringUtil.isEmpty(textColorConf)){
+            textColor=textColorConf;
+        }
+    }
 
     //调用单例工厂
     public static CodeRainState getInstance() {
@@ -119,17 +133,28 @@ public class CodeRainState extends BaseStage{
         int currentColumn = 0;
         for (int x = 0; x < screenSize.width; x += 5*gap) {
             int endPos = posArr[currentColumn];
-            gc.setFill(Color.GREEN);
+            Color color=Color.valueOf(textColor);
+            gc.setFill(color);
             gc.setFont(Font.font(null, FontWeight.BOLD,9));
             gc.fillText(String.valueOf(getChr()), x, endPos * gap);
+            int cr=0;
             int cg=0;
+            int cb=0;
             for (int j = endPos - 15; j < endPos; j++) {
                 //颜色渐变
-                cg += 20;
-                if (cg > 255) {
-                    cg = 255;
+                cr += 20;
+                if (cr > (int)(color.getRed()*255)) {
+                    cr = (int)(color.getRed()*255);
                 }
-                gc.setFill(Color.rgb(0,cg, 0));
+                cg += 20;
+                if (cg > (int)(color.getGreen()*255)) {
+                    cg = (int)(color.getGreen()*255);
+                }
+                cb += 20;
+                if (cb > (int)(color.getBlue()*255)) {
+                    cb = (int)(color.getBlue()*255);
+                }
+                gc.setFill(Color.rgb(cr,cg, cb));
                 gc.fillText(String.valueOf(getChr()), x, j * gap);
             }
             //每放完一帧，当前列上雨点的位置随机下移1~5行
@@ -165,5 +190,11 @@ public class CodeRainState extends BaseStage{
         }
     }
 
+    public static String getTextColor() {
+        return textColor;
+    }
 
+    public static void setTextColor(String textColor) {
+        CodeRainState.textColor = textColor;
+    }
 }

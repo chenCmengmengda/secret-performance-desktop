@@ -41,6 +41,10 @@ public class CommonConst {
 
 
     /**
+     * 时钟大小
+     */
+    public static final int CLOCKSIZE=450;
+    /**
      * 时钟边框颜色
      */
     public static final String CLOCKBORDERCOLOR="#FFFFFF";
@@ -64,7 +68,8 @@ public class CommonConst {
     public static final String HOURCOLOR="#808080";
     //时间颜色
     public static final String TIMECOLOR="#F5F5F5";
-
+    //代码雨文字颜色
+    public static final String CODERAINTEXTCOLOR="#00ff00";
 
 
 }

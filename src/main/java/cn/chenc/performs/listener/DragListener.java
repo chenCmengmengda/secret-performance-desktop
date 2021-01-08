@@ -17,9 +17,13 @@ public class DragListener implements EventHandler<MouseEvent> {
     private double xOffset = 0;
     private double yOffset = 0;
     private final Stage stage;
+    private ConfigEnum configEnumX;
+    private ConfigEnum configEnumY;
 
-    public DragListener(Stage stage) {
+    public DragListener(Stage stage,ConfigEnum configEnumX,ConfigEnum configEnumY) {
         this.stage = stage;
+        this.configEnumX = configEnumX;
+        this.configEnumY = configEnumY;
     }
 
     @Override
@@ -35,8 +39,8 @@ public class DragListener implements EventHandler<MouseEvent> {
             }else {
                 stage.setY(event.getScreenY() - yOffset);
             }
-            ConfigPropertiesUtil.set(ConfigEnum.SCENEX.getKey(),String.valueOf(stage.getX()));
-            ConfigPropertiesUtil.set(ConfigEnum.SCENEY.getKey(),String.valueOf(stage.getY()));
+            ConfigPropertiesUtil.set(configEnumX.getKey(),String.valueOf(stage.getX()));
+            ConfigPropertiesUtil.set(configEnumY.getKey(),String.valueOf(stage.getY()));
         }
     }
 

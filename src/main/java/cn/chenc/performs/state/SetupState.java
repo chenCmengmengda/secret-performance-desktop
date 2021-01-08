@@ -33,7 +33,7 @@ public class SetupState extends BaseStage {
     private void start() throws Exception {
         Stage stage = new Stage();
         mainStage=stage;
-        URL url= SetupState.class.getClassLoader().getResource("setup.fxml");
+        URL url= SetupState.class.getResource("/setup.fxml");
 
         String urlStr=java.net.URLDecoder.decode(String.valueOf(url),"utf-8");
         url=new URL(urlStr);

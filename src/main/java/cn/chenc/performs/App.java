@@ -14,6 +14,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import oshi.SystemInfo;
+import oshi.hardware.CentralProcessor;
+import oshi.hardware.HardwareAbstractionLayer;
 
 import java.net.URL;
 import java.util.concurrent.Executors;
@@ -76,8 +79,12 @@ public class App extends Application {
 //        Timeline animation=new Timeline(new KeyFrame(Duration.millis(1000),eventHandler));
 
         AppTask appTask = new AppTask(controller,root);
+        //获取当前系统cpu核心数
+        HardwareAbstractionLayer hal = new SystemInfo().getHardware();
+        CentralProcessor processor =hal.getProcessor();
+        int cpucore=processor.getPhysicalProcessorCount();
         // 设置线程池，restart会尝试重用线程
-        appTask.setExecutor(Executors.newFixedThreadPool(5));
+        appTask.setExecutor(Executors.newFixedThreadPool(cpucore+1));
         // 延时0s开始
         appTask.setDelay(Duration.millis(0));
         // 间隔1s执行

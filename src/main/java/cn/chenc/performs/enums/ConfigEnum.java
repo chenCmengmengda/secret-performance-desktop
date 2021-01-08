@@ -14,6 +14,9 @@ public enum ConfigEnum {
     SCENEY("scene-y"),
     LAYOUTTYPE("layout-type"),
     CLOCKOPEN("clock-open"),
+    CLOCKX("clock-x"),
+    CLOCKY("clock-y"),
+    CLOCKSIZE("clock-size"),
     CLOCKBORDERCOLOR("clock-border-color"),
     CLOCKBACKGROUND("clock-background"),
     CLOCKBACKGROUNDOPACITY("clock-background-opacity"),
@@ -22,7 +25,8 @@ public enum ConfigEnum {
     HOURCOLOR("hour-color"),
     TIMECOLOR("time-color"),
     ANIMATIONOPEN("animation-open"),
-    ANIMATIONTYPE("animation-type")
+    ANIMATIONTYPE("animation-type"),
+    CODERAINTEXTCOLOR("coderain-text-color"),
     ;
 
     private String key;

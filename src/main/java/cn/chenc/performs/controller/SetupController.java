@@ -67,6 +67,10 @@ public class SetupController {
     @FXML
     private CheckBox clockOpenCheckBox;
     @FXML
+    private CheckBox clockDragCheckBox;
+    @FXML
+    private Slider clockSizeSlider;
+    @FXML
     private ColorPicker clockBorderColor;
     @FXML
     private ColorPicker clockBackgroundColor;
@@ -84,6 +88,8 @@ public class SetupController {
     private CheckBox animationOpenCheckBox;
     @FXML
     private ChoiceBox animationTypeChoiceBox;
+    @FXML
+    private ColorPicker codeRainTextColor;
 
     @FXML
     private void initialize(){
@@ -98,7 +104,7 @@ public class SetupController {
                 stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                     @Override
                     public void handle(WindowEvent event) {
-                        System.out.print("监听到窗口关闭");
+//                        System.out.print("监听到窗口关闭");
                         AppController.model.setDrag(false);
                     }
                 });
@@ -222,6 +228,28 @@ public class SetupController {
     public void initClockConfig(){
         initClockColor();
         //监听
+        clockDragCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> ov,
+                                Boolean old_val, Boolean new_val) {
+                ClockState clockState=ClockState.getInstance();
+                if(new_val) {//设置是否开启时钟监听
+                    ClockState clockState1=ClockState.getInstance();
+                    clockState.openDrag();
+                } else {
+                    clockState.closeDrag();
+                }
+            }
+        });
+        clockSizeSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> ov,
+                                Number old_val, Number new_val) {
+                int newValInt=new_val.intValue();
+                ClockState.setClockSize(newValInt);
+                ConfigPropertiesUtil.set(ConfigEnum.CLOCKSIZE.getKey(),String.valueOf(newValInt));
+            }
+        });
         clockBorderColor.valueProperty().addListener(new ChangeListener<Color>() {
             @Override
             public void changed(ObservableValue<? extends Color> observable, Color oldValue, Color newValue) {
@@ -244,7 +272,7 @@ public class SetupController {
                                 Number old_val, Number new_val) {
                 String oldValStr=String.format("%.2f",old_val);
                 String newValStr=String.format("%.2f",new_val);
-                //防止新旧值频繁更新以及有色图片完全透明和原图片本身透明部分混合导致最后不渲染
+                //防止新旧值频繁更新
                 if(!oldValStr.equals(newValStr) && !newValStr.equals("1.00")) {
                     ClockState.setClockBackgroundOpacity(Double.valueOf(newValStr));
                     ConfigPropertiesUtil.set(ConfigEnum.CLOCKBACKGROUNDOPACITY.getKey(),newValStr);
@@ -286,6 +314,7 @@ public class SetupController {
     }
 
     private void initClockColor(){
+        clockSizeSlider.setValue(ClockState.getClockSize());
         clockBorderColor.setValue(Color.valueOf(ClockState.getClockBorderColor()));
         clockBackgroundColor.setValue(Color.valueOf(ClockState.getClockBackground()));
         clockBackgroundOpacitySlider.setValue(ClockState.getClockBackgroundOpacity());
@@ -321,6 +350,14 @@ public class SetupController {
                 ConfigPropertiesUtil.set(ConfigEnum.ANIMATIONOPEN.getKey(),new_val.toString());
             }
         });
+        codeRainTextColor.valueProperty().addListener(new ChangeListener<Color>() {
+            @Override
+            public void changed(ObservableValue<? extends Color> observable, Color oldValue, Color newValue) {
+                String color=ColorUtil.parse(newValue.toString());
+                CodeRainState.setTextColor(color);
+                ConfigPropertiesUtil.set(ConfigEnum.CODERAINTEXTCOLOR.getKey(), color);
+            }
+        });
     }
 
     //初始化动画设置
@@ -328,6 +365,7 @@ public class SetupController {
         //动画类型初始化
         initAnimationType();
         //代码雨初始化配置
+        initCodeRain();
         //雪花飘落初始化
         //樱花初始化
 
@@ -368,6 +406,10 @@ public class SetupController {
             animationTypeChoiceBox.setValue(AnimationEnum.CODERAIN.getValue());
             animationStage = CodeRainState.getInstance();
         }
+    }
+
+    private void initCodeRain(){
+        codeRainTextColor.setValue(Color.valueOf(CodeRainState.getTextColor()));
     }
 
     @FXML
@@ -444,6 +486,7 @@ public class SetupController {
         initClockColor();
         //重置动画
         initAnimationType();
+        initCodeRain();
         animationOpenCheckBox.setSelected(true);
     }
 

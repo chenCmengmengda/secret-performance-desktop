@@ -13,7 +13,7 @@
     <ScrollPane fx:id="scrollPane" >
         <GridPane alignment="CENTER" >
             <VBox>
-                <Label text="主面板设置" ></Label>
+                <Label text="主面板设置" minHeight="30" ></Label>
                 <HBox minHeight="30" >
                     <Button fx:id="checkLogo" id="checkLogo" onAction="#checkLogoAction" text="logo图片" minWidth="100"></Button>
                     <TextField fx:id="logoPath" minWidth="150" maxWidth="150" prefWidth="30" disable="true"></TextField>
@@ -28,7 +28,7 @@
                    <ColorPicker fx:id="themeChoose" onAction="#themeChooseAction" minWidth="150" maxWidth="200"></ColorPicker>
                 </HBox>
                 <HBox minHeight="30">
-                    <Label fx:id="dragLabel" text="开启鼠标拖拽" minWidth="100" alignment="CENTER" ></Label>
+                    <Label fx:id="dragLabel" text="开启拖拽" minWidth="100" alignment="CENTER" ></Label>
                     <AnchorPane minWidth="130"></AnchorPane>
                     <CheckBox fx:id="dragCheckBox" prefWidth="5"  alignment="CENTER_RIGHT"></CheckBox>
                     <Button fx:id="resetDrag" id="checkLogo" onAction="#resetDragAction" text="默认位置" minWidth="40"  alignment="CENTER_RIGHT"></Button>
@@ -46,6 +46,15 @@
                     <Label fx:id="clockOpenLabel" text="开启时钟" minWidth="100" alignment="CENTER" ></Label>
                     <AnchorPane minWidth="130"></AnchorPane>
                     <CheckBox fx:id="clockOpenCheckBox" prefWidth="5"  alignment="CENTER_RIGHT"></CheckBox>
+                </HBox>
+                <HBox minHeight="30">
+                    <Label fx:id="clockDragLabel" text="开启拖拽" minWidth="100" alignment="CENTER" ></Label>
+                    <AnchorPane minWidth="130"></AnchorPane>
+                    <CheckBox fx:id="clockDragCheckBox" prefWidth="5"  alignment="CENTER_RIGHT"></CheckBox>
+                </HBox>
+                <HBox minHeight="30">
+                    <Label fx:id="clockSizeLabel" text="时钟大小" minWidth="100" alignment="CENTER" ></Label>
+                    <Slider fx:id="clockSizeSlider" min="150" max="600" blockIncrement="1" minWidth="150"></Slider>
                 </HBox>
                 <HBox minHeight="30">
                     <Label fx:id="clockBorderLabel" text="边框颜色" minWidth="100" alignment="CENTER" ></Label>
@@ -86,14 +95,16 @@
                     <ChoiceBox fx:id="animationTypeChoiceBox" minWidth="150" maxWidth="150"  >
                         <items>
                             <FXCollections fx:factory="observableArrayList">
-        <!--                        <String fx:value="黑客帝国"></String>-->
-        <!--                        <String fx:value="雪花飘落"></String>-->
-        <!--                        <String fx:value="樱花飘落"></String>-->
+
                             </FXCollections>
                         </items>
                     </ChoiceBox>
                 </HBox>
-                <HBox minHeight="50"  alignment="BOTTOM_LEFT">
+                <HBox minHeight="30">
+                    <Label fx:id="codeRainTextLabel" text="代码雨颜色" minWidth="100" alignment="CENTER" ></Label>
+                    <ColorPicker fx:id="codeRainTextColor"  minWidth="150" maxWidth="200"></ColorPicker>
+                </HBox>
+                <HBox minHeight="50" alignment="CENTER_LEFT">
                     <Button fx:id="resetConfig" onAction="#resetConfigAction" text="重置" minWidth="100"></Button>
                 </HBox>
             </VBox>

@@ -103,7 +103,7 @@ public class AppController {
             public void run() {
                 //鼠标拖拽
                 stage= (Stage) rootFlowPane.getScene().getWindow();
-                dragListener=new DragListener(stage);
+                dragListener=new DragListener(stage,ConfigEnum.SCENEX,ConfigEnum.SCENEY);
             }
         });
         //初始化cpu信息
