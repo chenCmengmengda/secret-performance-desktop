@@ -43,25 +43,25 @@
 
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.properties</include>
-                    <include>*.fxml</include>
-                    <include>**/*.fxml</include>
-                    <include>**/fxml/*.fxml</include>
-                    <include>*.css</include>
-                    <include>**/*.css</include>
-                    <include>**/css/*.css</include>
-                    <include>**/*.png</include>
-                    <include>**/*.jpg</include>
-                    <include>**/images/*.png</include>
-                    <include>**/images/*.jpg</include>
-                </includes>
-                <filtering>false</filtering>
-            </resource>
-        </resources>
+<!--        <resources>-->
+<!--            <resource>-->
+<!--                <directory>src/main/resources</directory>-->
+<!--                <includes>-->
+<!--                    <include>**/*.properties</include>-->
+<!--                    <include>*.fxml</include>-->
+<!--                    <include>**/*.fxml</include>-->
+<!--                    <include>**/fxml/*.fxml</include>-->
+<!--                    <include>*.css</include>-->
+<!--                    <include>**/*.css</include>-->
+<!--                    <include>**/css/*.css</include>-->
+<!--                    <include>**/*.png</include>-->
+<!--                    <include>**/*.jpg</include>-->
+<!--                    <include>**/images/*.png</include>-->
+<!--                    <include>**/images/*.jpg</include>-->
+<!--                </includes>-->
+<!--                <filtering>false</filtering>-->
+<!--            </resource>-->
+<!--        </resources>-->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

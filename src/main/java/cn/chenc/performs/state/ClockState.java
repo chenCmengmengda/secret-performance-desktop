@@ -47,6 +47,8 @@ public class ClockState {
     private static int clockd=400;
     //圆心
     private static int clockCenter=225;
+    //圆边框粗细
+    private static int borderLine=4;
     //粗刻度线与圆心距离
     private static int clockBRange=175;
     //粗刻度线宽高
@@ -236,7 +238,7 @@ public class ClockState {
         gc.save();
         // 变换坐标到外切圆矩形左上角坐标
         gc.translate(25,25);
-        gc.setLineWidth(4);
+        gc.setLineWidth(borderLine);
         //时钟边框颜色
         gc.setStroke(ColorUtil.setOpacity(clockBorderColor, clockOtherOopcity));
         gc.strokeOval(0, 0, clockd, clockd);
@@ -394,6 +396,14 @@ public class ClockState {
         int clockr=clockd/2;
         //圆心
         clockCenter=clockSize/2;
+        //圆边框粗细
+        if(size>=400){
+            borderLine=4;
+        } else if(size>=300){
+            borderLine=3;
+        } else {
+            borderLine=2;
+        }
         //粗刻度线宽高
         if(size>=400) {
             clockBWidth = 25;

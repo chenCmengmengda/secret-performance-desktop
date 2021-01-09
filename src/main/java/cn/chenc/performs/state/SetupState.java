@@ -33,12 +33,13 @@ public class SetupState extends BaseStage {
     private void start() throws Exception {
         Stage stage = new Stage();
         mainStage=stage;
-        URL url= SetupState.class.getResource("/setup.fxml");
+        URL url= SetupState.class.getResource("/fxml/setup.fxml");
 
         String urlStr=java.net.URLDecoder.decode(String.valueOf(url),"utf-8");
         url=new URL(urlStr);
         FXMLLoader fxmlLoader = new FXMLLoader(url);
         Parent root = fxmlLoader.load();
+        root.getStylesheets().add(getClass().getResource("/css/Setup.css").toExternalForm());
         stage.initStyle(StageStyle.DECORATED);
         stage.setTitle("设置");
         stage.getIcons().add(new Image(
