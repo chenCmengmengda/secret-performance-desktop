@@ -1,7 +1,9 @@
 package cn.chenc.performs.state;
 
+import cn.chenc.performs.consts.StageTitleConst;
 import cn.chenc.performs.factory.BaseStage;
 import cn.chenc.performs.factory.SingletonFactory;
+import cn.chenc.performs.util.JnaUtil;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
@@ -55,6 +57,7 @@ public class SakuraState extends BaseStage{
         Stage stage= BaseStage.getStage();
         mainStage = new Stage();
         mainStage.initOwner(stage);
+        mainStage.setTitle(StageTitleConst.SAKURATITLE);
         //透明窗口
         mainStage.initStyle(StageStyle.TRANSPARENT);
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();//获取屏幕
@@ -69,6 +72,10 @@ public class SakuraState extends BaseStage{
         mainStage.setResizable(false);
         stage.show();
         mainStage.show();
+        //置于图标下层
+        JnaUtil.setWinIconAfter(StageTitleConst.SAKURATITLE);
+        //设置窗口位置
+        JnaUtil.setWinIconAfter("sakura");
 
         //初始化樱花坐标，大小
         for(int i = 0; i < 100; ++i) {
@@ -153,6 +160,7 @@ public class SakuraState extends BaseStage{
         if(mainStage!=null) {
             mainStage.show();
             timeLine.play();
+            JnaUtil.setWinIconAfter(StageTitleConst.SAKURATITLE);
         } else{
             getInstance().start();
         }

@@ -1,12 +1,14 @@
 package cn.chenc.performs.state;
 
 import cn.chenc.performs.consts.CommonConst;
+import cn.chenc.performs.consts.StageTitleConst;
 import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.factory.BaseStage;
 import cn.chenc.performs.factory.SingletonFactory;
 import cn.chenc.performs.listener.DragListener;
 import cn.chenc.performs.util.ColorUtil;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
+import cn.chenc.performs.util.JnaUtil;
 import cn.chenc.performs.util.StringUtil;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -196,6 +198,7 @@ public class ClockState {
         }
         mainStage.initOwner(stage);
         mainStage.initStyle(StageStyle.TRANSPARENT);
+        mainStage.setTitle(StageTitleConst.CLOCKTITLE);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();//获取屏幕
         AnchorPane root = new AnchorPane();
         root.setStyle("-fx-fill: null;-fx-background-color: rgba(0,0,0,0)");
@@ -207,6 +210,8 @@ public class ClockState {
 //        mainStage.setResizable(false);
         stage.show();
         mainStage.show();
+        //设置窗口位置
+        JnaUtil.setWinIconAfter(StageTitleConst.CLOCKTITLE);
         // 获取画板对象
         GraphicsContext gc = canvas.getGraphicsContext2D();
         // 创建时间轴
@@ -359,6 +364,7 @@ public class ClockState {
         if(mainStage!=null) {
             mainStage.show();
             timeLine.play();
+            JnaUtil.setWinIconAfter(StageTitleConst.CLOCKTITLE);
         } else{
             getInstance().start();
         }
@@ -368,12 +374,18 @@ public class ClockState {
         if(dragListener==null) {
             dragListener = new DragListener(mainStage,ConfigEnum.CLOCKX,ConfigEnum.CLOCKY);
             dragListener.enableDrag(mainStage.getScene().getRoot());
+        } else {
+            dragListener.enableDrag(mainStage.getScene().getRoot());
         }
+        JnaUtil.setWinIconTop(StageTitleConst.CLOCKTITLE);
     }
 
     public void closeDrag(){
         if(dragListener!=null){
             dragListener.closeDrag(mainStage.getScene().getRoot());
+            mainStage.close();
+            mainStage.show();
+            JnaUtil.setWinIconAfter(StageTitleConst.CLOCKTITLE);
         }
     }
 

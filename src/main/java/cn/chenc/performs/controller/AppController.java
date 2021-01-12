@@ -2,6 +2,7 @@ package cn.chenc.performs.controller;
 
 import cn.chenc.performs.consts.CommonConst;
 import cn.chenc.performs.consts.LayoutConst;
+import cn.chenc.performs.consts.StageTitleConst;
 import cn.chenc.performs.enums.AnimationEnum;
 import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.factory.StageInterface;
@@ -13,6 +14,7 @@ import cn.chenc.performs.state.SakuraState;
 import cn.chenc.performs.state.SnowState;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
 import cn.chenc.performs.util.ImageUtil;
+import cn.chenc.performs.util.JnaUtil;
 import cn.chenc.performs.util.StringUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -142,8 +144,12 @@ public class AppController {
         model.getDragProperty().addListener((obs, oldVal, newVal) -> {
             if(newVal){
                 dragListener.enableDrag(rootFlowPane);//开启监听
+                JnaUtil.setWinIconTop(StageTitleConst.APPTITLE);
             } else{
                 dragListener.closeDrag(rootFlowPane);//关闭监听
+                stage.close();
+                stage.show();
+                JnaUtil.setWinIconAfter(StageTitleConst.APPTITLE);
             }
         });
         //layout-type

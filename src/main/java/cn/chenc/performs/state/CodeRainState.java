@@ -1,9 +1,11 @@
 package cn.chenc.performs.state;
 
+import cn.chenc.performs.consts.StageTitleConst;
 import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.factory.BaseStage;
 import cn.chenc.performs.factory.SingletonFactory;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
+import cn.chenc.performs.util.JnaUtil;
 import cn.chenc.performs.util.StringUtil;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -70,6 +72,7 @@ public class CodeRainState extends BaseStage{
         // 设置父级透明度为0
 //        stage.setOpacity(0);
         mainStage = new Stage();
+        mainStage.setTitle(StageTitleConst.CODERAINTITLE);
         mainStage.initOwner(stage);
         //透明窗口
         mainStage.initStyle(StageStyle.TRANSPARENT);
@@ -87,6 +90,8 @@ public class CodeRainState extends BaseStage{
         mainStage.setResizable(false);
         stage.show();
         mainStage.show();
+        JnaUtil.setWinIconAfter(StageTitleConst.CODERAINTITLE);
+
         lines = screenSize.height / gap;
         columns = screenSize.width / gap;
         posArr = new int[columns + 1];
@@ -185,6 +190,7 @@ public class CodeRainState extends BaseStage{
         if(mainStage!=null) {
             mainStage.show();
             timeLine.play();
+            JnaUtil.setWinIconAfter(StageTitleConst.CODERAINTITLE);
         } else{
             getInstance().start();
         }

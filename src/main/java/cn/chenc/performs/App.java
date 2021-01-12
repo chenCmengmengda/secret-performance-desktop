@@ -1,11 +1,13 @@
 package cn.chenc.performs;
 
 import cn.chenc.performs.consts.LayoutConst;
+import cn.chenc.performs.consts.StageTitleConst;
 import cn.chenc.performs.controller.AppController;
 import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.factory.BaseStage;
 import cn.chenc.performs.task.AppTask;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
+import cn.chenc.performs.util.JnaUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -56,7 +58,7 @@ public class App extends Application {
         box.setStyle("-fx-background:transparent;");//vbox透明
         mainStage.initStyle(StageStyle.TRANSPARENT);//取消窗口装饰
 //        mainStage.initStyle(StageStyle.DECORATED);
-        mainStage.setTitle("performance-desktop");
+        mainStage.setTitle(StageTitleConst.APPTITLE);
         //设置窗口横纵坐标，默认自适应屏幕宽度,且支持从设置获取
         double sceneX = ConfigPropertiesUtil.getDouble(ConfigEnum.SCENEX.getKey());
         double sceneY = ConfigPropertiesUtil.getDouble(ConfigEnum.SCENEY.getKey());
@@ -97,8 +99,11 @@ public class App extends Application {
 //        LineChart cpuChart = (LineChart) root.lookup("#cpuChart");
 //        controller.printlnCpuChart(cpuChart);
         MySystemTray.getInstance(mainStage);
+        //显示窗口
         primaryStage.show();
         mainStage.show();
+        //设置窗口位置
+        JnaUtil.setWinIconAfter(StageTitleConst.APPTITLE);
     }
 
     public static void main(String[] args) {

@@ -8,6 +8,8 @@ module cn.chenc.performs {
     requires javafx.controls;
     requires javafx.fxml;
     requires org.kordamp.bootstrapfx.core;
+    requires com.sun.jna;
+    requires com.sun.jna.platform;
 
     requires java.desktop;
 
