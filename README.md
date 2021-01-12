@@ -19,6 +19,7 @@ secret-performance-desktop(桌面性能监控)
 * 黑客帝国代码雨
 * 雪花飘落
 * 樱花飘落
+* 窗口显示在桌面与图标之间
 
 #### 使用方法
 下载可执行文件:
@@ -41,6 +42,19 @@ secret-performance-desktop(桌面性能监控)
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img2.png)
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img3.png)
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img4.png)
+
+### 局限性
+* 窗口置于底层不兼容部分系统
+
+使用spy++查看窗口层级关系
+
+![avatar](http://secretOpen.gitee.io/secret-performance-desktop/limit1.png)
+
+如果为以上层级，则说明桌面和图标融合在了一起，这种情况无法兼容窗口置于图标下层。
+
+**下图情况大部分可以实现（还是存在特殊不兼容情况，这里就不举例了）:**
+
+![avatar](http://secretOpen.gitee.io/secret-performance-desktop/limit2.png)
 
 
 
