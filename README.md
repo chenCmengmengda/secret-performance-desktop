@@ -56,7 +56,7 @@ secret-performance-desktop(桌面性能监控)
 
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/limit2.png)
 
-
+实现原理:[Draw Behind Desktop Icons in Windows 8+](https://www.codeproject.com/articles/856020/draw-behind-desktop-icons-in-windows)
 
 ### 致谢
 
