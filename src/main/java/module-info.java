@@ -7,6 +7,7 @@ module cn.chenc.performs {
     requires com.github.oshi;
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.media;
     requires org.kordamp.bootstrapfx.core;
     requires com.sun.jna;
     requires com.sun.jna.platform;

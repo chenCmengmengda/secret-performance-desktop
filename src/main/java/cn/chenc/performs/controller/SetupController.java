@@ -2,16 +2,15 @@ package cn.chenc.performs.controller;
 
 import cn.chenc.performs.consts.CommonConst;
 import cn.chenc.performs.consts.LayoutConst;
+import cn.chenc.performs.consts.StageTitleConst;
 import cn.chenc.performs.enums.AnimationEnum;
 import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.factory.StageInterface;
-import cn.chenc.performs.state.ClockState;
-import cn.chenc.performs.state.CodeRainState;
-import cn.chenc.performs.state.SakuraState;
-import cn.chenc.performs.state.SnowState;
+import cn.chenc.performs.state.*;
 import cn.chenc.performs.util.ColorUtil;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
 import cn.chenc.performs.util.StringUtil;
+import cn.chenc.performs.util.Win32Util;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -90,6 +89,8 @@ public class SetupController {
     private ChoiceBox animationTypeChoiceBox;
     @FXML
     private ColorPicker codeRainTextColor;
+    @FXML
+    private TextField mediaPath;
 
     @FXML
     private void initialize(){
@@ -120,6 +121,7 @@ public class SetupController {
         initClockConfig();
         setAnimationOpenCheckBox();
         initAnimationConfig();
+        setMediaPath();
     }
 
     public void setLogoPath() {
@@ -388,6 +390,13 @@ public class SetupController {
             });
     }
 
+    private void setMediaPath(){
+        String mediaWallpapaerPathConf=ConfigPropertiesUtil.get(ConfigEnum.MEDIAWALLPAPERPATH.getKey());
+        if(!StringUtil.isEmpty(mediaWallpapaerPathConf)){
+            mediaPath.setText(mediaWallpapaerPathConf);
+        }
+    }
+
     private void initAnimationType(){
         if(animationTypeChoiceBox.getItems().size()==0) {
             animationTypeChoiceBox.getItems().addAll(AnimationEnum.getValues());
@@ -451,6 +460,56 @@ public class SetupController {
         ConfigPropertiesUtil.set(ConfigEnum.SCENEX.getKey(),"");
         ConfigPropertiesUtil.set(ConfigEnum.SCENEY.getKey(),"");
         AppController.dragListener.setXY(LayoutConst.SCENEX1,LayoutConst.SCENEY1);
+    }
+
+
+    @FXML
+    private void checkMediaAction(ActionEvent event){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        File file=fileChooser.showOpenDialog(stage);
+        if(file!=null) {
+            String path = "file:/"+file.getPath().replaceAll("\\\\","/");
+            mediaPath.setText(path);
+            MediaWallpaperController mediaWallpaperController = MediaWallpaperController.getInstance();
+            if (mediaWallpaperController == null) {
+                MediaWallpaperStage.getInstance().show();
+                mediaWallpaperController=MediaWallpaperController.getInstance();
+            } else{
+                MediaWallpaperStage.getInstance().show();
+            }
+            mediaWallpaperController.setMedia(path);
+            //重启主面板
+            AppController.getStage().close();
+            AppController.getStage().show();
+            Win32Util.setWinIconAfter(StageTitleConst.APPTITLE);
+            //重启时钟
+            ClockState.getInstance().close();
+            ClockState.getInstance().show();
+            Win32Util.setWinIconAfter(StageTitleConst.CLOCKTITLE);
+            if (animationStage instanceof CodeRainState) {
+                //代码雨重启
+                CodeRainState.getInstance().close();
+                CodeRainState.getInstance().show();
+            } else if (animationStage instanceof SnowState) {
+                //雪花重启
+                SnowState.getInstance().close();
+                SnowState.getInstance().show();
+            } else if (animationStage instanceof SakuraState) {
+                //樱花重启
+                SakuraState.getInstance().close();
+                SakuraState.getInstance().show();
+            }
+            ConfigPropertiesUtil.set(ConfigEnum.MEDIAWALLPAPERPATH.getKey(), path);
+        }
+    }
+
+    @FXML
+    private void resetMediaAction(){
+        ConfigPropertiesUtil.set(ConfigEnum.MEDIAWALLPAPERPATH.getKey(),"");
+        mediaPath.setText("");
+        //关闭动态背景窗口
+        MediaWallpaperStage.getInstance().close();
     }
 
 

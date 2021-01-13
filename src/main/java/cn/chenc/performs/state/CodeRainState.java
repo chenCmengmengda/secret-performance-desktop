@@ -5,7 +5,7 @@ import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.factory.BaseStage;
 import cn.chenc.performs.factory.SingletonFactory;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
-import cn.chenc.performs.util.JnaUtil;
+import cn.chenc.performs.util.Win32Util;
 import cn.chenc.performs.util.StringUtil;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -90,7 +90,7 @@ public class CodeRainState extends BaseStage{
         mainStage.setResizable(false);
         stage.show();
         mainStage.show();
-        JnaUtil.setWinIconAfter(StageTitleConst.CODERAINTITLE);
+        Win32Util.setWinIconAfter(StageTitleConst.CODERAINTITLE);
 
         lines = screenSize.height / gap;
         columns = screenSize.width / gap;
@@ -190,7 +190,7 @@ public class CodeRainState extends BaseStage{
         if(mainStage!=null) {
             mainStage.show();
             timeLine.play();
-            JnaUtil.setWinIconAfter(StageTitleConst.CODERAINTITLE);
+            Win32Util.setWinIconAfter(StageTitleConst.CODERAINTITLE);
         } else{
             getInstance().start();
         }

@@ -3,7 +3,7 @@ package cn.chenc.performs.state;
 import cn.chenc.performs.consts.StageTitleConst;
 import cn.chenc.performs.factory.BaseStage;
 import cn.chenc.performs.factory.SingletonFactory;
-import cn.chenc.performs.util.JnaUtil;
+import cn.chenc.performs.util.Win32Util;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
@@ -68,7 +68,7 @@ public class SnowState extends BaseStage{
         stage.show();
         mainStage.show();
         //置于图标下层
-        JnaUtil.setWinIconAfter(StageTitleConst.SNOWTITLE);
+        Win32Util.setWinIconAfter(StageTitleConst.SNOWTITLE);
         //初始化雪花坐标
         for(int i = 0; i < 100; ++i) {
             this.xx[i] = (int)(Math.random() * screenSize.getWidth());
@@ -142,7 +142,7 @@ public class SnowState extends BaseStage{
         if(mainStage!=null) {
             mainStage.show();
             timeLine.play();
-            JnaUtil.setWinIconAfter(StageTitleConst.SNOWTITLE);
+            Win32Util.setWinIconAfter(StageTitleConst.SNOWTITLE);
         } else{
             getInstance().start();
         }

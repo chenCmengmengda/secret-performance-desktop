@@ -103,6 +103,12 @@
                     <Label fx:id="codeRainTextLabel" text="代码雨颜色" minWidth="100" alignment="CENTER" ></Label>
                     <ColorPicker fx:id="codeRainTextColor"  minWidth="150" maxWidth="200"></ColorPicker>
                 </HBox>
+                <Label text="视频壁纸"></Label>
+                <HBox minHeight="30" >
+                    <Button onAction="#checkMediaAction" text="选择壁纸" minWidth="100"></Button>
+                    <TextField fx:id="mediaPath" minWidth="150" maxWidth="150" prefWidth="30" disable="true"></TextField>
+                    <Button fx:id="resetMedia" onAction="#resetMediaAction" text="清空" minWidth="40"></Button>
+                </HBox>
                 <HBox minHeight="50" alignment="CENTER_LEFT">
                     <Button fx:id="resetConfig" onAction="#resetConfigAction" text="重置" minWidth="100"></Button>
                 </HBox>

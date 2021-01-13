@@ -8,13 +8,10 @@ import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.factory.StageInterface;
 import cn.chenc.performs.listener.DragListener;
 import cn.chenc.performs.model.AppModel;
-import cn.chenc.performs.state.ClockState;
-import cn.chenc.performs.state.CodeRainState;
-import cn.chenc.performs.state.SakuraState;
-import cn.chenc.performs.state.SnowState;
+import cn.chenc.performs.state.*;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
 import cn.chenc.performs.util.ImageUtil;
-import cn.chenc.performs.util.JnaUtil;
+import cn.chenc.performs.util.Win32Util;
 import cn.chenc.performs.util.StringUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -42,9 +39,11 @@ import java.util.Calendar;
 
 public class AppController {
 
+    private static AppController instance;
     public  static AppModel model = new AppModel();
     //鼠标拖动监听
     public static DragListener dragListener;
+
     //主窗口
     private static Stage stage;
     @FXML
@@ -89,6 +88,14 @@ public class AppController {
         sensors = systemInfo.getHardware().getSensors();
     }
 
+    public static AppController getInstance(){
+        return instance;
+    }
+
+    public static Stage getStage() {
+        return stage;
+    }
+
     /**
      * @description: 开始获取系统信息
      * @param
@@ -99,6 +106,7 @@ public class AppController {
      */
     @FXML
     private void initialize() {
+        instance=this;
         //窗口初始化
         Platform.runLater(new Runnable() {
             @Override
@@ -144,12 +152,12 @@ public class AppController {
         model.getDragProperty().addListener((obs, oldVal, newVal) -> {
             if(newVal){
                 dragListener.enableDrag(rootFlowPane);//开启监听
-                JnaUtil.setWinIconTop(StageTitleConst.APPTITLE);
+                Win32Util.setWinIconTop(StageTitleConst.APPTITLE);
             } else{
                 dragListener.closeDrag(rootFlowPane);//关闭监听
                 stage.close();
                 stage.show();
-                JnaUtil.setWinIconAfter(StageTitleConst.APPTITLE);
+                Win32Util.setWinIconAfter(StageTitleConst.APPTITLE);
             }
         });
         //layout-type
@@ -162,6 +170,13 @@ public class AppController {
             });
         });
         //从配置文件读取配置
+        //动态壁纸
+        String mediaWallpaperConf=ConfigPropertiesUtil.get(ConfigEnum.MEDIAWALLPAPERPATH.getKey());
+        if(!StringUtil.isEmpty(mediaWallpaperConf)) {
+            MediaWallpaperStage.getInstance().show();
+            MediaWallpaperController mediaWallpaperController = MediaWallpaperController.getInstance();
+            mediaWallpaperController.setMedia(mediaWallpaperConf);
+        }
         //logo-url
         if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.LOGOURL.getKey()))) {
             model.setImageUrl(ConfigPropertiesUtil.get(ConfigEnum.LOGOURL.getKey()));

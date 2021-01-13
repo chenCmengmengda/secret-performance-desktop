@@ -7,7 +7,7 @@ import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.factory.BaseStage;
 import cn.chenc.performs.task.AppTask;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
-import cn.chenc.performs.util.JnaUtil;
+import cn.chenc.performs.util.Win32Util;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -103,7 +103,7 @@ public class App extends Application {
         primaryStage.show();
         mainStage.show();
         //设置窗口位置
-        JnaUtil.setWinIconAfter(StageTitleConst.APPTITLE);
+        Win32Util.setWinIconAfter(StageTitleConst.APPTITLE);
     }
 
     public static void main(String[] args) {

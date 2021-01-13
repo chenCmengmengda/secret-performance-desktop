@@ -8,7 +8,7 @@ import cn.chenc.performs.factory.SingletonFactory;
 import cn.chenc.performs.listener.DragListener;
 import cn.chenc.performs.util.ColorUtil;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
-import cn.chenc.performs.util.JnaUtil;
+import cn.chenc.performs.util.Win32Util;
 import cn.chenc.performs.util.StringUtil;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -211,7 +211,7 @@ public class ClockState {
         stage.show();
         mainStage.show();
         //设置窗口位置
-        JnaUtil.setWinIconAfter(StageTitleConst.CLOCKTITLE);
+        Win32Util.setWinIconAfter(StageTitleConst.CLOCKTITLE);
         // 获取画板对象
         GraphicsContext gc = canvas.getGraphicsContext2D();
         // 创建时间轴
@@ -364,7 +364,7 @@ public class ClockState {
         if(mainStage!=null) {
             mainStage.show();
             timeLine.play();
-            JnaUtil.setWinIconAfter(StageTitleConst.CLOCKTITLE);
+            Win32Util.setWinIconAfter(StageTitleConst.CLOCKTITLE);
         } else{
             getInstance().start();
         }
@@ -377,7 +377,7 @@ public class ClockState {
         } else {
             dragListener.enableDrag(mainStage.getScene().getRoot());
         }
-        JnaUtil.setWinIconTop(StageTitleConst.CLOCKTITLE);
+        Win32Util.setWinIconTop(StageTitleConst.CLOCKTITLE);
     }
 
     public void closeDrag(){
@@ -385,7 +385,7 @@ public class ClockState {
             dragListener.closeDrag(mainStage.getScene().getRoot());
             mainStage.close();
             mainStage.show();
-            JnaUtil.setWinIconAfter(StageTitleConst.CLOCKTITLE);
+            Win32Util.setWinIconAfter(StageTitleConst.CLOCKTITLE);
         }
     }
 

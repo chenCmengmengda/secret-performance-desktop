@@ -11,7 +11,7 @@ import com.sun.jna.platform.win32.WinUser;
  * 　@date 2021/1/11 20:10
  *
  */
-public class JnaUtil {
+public class Win32Util {
 
     private static WinDef.HWND desktopWorkerw;
     private static WinDef.HWND windowhWnd;

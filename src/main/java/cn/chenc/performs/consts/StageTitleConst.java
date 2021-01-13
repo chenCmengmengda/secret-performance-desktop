@@ -13,6 +13,7 @@ public class StageTitleConst {
     public static final String CODERAINTITLE="coderain-desktop";
     public static final String SNOWTITLE="snow-desktop";
     public static final String SAKURATITLE="sakura-desktop";
+    public static final String MEDIAWALLPAPERTITLE="media-wallpaper-desktop";
 
 
 }
