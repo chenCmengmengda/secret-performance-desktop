@@ -7,6 +7,11 @@ package cn.chenc.performs.enums;
  *
  */
 public enum ConfigEnum {
+    MAINPANEDISPLAY("main-pane-display"),
+    LOGODISPLAY("logo-display"),
+    SYSTEMINFODISPLAY("system-info-display"),
+    CPUINFODISPLAY("cpu-info-display"),
+    RAMINFODISPLAY("ram-info-display"),
     LOGOURL("logo-url"),
     LOGOOPACITY("logo-opacity"),
     THEMECOLOR("theme-color"),

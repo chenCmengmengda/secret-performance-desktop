@@ -13,6 +13,31 @@
         <GridPane alignment="CENTER" >
             <VBox>
                 <Label text="主面板设置" minHeight="30" ></Label>
+                <HBox minHeight="30">
+                    <Label  text="显示主面板" minWidth="100" alignment="CENTER" ></Label>
+                    <AnchorPane minWidth="130"></AnchorPane>
+                    <CheckBox fx:id="mainPane" prefWidth="5" onAction="#openMainPane"  alignment="CENTER_RIGHT"></CheckBox>
+                </HBox>
+                <HBox minHeight="30">
+                    <Label  text="显示logo" minWidth="100" alignment="CENTER" ></Label>
+                    <AnchorPane minWidth="130"></AnchorPane>
+                    <CheckBox fx:id="logoDisplay" prefWidth="5" onAction="#openLogoDisplay"  alignment="CENTER_RIGHT"></CheckBox>
+                </HBox>
+                <HBox minHeight="30">
+                    <Label  text="显示系统信息" minWidth="100" alignment="CENTER" ></Label>
+                    <AnchorPane minWidth="130"></AnchorPane>
+                    <CheckBox fx:id="systemInfoDisplay" prefWidth="5" onAction="#openSystemInfoDisplay"  alignment="CENTER_RIGHT"></CheckBox>
+                </HBox>
+                <HBox minHeight="30">
+                    <Label  text="显示cpu信息" minWidth="100" alignment="CENTER" ></Label>
+                    <AnchorPane minWidth="130"></AnchorPane>
+                    <CheckBox fx:id="cpuInfoDisplay" prefWidth="5" onAction="#openCpuInfoDisplay"  alignment="CENTER_RIGHT"></CheckBox>
+                </HBox>
+                <HBox minHeight="30">
+                    <Label  text="显示内存信息" minWidth="100" alignment="CENTER" ></Label>
+                    <AnchorPane minWidth="130"></AnchorPane>
+                    <CheckBox fx:id="ramInfoDisplay" prefWidth="5" onAction="#openRamInfoDisplay"  alignment="CENTER_RIGHT"></CheckBox>
+                </HBox>
                 <HBox minHeight="30" >
                     <Button fx:id="checkLogo" id="checkLogo" onAction="#checkLogoAction" text="logo图片" minWidth="100"></Button>
                     <TextField fx:id="logoPath" minWidth="150" maxWidth="150" prefWidth="30" disable="true"></TextField>

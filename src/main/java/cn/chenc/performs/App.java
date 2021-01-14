@@ -60,14 +60,14 @@ public class App extends Application {
 //        mainStage.initStyle(StageStyle.DECORATED);
         mainStage.setTitle(StageTitleConst.APPTITLE);
         //设置窗口横纵坐标，默认自适应屏幕宽度,且支持从设置获取
-        double sceneX = ConfigPropertiesUtil.getDouble(ConfigEnum.SCENEX.getKey());
-        double sceneY = ConfigPropertiesUtil.getDouble(ConfigEnum.SCENEY.getKey());
-        if(sceneX==-1) {
+        Double sceneX = ConfigPropertiesUtil.getDouble(ConfigEnum.SCENEX.getKey());
+        Double sceneY = ConfigPropertiesUtil.getDouble(ConfigEnum.SCENEY.getKey());
+        if(sceneX==null) {
             mainStage.setX(LayoutConst.SCENEX1);
         } else {
             mainStage.setX(sceneX);
         }
-        if(sceneY==-1) {
+        if(sceneY==null) {
             mainStage.setY(LayoutConst.SCENEY1);
         } else {
             mainStage.setY(sceneY);
@@ -101,7 +101,10 @@ public class App extends Application {
         MySystemTray.getInstance(mainStage);
         //显示窗口
         primaryStage.show();
-        mainStage.show();
+        Boolean mainPaneConfig=ConfigPropertiesUtil.getBoolean(ConfigEnum.MAINPANEDISPLAY.getKey());
+        if(mainPaneConfig==null || mainPaneConfig.equals(true)) {
+            mainStage.show();
+        }
         //设置窗口位置
         Win32Util.setWinIconAfter(StageTitleConst.APPTITLE);
     }

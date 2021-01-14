@@ -41,8 +41,8 @@ public class ClockState {
     private Canvas canvas;
     private DragListener dragListener;
     //时钟位置
-    private static double clockX;
-    private static double clockY;
+    private static Double clockX;
+    private static Double clockY;
     //时钟宽高
     private static int clockSize=450;
     //直径
@@ -190,10 +190,10 @@ public class ClockState {
 //        stage.setOpacity(0);
         mainStage = new Stage();
         //设置窗口位置
-        if(clockX != -1){
+        if(clockX != null){
             mainStage.setX(clockX);
         }
-        if(clockY != -1){
+        if(clockY != null){
             mainStage.setY(clockY);
         }
         mainStage.initOwner(stage);

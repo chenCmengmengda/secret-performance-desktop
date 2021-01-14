@@ -58,9 +58,9 @@ public class ConfigPropertiesUtil {
         return null == value ? null : Integer.valueOf(value);
     }
 
-    public static double getDouble(String key){
+    public static Double getDouble(String key){
         String value = get(key);
-        return StringUtil.isEmpty(value) ? -1 : Double.parseDouble(value);
+        return value==null ? null : Double.parseDouble(value);
     }
 
     /**

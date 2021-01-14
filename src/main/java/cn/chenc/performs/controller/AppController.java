@@ -9,10 +9,7 @@ import cn.chenc.performs.factory.StageInterface;
 import cn.chenc.performs.listener.DragListener;
 import cn.chenc.performs.model.AppModel;
 import cn.chenc.performs.state.*;
-import cn.chenc.performs.util.ConfigPropertiesUtil;
-import cn.chenc.performs.util.ImageUtil;
-import cn.chenc.performs.util.Win32Util;
-import cn.chenc.performs.util.StringUtil;
+import cn.chenc.performs.util.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -24,6 +21,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import oshi.SystemInfo;
@@ -49,11 +48,19 @@ public class AppController {
     @FXML
     private FlowPane rootFlowPane;
     @FXML
+    private HBox systemInfoHbox;
+    @FXML
     private ImageView SystemLogo;
     @FXML
     private Label SystemInfo;
     @FXML
+    private VBox cpuVBox;
+    @FXML
+    private Label cpuName;
+    @FXML
     private Label CPU;
+    @FXML
+    private VBox ramVBox;
     @FXML
     private Label RAM;
     @FXML
@@ -177,6 +184,8 @@ public class AppController {
             MediaWallpaperController mediaWallpaperController = MediaWallpaperController.getInstance();
             mediaWallpaperController.setMedia(mediaWallpaperConf);
         }
+        //主面板显示
+
         //logo-url
         if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.LOGOURL.getKey()))) {
             model.setImageUrl(ConfigPropertiesUtil.get(ConfigEnum.LOGOURL.getKey()));
@@ -235,14 +244,58 @@ public class AppController {
                 stageInterface.show();
             }
         }
+        initMainPaneDisplay();
+    }
+
+    public void initMainPaneDisplay(){
+//        Boolean mainPaneConfig=ConfigPropertiesUtil.getBoolean(ConfigEnum.MAINPANEDISPLAY.getKey());
+//        if(mainPaneConfig != null && mainPaneConfig.equals(false) ){
+//            stage.close();
+//        }
+        Boolean logoDisplayConfig=ConfigPropertiesUtil.getBoolean(ConfigEnum.LOGODISPLAY.getKey());
+        if(logoDisplayConfig!=null && logoDisplayConfig.equals(false)){
+            setSystemLogoVisible(false);
+        }
+        Boolean systemInfoDisplayConfig=ConfigPropertiesUtil.getBoolean(ConfigEnum.SYSTEMINFODISPLAY.getKey());
+        if(systemInfoDisplayConfig!=null && systemInfoDisplayConfig.equals(false)){
+            setSystemInfoVisible(false);
+        }
+        Boolean cpuInfoDisplayConfig=ConfigPropertiesUtil.getBoolean(ConfigEnum.CPUINFODISPLAY.getKey());
+        if(cpuInfoDisplayConfig!=null && cpuInfoDisplayConfig.equals(false)){
+            setCpuVBoxVisible(false);
+        }
+        Boolean ramInfoDisplayConfig=ConfigPropertiesUtil.getBoolean(ConfigEnum.RAMINFODISPLAY.getKey());
+        if(ramInfoDisplayConfig!=null && ramInfoDisplayConfig.equals(false)){
+            setRamVBoxVisible(false);
+        }
 
     }
 
+    public void setSystemLogoVisible(boolean b){
+        SystemLogo.setVisible(b);
+        SystemLogo.setManaged(b);
+    }
+
+    public void setSystemInfoVisible(boolean b){
+        SystemInfo.setVisible(b);
+        SystemInfo.setManaged(b);
+    }
+
+    public void setCpuVBoxVisible(boolean b){
+        cpuVBox.setVisible(b);
+        cpuVBox.setManaged(b);
+    }
+
+    public void setRamVBoxVisible(boolean b){
+        ramVBox.setVisible(b);
+        ramVBox.setManaged(b);
+    }
 
     public void setThemeColor(String color){
         if(StringUtil.isEmpty(color)) {//传入颜色为空，直接取默认配置
             String themeColor = CommonConst.THEMECOLOR;
             SystemInfo.setTextFill(Color.valueOf(themeColor));
+            cpuName.setTextFill(Color.valueOf(themeColor));
             CPU.setTextFill(Color.valueOf(themeColor));
             RAM.setTextFill(Color.valueOf(themeColor));
             cpuChart.lookup(".chart-series-area-line").setStyle("-fx-stroke:"+themeColor+";");
@@ -251,6 +304,7 @@ public class AppController {
             ramChart.lookup(".chart-series-area-fill").setStyle("-fx-fill:"+themeColor+"33;");
         } else{ //监听颜色设置
             SystemInfo.setTextFill(Color.valueOf(color));
+            cpuName.setTextFill(Color.valueOf(color));
             CPU.setTextFill(Color.valueOf(color));
             RAM.setTextFill(Color.valueOf(color));
             cpuChart.lookup(".chart-series-area-line").setStyle("-fx-stroke:"+color+";");
@@ -311,7 +365,16 @@ public class AppController {
         //无法监测cpu温度
 //        String cpuTemperature=String.format("%.1f°C",sensors.getCpuTemperature());
 //        System.out.println("cpu当前温度:"+cpuTemperature);
-
+        //获取cpu产商信息
+        String cpuVendor=processor.getProcessorIdentifier().getVendor();
+        //获取cpu名称
+        String cpuName=processor.getProcessorIdentifier().getName();
+        //获取cpu频率
+//        String cpu=processor.getProcessorIdentifier().getVendorFreq();
+//        System.out.println(processor.getProcessorIdentifier());
+        //获取当前频率
+//        processor.();
+        this.cpuName.setText(cpuName);
         CPU.setText("CPU("+totalCpuStr+")");
 
         //调用cpuchar图
@@ -482,20 +545,15 @@ public class AppController {
         OperatingSystem operatingSystem=systemInfo.getOperatingSystem();
         String manufacturer=operatingSystem.getManufacturer();//供应商
         String family=operatingSystem.getFamily();//操作系统名称
-        String version = operatingSystem.getVersionInfo().getVersion();
-        String codeName="";
-        if(operatingSystem.getVersionInfo().getCodeName().equals("Home")){
-            codeName="家庭版";
-        } else if(operatingSystem.getVersionInfo().getCodeName().contains("Pro")){
-            codeName="专业版";
-        } else if(operatingSystem.getVersionInfo().getCodeName().equals("Enterprise")){
-            codeName="企业版";
-        }
+        String version = operatingSystem.getVersionInfo().getVersion().split("\\.")[0];
+        String codeName=operatingSystem.getVersionInfo().getCodeName();
         String buildNumber=operatingSystem.getVersionInfo().getBuildNumber();//内部版本号
         String osArch = System.getProperty("os.arch"); //系统架构
+
         String systemInfo=family+version+" "+codeName+"\n"
-                +"版本号:"+buildNumber+"\n"
-                +"系统架构:"+osArch;
+//                +"版本号:"+buildNumber+"\n"
+                +"系统架构:"+osArch+"\n"
+                +"屏幕分辨率"+ HardwareUtil.getScreenToString();
         SystemInfo.setText(systemInfo);
     }
 
@@ -541,6 +599,15 @@ public class AppController {
             stage.setWidth(LayoutConst.MAINSCENEWIDTH2);
             stage.setHeight(LayoutConst.MAINSCENEHEIGHT2);
         }
+    }
+
+    public void show(){
+        stage.show();
+        Win32Util.setWinIconAfter(StageTitleConst.APPTITLE);
+    }
+
+    public void close(){
+        stage.close();
     }
 
 }

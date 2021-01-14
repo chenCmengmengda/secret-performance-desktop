@@ -44,6 +44,16 @@ public class SetupController {
     @FXML
     private ScrollPane scrollPane;
     @FXML
+    private CheckBox mainPane;
+    @FXML
+    private CheckBox logoDisplay;
+    @FXML
+    private CheckBox systemInfoDisplay;
+    @FXML
+    private CheckBox cpuInfoDisplay;
+    @FXML
+    private CheckBox ramInfoDisplay;
+    @FXML
     private Button checkLogo;
     @FXML
     private TextField logoPath;
@@ -106,12 +116,17 @@ public class SetupController {
                     @Override
                     public void handle(WindowEvent event) {
 //                        System.out.print("监听到窗口关闭");
+                        //关闭拖拽
                         AppController.model.setDrag(false);
+                        dragCheckBox.setSelected(false);
+                        ClockState.getInstance().closeDrag();
+                        clockDragCheckBox.setSelected(false);
                     }
                 });
             }
         });
 
+        initMainPaneDisplay();
         setLogoPath();
         setThemeChoose();
         setLogoOpacitySlider();
@@ -122,6 +137,43 @@ public class SetupController {
         setAnimationOpenCheckBox();
         initAnimationConfig();
         setMediaPath();
+    }
+
+    /**
+     * 初始化主面板显示设置
+     */
+    public void initMainPaneDisplay(){
+        //默认都为打开状态
+        //主面板
+        if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.MAINPANEDISPLAY.getKey()))) {
+            mainPane.setSelected(ConfigPropertiesUtil.getBoolean(ConfigEnum.MAINPANEDISPLAY.getKey()));
+        } else{
+            mainPane.setSelected(true);
+        }
+        //logo
+        if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.LOGODISPLAY.getKey()))) {
+            logoDisplay.setSelected(ConfigPropertiesUtil.getBoolean(ConfigEnum.LOGODISPLAY.getKey()));
+        } else{
+            logoDisplay.setSelected(true);
+        }
+        //系统信息
+        if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.SYSTEMINFODISPLAY.getKey()))) {
+            systemInfoDisplay.setSelected(ConfigPropertiesUtil.getBoolean(ConfigEnum.SYSTEMINFODISPLAY.getKey()));
+        } else{
+            systemInfoDisplay.setSelected(true);
+        }
+        //cpu信息
+        if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.SYSTEMINFODISPLAY.getKey()))) {
+            cpuInfoDisplay.setSelected(ConfigPropertiesUtil.getBoolean(ConfigEnum.SYSTEMINFODISPLAY.getKey()));
+        } else{
+            cpuInfoDisplay.setSelected(true);
+        }
+        //ram信息
+        if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.SYSTEMINFODISPLAY.getKey()))) {
+            ramInfoDisplay.setSelected(ConfigPropertiesUtil.getBoolean(ConfigEnum.SYSTEMINFODISPLAY.getKey()));
+        } else{
+            ramInfoDisplay.setSelected(true);
+        }
     }
 
     public void setLogoPath() {
@@ -419,6 +471,45 @@ public class SetupController {
 
     private void initCodeRain(){
         codeRainTextColor.setValue(Color.valueOf(CodeRainState.getTextColor()));
+    }
+
+    @FXML
+    public void openMainPane(ActionEvent event){
+        boolean b=((CheckBox)event.getSource()).isSelected();
+        if(b){
+            AppController.getInstance().show();
+        } else {
+            AppController.getInstance().close();
+        }
+        ConfigPropertiesUtil.set(ConfigEnum.MAINPANEDISPLAY.getKey(), String.valueOf(b));
+    }
+
+    @FXML
+    public void openLogoDisplay(ActionEvent event){
+        boolean b=((CheckBox)event.getSource()).isSelected();
+        AppController.getInstance().setSystemLogoVisible(b);
+        ConfigPropertiesUtil.set(ConfigEnum.LOGODISPLAY.getKey(), String.valueOf(b));
+    }
+
+    @FXML
+    public void openSystemInfoDisplay(ActionEvent event){
+        boolean b=((CheckBox)event.getSource()).isSelected();
+        AppController.getInstance().setSystemInfoVisible(b);
+        ConfigPropertiesUtil.set(ConfigEnum.SYSTEMINFODISPLAY.getKey(), String.valueOf(b));
+    }
+
+    @FXML
+    public void openCpuInfoDisplay(ActionEvent event){
+        boolean b=((CheckBox)event.getSource()).isSelected();
+        AppController.getInstance().setCpuVBoxVisible(b);
+        ConfigPropertiesUtil.set(ConfigEnum.CPUINFODISPLAY.getKey(), String.valueOf(b));
+    }
+
+    @FXML
+    public void openRamInfoDisplay(ActionEvent event){
+        boolean b=((CheckBox)event.getSource()).isSelected();
+        AppController.getInstance().setRamVBoxVisible(b);
+        ConfigPropertiesUtil.set(ConfigEnum.RAMINFODISPLAY.getKey(), String.valueOf(b));
     }
 
     @FXML
