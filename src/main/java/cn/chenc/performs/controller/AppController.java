@@ -553,7 +553,7 @@ public class AppController {
         String systemInfo=family+version+" "+codeName+"\n"
 //                +"版本号:"+buildNumber+"\n"
                 +"系统架构:"+osArch+"\n"
-                +"屏幕分辨率"+ HardwareUtil.getScreenToString();
+                +"分辨率"+ HardwareUtil.getScreenToString();
         SystemInfo.setText(systemInfo);
     }
 
