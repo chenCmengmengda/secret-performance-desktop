@@ -27,12 +27,20 @@
 #### 使用方法
 下载可执行文件:
 
-***目前版本:v1.5.0***
+***目前版本:v1.6.0***
 
-* [点击下载windows最新版本](https://gitee.com/SecretOpen/secret-performance-desktop/attach_files/581746/download/secret-performance-desktop-1.5.0.rar)
+* [点击下载windows最新版本](https://gitee.com/SecretOpen/secret-performance-desktop/attach_files/584061/download/secret-performance-desktop-1.6.0.rar)
 
 * [更多历史发行版本下载](https://gitee.com/SecretOpen/secret-performance-desktop/releases)
 
+***壁纸下载***
+链接：https://pan.baidu.com/s/119_HUU7zLoJ3E9_-tghY4g 
+
+提取码：9rb0 
+
+复制这段内容后打开百度网盘手机App，操作更方便哦
+
+![avatar](http://secretOpen.gitee.io/secret-performance-desktop/media1.png)
 
 #### 核心依赖
 |  组件   | 版本  |
