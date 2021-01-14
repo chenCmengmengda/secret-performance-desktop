@@ -38,8 +38,8 @@ public class MediaWallpaperController {
         initMediaView();
         if(!StringUtil.isEmpty(mediaWallpaperPathConf)) {
 //            setMedia("file:///E:/upload/secretBlog/media/20200520221446179/20200520221446184.mp4");
-//            setMedia(mediaWallpaperPathConf);
-            setMedia("http://secretopen.gitee.io/secret-performance-desktop/media/test.mp4");
+            setMedia(mediaWallpaperPathConf);
+//            setMedia("http://secretopen.gitee.io/secret-performance-desktop/media/test.mp4");
         }
     }
 

@@ -371,17 +371,20 @@ public class ClockState {
     }
 
     public void openDrag(){
-        if(dragListener==null) {
-            dragListener = new DragListener(mainStage,ConfigEnum.CLOCKX,ConfigEnum.CLOCKY);
-            dragListener.enableDrag(mainStage.getScene().getRoot());
-        } else {
-            dragListener.enableDrag(mainStage.getScene().getRoot());
+        if(mainStage != null && mainStage.isShowing()) {
+            if (dragListener == null) {
+                dragListener = new DragListener(mainStage, ConfigEnum.CLOCKX, ConfigEnum.CLOCKY);
+                dragListener.enableDrag(mainStage.getScene().getRoot());
+                Win32Util.setWinIconTop(StageTitleConst.CLOCKTITLE);
+            } else {
+                dragListener.enableDrag(mainStage.getScene().getRoot());
+                Win32Util.setWinIconTop(StageTitleConst.CLOCKTITLE);
+            }
         }
-        Win32Util.setWinIconTop(StageTitleConst.CLOCKTITLE);
     }
 
     public void closeDrag(){
-        if(dragListener!=null){
+        if(dragListener!=null && mainStage!=null && mainStage.isShowing()){
             dragListener.closeDrag(mainStage.getScene().getRoot());
             mainStage.close();
             mainStage.show();
