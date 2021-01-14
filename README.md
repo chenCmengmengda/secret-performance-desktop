@@ -34,11 +34,11 @@
 * [更多历史发行版本下载](https://gitee.com/SecretOpen/secret-performance-desktop/releases)
 
 ***壁纸下载***
+
 链接：https://pan.baidu.com/s/119_HUU7zLoJ3E9_-tghY4g 
 
 提取码：9rb0 
 
-复制这段内容后打开百度网盘手机App，操作更方便哦
 
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/media1.png)
 
