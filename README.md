@@ -35,7 +35,7 @@
 
 **更新说明**
 
-由于缺乏在线自动更新功能，更新只能手动覆盖exe文件，config目录中的config.properties可以不用覆盖
+由于没有在线自动更新功能，更新只能手动覆盖exe文件，config目录中的config.properties可以不用覆盖
 
 ***壁纸下载***
 
