@@ -163,14 +163,14 @@ public class SetupController {
             systemInfoDisplay.setSelected(true);
         }
         //cpu信息
-        if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.SYSTEMINFODISPLAY.getKey()))) {
-            cpuInfoDisplay.setSelected(ConfigPropertiesUtil.getBoolean(ConfigEnum.SYSTEMINFODISPLAY.getKey()));
+        if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.CPUINFODISPLAY.getKey()))) {
+            cpuInfoDisplay.setSelected(ConfigPropertiesUtil.getBoolean(ConfigEnum.CPUINFODISPLAY.getKey()));
         } else{
             cpuInfoDisplay.setSelected(true);
         }
         //ram信息
-        if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.SYSTEMINFODISPLAY.getKey()))) {
-            ramInfoDisplay.setSelected(ConfigPropertiesUtil.getBoolean(ConfigEnum.SYSTEMINFODISPLAY.getKey()));
+        if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.RAMINFODISPLAY.getKey()))) {
+            ramInfoDisplay.setSelected(ConfigPropertiesUtil.getBoolean(ConfigEnum.RAMINFODISPLAY.getKey()));
         } else{
             ramInfoDisplay.setSelected(true);
         }

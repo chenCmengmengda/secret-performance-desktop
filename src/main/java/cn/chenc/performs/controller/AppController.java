@@ -185,7 +185,7 @@ public class AppController {
             mediaWallpaperController.setMedia(mediaWallpaperConf);
         }
         //主面板显示
-
+        initMainPaneDisplay();
         //logo-url
         if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.LOGOURL.getKey()))) {
             model.setImageUrl(ConfigPropertiesUtil.get(ConfigEnum.LOGOURL.getKey()));
@@ -198,6 +198,8 @@ public class AppController {
         } else {
             setSystemLogoOpacity(0);
         }
+        //system-info
+        printlnSystemInfo();
         //theme-color
         if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.THEMECOLOR.getKey()))) {
             model.setThemeColor(ConfigPropertiesUtil.get(ConfigEnum.THEMECOLOR.getKey()));
@@ -244,14 +246,9 @@ public class AppController {
                 stageInterface.show();
             }
         }
-        initMainPaneDisplay();
     }
 
     public void initMainPaneDisplay(){
-//        Boolean mainPaneConfig=ConfigPropertiesUtil.getBoolean(ConfigEnum.MAINPANEDISPLAY.getKey());
-//        if(mainPaneConfig != null && mainPaneConfig.equals(false) ){
-//            stage.close();
-//        }
         Boolean logoDisplayConfig=ConfigPropertiesUtil.getBoolean(ConfigEnum.LOGODISPLAY.getKey());
         if(logoDisplayConfig!=null && logoDisplayConfig.equals(false)){
             setSystemLogoVisible(false);
@@ -544,17 +541,18 @@ public class AppController {
         //获取系统信息
         OperatingSystem operatingSystem=systemInfo.getOperatingSystem();
         String manufacturer=operatingSystem.getManufacturer();//供应商
-        String family=operatingSystem.getFamily();//操作系统名称
-        String version = operatingSystem.getVersionInfo().getVersion().split("\\.")[0];
-        String codeName=operatingSystem.getVersionInfo().getCodeName();
-        String buildNumber=operatingSystem.getVersionInfo().getBuildNumber();//内部版本号
+        String family=System.getProperty("os.name");//操作系统名称
+//        String version = operatingSystem.getVersionInfo().getVersion();//系统版本
+//        version = String.format("%.0f",Double.parseDouble(version));
+        String codeName=operatingSystem.getVersionInfo().getCodeName();//代码名称  eg:Home/Pro
+//        String buildNumber=operatingSystem.getVersionInfo().getBuildNumber();//内部版本号
+
         String osArch = System.getProperty("os.arch"); //系统架构
 
-        String systemInfo=family+version+" "+codeName+"\n"
-//                +"版本号:"+buildNumber+"\n"
+        String info=family+" "+codeName+"\n"
                 +"系统架构:"+osArch+"\n"
-                +"分辨率"+ HardwareUtil.getScreenToString();
-        SystemInfo.setText(systemInfo);
+                +"分辨率:"+ HardwareUtil.getScreenToString();
+        SystemInfo.setText(info);
     }
 
     public void setSystemLogo(String url) {

@@ -60,6 +60,8 @@ public class SakuraState extends BaseStage{
         mainStage.setTitle(StageTitleConst.SAKURATITLE);
         //透明窗口
         mainStage.initStyle(StageStyle.TRANSPARENT);
+        mainStage.setX(0);
+        mainStage.setY(0);
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();//获取屏幕
         AnchorPane root = new AnchorPane();
         root.setStyle("-fx-fill: null;-fx-background-color: rgba(0,0,0,0)");

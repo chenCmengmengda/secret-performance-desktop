@@ -76,6 +76,8 @@ public class CodeRainState extends BaseStage{
         mainStage.initOwner(stage);
         //透明窗口
         mainStage.initStyle(StageStyle.TRANSPARENT);
+        mainStage.setX(0);
+        mainStage.setY(0);
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();//获取屏幕
         //最大化
 //        mainStage.setMaximized(true);

@@ -47,6 +47,7 @@
 |  ----  | ----  |
 | javafx  | 15.0.1 |
 | oshi-core  | 5.3.7 |
+| jna  | 5.6.0 |
 
 #### 截图
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img1.png)

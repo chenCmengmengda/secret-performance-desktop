@@ -9,6 +9,10 @@
     -fx-font-weight: bold;
 }
 
+#SystemInfo{
+    -fx-font-size: 14;
+}
+
 #cpuName{
     -fx-font-size: 14;
     -fx-font-weight: none;
