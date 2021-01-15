@@ -27,11 +27,15 @@
 #### 使用方法
 下载可执行文件:
 
-***目前版本:v1.6.1***
+**目前版本:v1.6.1**
 
 * [点击下载windows最新版本](https://gitee.com/SecretOpen/secret-performance-desktop/attach_files/585602/download/secret-performance-desktop-1.6.1.rar)
 
 * [更多历史发行版本下载](https://gitee.com/SecretOpen/secret-performance-desktop/releases)
+
+**更新说明**
+
+由于缺乏在线自动更新功能，更新只能手动覆盖exe文件，config目录中的config.properties可以不用覆盖
 
 ***壁纸下载***
 
