@@ -268,6 +268,16 @@ public class AppController {
 
     }
 
+    /**
+     * 重置默认
+     */
+    public void defaultMainPaneDisplay(){
+        setSystemLogoVisible(true);
+        setSystemInfoVisible(true);
+        setCpuVBoxVisible(true);
+        setRamVBoxVisible(true);
+    }
+
     public void setSystemLogoVisible(boolean b){
         SystemLogo.setVisible(b);
         SystemLogo.setManaged(b);

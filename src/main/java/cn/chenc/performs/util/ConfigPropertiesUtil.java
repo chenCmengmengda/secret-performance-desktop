@@ -60,7 +60,7 @@ public class ConfigPropertiesUtil {
 
     public static Double getDouble(String key){
         String value = get(key);
-        return value==null ? null : Double.parseDouble(value);
+        return StringUtil.isEmpty(value) ? null : Double.valueOf(value);
     }
 
     /**
@@ -70,7 +70,7 @@ public class ConfigPropertiesUtil {
      */
     public static Boolean getBoolean(String key) {
         String value = get(key);
-        return null == value ? null : Boolean.valueOf(value);
+        return StringUtil.isEmpty(value) ? null : Boolean.valueOf(value);
     }
 
     public static Set<String> getKeys(){

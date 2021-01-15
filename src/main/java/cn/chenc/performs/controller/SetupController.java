@@ -616,6 +616,10 @@ public class SetupController {
     public void resetConfigAction(){
         //清空配置文件
         ConfigPropertiesUtil.clean();
+        //重置面板显示
+        initMainPaneDisplay();
+        AppController.getInstance().show();
+        AppController.getInstance().defaultMainPaneDisplay();
         //重置图片设置
         logoPath.setText("");
         AppController.model.setImageUrl(null);
@@ -630,14 +634,14 @@ public class SetupController {
         layoutRadio1.setSelected(true);
         AppController.model.setLayout("0");
         //重置时钟
-        clockOpenCheckBox.setSelected(true);
+        clockOpenCheckBox.setSelected(false);
         ClockState clockState=ClockState.getInstance();
         clockState.reset();
         initClockColor();
         //重置动画
         initAnimationType();
         initCodeRain();
-        animationOpenCheckBox.setSelected(true);
+        animationOpenCheckBox.setSelected(false);
     }
 
 
