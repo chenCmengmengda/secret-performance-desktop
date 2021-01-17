@@ -5,12 +5,12 @@
 [![license](https://img.shields.io/badge/license-GPL%20v3-yellow.svg)](https://gitee.com/secret_C/secretBlogBoot/blob/master/LICENSE)
 
 
-#### 介绍
+### 介绍
 基于javafx的桌面个性化工具
 
 起初只想在做个桌面的cpu和内存监控工具，连续迭代几个版本之后，成了一个桌面的个性化工具。
 
-#### 功能
+### 功能
 * cpu和内存的实时监控
 * 开机自动启动
 * 自定义logo
@@ -24,7 +24,7 @@
 * 窗口显示在桌面与图标之间
 * 动态壁纸 wallpaper
 
-#### 使用方法
+### 使用方法
 下载可执行文件:
 
 **目前版本:v1.6.1**
@@ -46,14 +46,14 @@
 
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/media1.png)
 
-#### 核心依赖
+### 核心依赖
 |  组件   | 版本  |
 |  ----  | ----  |
 | javafx  | 15.0.1 |
 | oshi-core  | 5.3.7 |
 | jna  | 5.6.0 |
 
-#### 截图
+### 截图
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img1.png)
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img2.png)
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img3.png)
@@ -73,6 +73,10 @@
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/limit2.png)
 
 实现原理:[Draw Behind Desktop Icons in Windows 8+](https://www.codeproject.com/articles/856020/draw-behind-desktop-icons-in-windows)
+
+### 联系作者
+<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1029693356&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1029693356:41" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>
+
 
 ### 致谢
 
