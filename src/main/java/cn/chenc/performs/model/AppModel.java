@@ -1,6 +1,7 @@
 package cn.chenc.performs.model;
 
 import javafx.beans.property.*;
+import javafx.scene.image.Image;
 
 /**
  * 　@description: TODO
@@ -10,6 +11,7 @@ import javafx.beans.property.*;
  */
 public class AppModel {
     private StringProperty imageProperty = new SimpleStringProperty();
+    private ObjectProperty<Image> imageObjProperty= new SimpleObjectProperty<Image>();
     private DoubleProperty logoOpacityProperty = new SimpleDoubleProperty();
     private StringProperty themeColorProperty = new SimpleStringProperty();
     private BooleanProperty dragProperty = new SimpleBooleanProperty();
@@ -17,6 +19,10 @@ public class AppModel {
 
     public StringProperty getImageProperty(){
         return imageProperty;
+    }
+
+    public ObjectProperty<Image> getImageObjProperty(){
+        return imageObjProperty;
     }
 
     public StringProperty getThemeColorProperty(){
@@ -41,6 +47,14 @@ public class AppModel {
 
     public final String getImageUrl(){
         return getImageProperty().get();
+    }
+
+    public final void setImageObj(Image image){
+        getImageObjProperty().set(image);
+    }
+
+    public final Image getImageObj(){
+        return getImageObjProperty().get();
     }
 
     public final void setLogoOpacity(double value){

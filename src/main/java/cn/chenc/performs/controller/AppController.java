@@ -115,45 +115,19 @@ public class AppController {
     private void initialize() {
         instance=this;
         //窗口初始化
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                //鼠标拖拽
-                stage= (Stage) rootFlowPane.getScene().getWindow();
-                dragListener=new DragListener(stage,ConfigEnum.SCENEX,ConfigEnum.SCENEY);
-            }
+        Platform.runLater(()->{
+            //鼠标拖拽
+            stage= (Stage) rootFlowPane.getScene().getWindow();
+            dragListener=new DragListener(stage,ConfigEnum.SCENEX,ConfigEnum.SCENEY);
         });
         //初始化cpu信息
         startGetSystemInfo(null);
         //监听绑定的数据模型
         //logo
-        model.getImageProperty().addListener((obs, oldText, newText) -> {
-//            setSystemLogo(newText);
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    setSystemLogo(newText);
-                }
-            });
-        });
-        //logo透明度
-        model.getLogoOpacityProperty().addListener((obs, oldVal, newVal) -> {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    setSystemLogoOpacity(Double.parseDouble(String.valueOf(newVal)));
-                }
-            });
-        });
+        SystemLogo.imageProperty().bindBidirectional(model.getImageObjProperty());
         //theme
         model.getThemeColorProperty().addListener((obs, oldText, newText) -> {
-//            setThemeColor(newText);
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    setThemeColor(newText);
-                }
-            });
+            Platform.runLater(()->setThemeColor(newText));
         });
         //drag
         model.getDragProperty().addListener((obs, oldVal, newVal) -> {
@@ -169,12 +143,7 @@ public class AppController {
         });
         //layout-type
         model.getLayoutProperty().addListener((obs, oldVal, newVal) -> {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    setLayout(newVal);
-                }
-            });
+            Platform.runLater(()->setLayout(newVal));
         });
         //从配置文件读取配置
         //动态壁纸
@@ -187,40 +156,33 @@ public class AppController {
         //主面板显示
         initMainPaneDisplay();
         //logo-url
+        String logoUrlConfig=null;
         if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.LOGOURL.getKey()))) {
-            model.setImageUrl(ConfigPropertiesUtil.get(ConfigEnum.LOGOURL.getKey()));
-        } else {
-            printlnSystemInfo();
+            logoUrlConfig=ConfigPropertiesUtil.get(ConfigEnum.LOGOURL.getKey());
         }
         //logo-opacity
+        double logoOpacityConf;
         if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.LOGOOPACITY.getKey()))) {
-            model.setLogoOpacity(ConfigPropertiesUtil.getDouble(ConfigEnum.LOGOOPACITY.getKey()));
+            logoOpacityConf = ConfigPropertiesUtil.getDouble(ConfigEnum.LOGOOPACITY.getKey());
         } else {
-            setSystemLogoOpacity(0);
+            logoOpacityConf=CommonConst.LOGOOPACITY;
         }
+        //渲染logo
+        String finalLogoUrlConfig = logoUrlConfig;
+        Platform.runLater(() -> setSystemLogo(finalLogoUrlConfig,logoOpacityConf));
         //system-info
         printlnSystemInfo();
         //theme-color
         if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.THEMECOLOR.getKey()))) {
             model.setThemeColor(ConfigPropertiesUtil.get(ConfigEnum.THEMECOLOR.getKey()));
         } else {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    setThemeColor(null);
-                }
-            });
+            Platform.runLater(()->setThemeColor(null));
         }
         //layout-type
         if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.LAYOUTTYPE.getKey()))) {
             model.setLayout(ConfigPropertiesUtil.get(ConfigEnum.LAYOUTTYPE.getKey()));
         } else {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    setLayout(null);
-                }
-            });
+            Platform.runLater(()-> setLayout(null));
         }
         //clock
         Boolean clockopen=ConfigPropertiesUtil.getBoolean(ConfigEnum.CLOCKOPEN.getKey());
@@ -330,16 +292,13 @@ public class AppController {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                //更新JavaFX的主线程的代码放在此处
-                try {
-                    printlnCpuInfo(root);
-                    printlnRamInfo(root);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        Platform.runLater(()->{
+            //更新JavaFX的主线程的代码放在此处
+            try {
+                printlnCpuInfo(root);
+                printlnRamInfo(root);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         });
     }
@@ -531,23 +490,6 @@ public class AppController {
     }
 
     public void printlnSystemInfo(){
-        //ascii文字logo
-//        String result = "";
-//        try {
-//            InputStream inputStream=AppController.class.getClassLoader().getResourceAsStream(winLogoFile);
-//
-////            File file = new File(inputStream);
-//            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-//            String s = null;
-//            while((s = br.readLine())!=null) {//使用readLine方法，一次读一行
-//                result = result + "\n" +s;
-//            }
-//            br.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        SystemLogo.setText(result);
-        setSystemLogo(null);
         //获取系统信息
         OperatingSystem operatingSystem=systemInfo.getOperatingSystem();
         String manufacturer=operatingSystem.getManufacturer();//供应商
@@ -565,36 +507,27 @@ public class AppController {
         SystemInfo.setText(info);
     }
 
-    public void setSystemLogo(String url) {
+    public void setSystemLogo(String url,double opacity) {
         if(StringUtil.isEmpty(url)){//空则使用默认配置
             try {
                 URL logoUrl=getClass().getResource(CommonConst.WINLOGOPATH);
                 String urlStr = java.net.URLDecoder.decode(String.valueOf(logoUrl),"utf-8");
                 Image image = new Image(urlStr, SystemLogo.getFitWidth(), SystemLogo.getFitHeight(), true, true);
                 //改变图片透明度
-                WritableImage wImage = ImageUtil.imgOpacity(image, CommonConst.LOGOOPACITY);
-                SystemLogo.setImage(wImage);
+                WritableImage wImage = ImageUtil.imgOpacity(image, opacity);
+                model.setImageUrl(urlStr);
+                model.setLogoOpacity(opacity);
+                Platform.runLater(() -> model.setImageObj(wImage));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         } else { //使用用户配置
             Image image = new Image(url, SystemLogo.getFitWidth(), SystemLogo.getFitHeight(), true, true);
             //改变图片透明度
-            WritableImage wImage = ImageUtil.imgOpacity(image, model.getLogoOpacity());
-            SystemLogo.setImage(wImage);
-        }
-    }
-
-    public void setSystemLogoOpacity(double opacity) {
-        setSystemLogo(model.getImageUrl());//重新设置图片,防止丢失精度
-        Image image = SystemLogo.getImage();
-        if(opacity==0){//使用默认配置
-            WritableImage wImage = ImageUtil.imgOpacity(image, CommonConst.LOGOOPACITY);
-            SystemLogo.setImage(wImage);
-        } else {
-            //改变图片透明度
             WritableImage wImage = ImageUtil.imgOpacity(image, opacity);
-            SystemLogo.setImage(wImage);
+            model.setImageUrl(url);
+            model.setLogoOpacity(opacity);
+            Platform.runLater(() -> model.setImageObj(wImage));
         }
     }
 

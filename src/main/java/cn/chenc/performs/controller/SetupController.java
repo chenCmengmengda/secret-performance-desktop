@@ -209,7 +209,7 @@ public class SetupController {
                 String newValStr=String.format("%.2f",new_val);
                 //防止新旧值频繁更新以及有色图片完全透明和原图片本身透明部分混合导致最后不渲染
                 if(!oldValStr.equals(newValStr) && !newValStr.equals("0.00")) {
-                    AppController.model.setLogoOpacity(Double.parseDouble(newValStr));
+                    AppController.getInstance().setSystemLogo(AppController.model.getImageUrl(),Double.parseDouble(newValStr));
                     ConfigPropertiesUtil.set(ConfigEnum.LOGOOPACITY.getKey(),newValStr);
                 }
             }
@@ -521,7 +521,7 @@ public class SetupController {
         if(file!=null) {//如果文件不为空，设置文本框内容
             String filePath = "file:\\"+file.getPath();
             logoPath.appendText(filePath);
-            AppController.model.setImageUrl(filePath);
+            AppController.getInstance().setSystemLogo(filePath,AppController.model.getLogoOpacity());
             ConfigPropertiesUtil.set(ConfigEnum.LOGOURL.getKey(),filePath);
         }
     }
@@ -531,7 +531,7 @@ public class SetupController {
     public void resetLogoAction(){
         ConfigPropertiesUtil.set(ConfigEnum.LOGOURL.getKey(),"");
         logoPath.setText("");
-        AppController.model.setImageUrl(null);
+        AppController.getInstance().setSystemLogo(null,AppController.model.getLogoOpacity());
     }
 
 
@@ -622,9 +622,8 @@ public class SetupController {
         AppController.getInstance().defaultMainPaneDisplay();
         //重置图片设置
         logoPath.setText("");
-        AppController.model.setImageUrl(null);
+        AppController.getInstance().setSystemLogo(null,CommonConst.LOGOOPACITY);
         logoOpacitySlider.setValue(CommonConst.LOGOOPACITY);
-        AppController.model.setLogoOpacity(CommonConst.LOGOOPACITY);
         //重置主题色
         themeChoose.setValue(Color.web(CommonConst.THEMECOLOR));
         AppController.model.setThemeColor(null);
