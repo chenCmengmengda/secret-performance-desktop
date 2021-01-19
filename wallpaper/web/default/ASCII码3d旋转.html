@@ -79,7 +79,7 @@ window.onload = () => {
 			const SIZE = (1 / PIXEL[2] * MAX_SIZE) | 0;
 			const BRIGHTNESS = SIZE / MAX_SIZE;
 			const COL = `rgba(255, 255, ${100 * BRIGHTNESS | 0 + 150}, ${BRIGHTNESS})`;
-			
+
 			CTX.beginPath();
 			CTX.fillStyle = COL;
 			CTX.font = SIZE + "px monospace";
@@ -102,7 +102,7 @@ window.onload = () => {
 			CHARS[i].render();
 		}
 	}
-	
+
 	let time = 0;
 	function update() {
 		CTX.clearRect(0, 0, ww, wh);
@@ -120,7 +120,7 @@ window.onload = () => {
 		update();
 		render();
 	}
-	
+
 	function getRandomInt(min, max) {
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	};
