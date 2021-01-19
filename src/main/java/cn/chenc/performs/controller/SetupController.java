@@ -8,10 +8,7 @@ import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.enums.WallpaperEnum;
 import cn.chenc.performs.factory.StageInterface;
 import cn.chenc.performs.state.*;
-import cn.chenc.performs.util.ColorUtil;
-import cn.chenc.performs.util.ConfigPropertiesUtil;
-import cn.chenc.performs.util.StringUtil;
-import cn.chenc.performs.util.Win32Util;
+import cn.chenc.performs.util.*;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -603,6 +600,8 @@ public class SetupController {
                 if(WebWallpaperController.getInstance()!=null) {
                     WebWallpaperController.getInstance().close();
                 }
+                //打开其他特效窗口
+                openOtherStage();
             }
             ConfigPropertiesUtil.set(ConfigEnum.WALLPAPERTYPE.getKey(),WallpaperEnum.MEDIA.getKey());
         } else{//web类型
@@ -614,9 +613,9 @@ public class SetupController {
                 if(MediaWallpaperController.getInstance()!=null) {
                     MediaWallpaperController.getInstance().close();
                 }
+                //打开其他特效窗口
+                openOtherStage();
             }
-            //打开其他特效窗口
-            openOtherStage();
             ConfigPropertiesUtil.set(ConfigEnum.WALLPAPERTYPE.getKey(),WallpaperEnum.WEB.getKey());
         }
     }
@@ -694,6 +693,7 @@ public class SetupController {
     private void checkMediaAction(ActionEvent event) throws IOException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("选择视频壁纸");
+        FileUtil.mkdir("wallpaper/media");
         fileChooser.setInitialDirectory(new File("wallpaper/media"));
         File file=fileChooser.showOpenDialog(stage);
         if(file!=null) {

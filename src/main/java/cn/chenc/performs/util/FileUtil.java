@@ -20,4 +20,20 @@ public class FileUtil {
 		return false;
 	}
 
+	/**
+	 * @description: 创建文件夹
+	 * @param filePath
+	 * @return boolean 创建成功 true 否则 false
+	 * @throws
+	 * @author secret
+	 * @date 2021/1/19 secret
+	 */
+	public static boolean mkdir(String filePath){
+		File file=new File(filePath);
+		if(!file.isDirectory()){
+			return file.mkdir();
+		}
+		return false;
+	}
+
 }

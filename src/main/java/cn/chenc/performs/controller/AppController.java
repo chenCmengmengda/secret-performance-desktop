@@ -154,7 +154,7 @@ public class AppController {
                 &&!StringUtil.isEmpty(mediaWallpaperConf)) {
             MediaWallpaperStage.getInstance().show();
             MediaWallpaperController.getInstance().setMedia(mediaWallpaperConf);
-        } else if(wallpaperType.equals(WallpaperEnum.WEB.getKey())
+        } else if(!StringUtil.isEmpty(wallpaperType) && wallpaperType.equals(WallpaperEnum.WEB.getKey())
                 &&!StringUtil.isEmpty(webWallpaperConf)) {
             WebWallpaperStage.getInstance().show();
             WebWallpaperController.getInstance().setWeb(webWallpaperConf);
