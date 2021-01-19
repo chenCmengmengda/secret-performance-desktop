@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.net.URL;
 
@@ -45,7 +44,6 @@ public class SetupState extends BaseStage {
         stage.getIcons().add(new Image(
                 SetupState.class.getResourceAsStream("/images/icon.png")));
         Scene scene=new Scene(root, 350, 450);
-        scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
         stage.setScene(scene);
         SetupController setupController=fxmlLoader.getController();
         stage.show();

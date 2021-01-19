@@ -34,7 +34,6 @@ import oshi.software.os.OperatingSystem;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.util.Calendar;
 
 public class AppController {
 
@@ -286,12 +285,6 @@ public class AppController {
 
 
     public void startGetSystemInfo(Parent root) {
-//        try {
-//            this.printlnCpuInfo(root);
-//            this.printlnRamInfo(root);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
         Platform.runLater(()->{
             //更新JavaFX的主线程的代码放在此处
             try {
@@ -339,7 +332,6 @@ public class AppController {
 //        String cpu=processor.getProcessorIdentifier().getVendorFreq();
 //        System.out.println(processor.getProcessorIdentifier());
         //获取当前频率
-//        processor.();
         this.cpuName.setText(cpuName);
         CPU.setText("CPU("+totalCpuStr+")");
 
@@ -350,10 +342,7 @@ public class AppController {
     private void printlnCpuChart(Parent root,long currentTimeMillis,double cpu){
 
         //60秒前时间戳
-        Calendar beforeTime = Calendar.getInstance();
-        beforeTime.add(Calendar.MINUTE, -1);// 1分钟之前的时间
-        long beforeTimeInMilli = beforeTime.getTimeInMillis();
-
+        long beforeTimeInMilli =currentTimeMillis-(1000*60);
 
 //        this.cpuChart=(AreaChart) root.lookup("#cpuChart");
 //        cpuChart.setStyle("-fx-background:transparent;");
@@ -428,10 +417,7 @@ public class AppController {
     private void printlnRamChart(Parent root,long currentTimeMillis,double ram){
 
         //60秒前时间戳
-        Calendar beforeTime = Calendar.getInstance();
-        beforeTime.add(Calendar.MINUTE, -1);// 1分钟之前的时间
-        long beforeTimeInMilli = beforeTime.getTimeInMillis();
-
+        long beforeTimeInMilli =currentTimeMillis-(1000*60);
 
 //        this.ramChart=(AreaChart) root.lookup("#ramChart");
 //        cpuChart.setStyle("-fx-background:transparent;");

@@ -114,7 +114,7 @@
                     <AnchorPane minWidth="130"></AnchorPane>
                     <CheckBox fx:id="animationOpenCheckBox" prefWidth="5"  alignment="CENTER_RIGHT"></CheckBox>
                 </HBox>
-                <HBox minHeight="30">
+                <HBox minHeight="40">
                     <Label fx:id="animationTypeLabel" text="动画类型" minWidth="100" alignment="CENTER" ></Label>
                     <ChoiceBox fx:id="animationTypeChoiceBox" minWidth="150" maxWidth="150"  >
                         <items>

@@ -5,10 +5,13 @@ import cn.chenc.performs.consts.StageTitleConst;
 import cn.chenc.performs.controller.AppController;
 import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.factory.BaseStage;
-import cn.chenc.performs.task.AppTask;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
 import cn.chenc.performs.util.Win32Util;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,12 +19,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import oshi.SystemInfo;
-import oshi.hardware.CentralProcessor;
-import oshi.hardware.HardwareAbstractionLayer;
 
 import java.net.URL;
-import java.util.concurrent.Executors;
 
 /**
  * 　@description: TODO
@@ -73,13 +72,15 @@ public class App extends Application {
             mainStage.setY(sceneY);
         }
         mainStage.setScene(scene);
-
         AppController controller=fxmlLoader.getController();
 //        controller.startGetSystemInfo(root);
         //创建定时任务
-//        EventHandler<ActionEvent> eventHandler= event -> {controller.startGetSystemInfo(root);};
-//        Timeline animation=new Timeline(new KeyFrame(Duration.millis(1000),eventHandler));
-
+        EventHandler<ActionEvent> eventHandler= event -> {controller.startGetSystemInfo(root);};
+        Timeline animation=new Timeline(new KeyFrame(Duration.millis(1000),eventHandler));
+        //循环计数
+        animation.setCycleCount(Timeline.INDEFINITE);
+        animation.play();
+        /*
         AppTask appTask = new AppTask(controller,root);
         //获取当前系统cpu核心数
         HardwareAbstractionLayer hal = new SystemInfo().getHardware();
@@ -92,10 +93,7 @@ public class App extends Application {
         // 间隔1s执行
         appTask.setPeriod(Duration.millis(1000));
         appTask.start();
-        //循环计数
-//        animation.setCycleCount(Timeline.INDEFINITE);
-//        animation.play();
-
+*/
 //        LineChart cpuChart = (LineChart) root.lookup("#cpuChart");
 //        controller.printlnCpuChart(cpuChart);
         MySystemTray.getInstance(mainStage);

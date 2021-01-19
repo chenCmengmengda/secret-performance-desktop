@@ -8,7 +8,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-import javafx.util.Duration;
 
 import java.awt.*;
 
@@ -58,12 +57,6 @@ public class MediaWallpaperController {
         mPlayer.setVolume(0);
         //自动循环播放
         mPlayer.setAutoPlay(true);
-        mPlayer.setOnEndOfMedia(new Runnable() {
-            @Override
-            public void run() {
-                mPlayer.seek(Duration.ZERO);
-                mPlayer.play();
-            }
-        });
+        mPlayer.setCycleCount(MediaPlayer.INDEFINITE);
     }
 }

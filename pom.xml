@@ -9,6 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <jdk.version>11</jdk.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javafx.version>15.0.1</javafx.version>
     </properties>
@@ -29,11 +30,11 @@
             <artifactId>javafx-media</artifactId>
             <version>${javafx.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.kordamp.bootstrapfx</groupId>
-            <artifactId>bootstrapfx-core</artifactId>
-            <version>0.4.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.kordamp.bootstrapfx</groupId>-->
+<!--            <artifactId>bootstrapfx-core</artifactId>-->
+<!--            <version>0.4.0</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.github.oshi</groupId>
             <artifactId>oshi-core</artifactId>
@@ -74,9 +75,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <release>11</release>
-                    <source>11</source>
-                    <target>11</target>
+                    <release>${jdk.version}</release>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
