@@ -22,7 +22,7 @@
 * 雪花飘落
 * 樱花飘落
 * 窗口显示在桌面与图标之间
-* 动态壁纸 wallpaper
+* 动态壁纸 wallpaper(支持mp4视频、web)
 
 ### 使用方法
 下载可执行文件:
@@ -37,11 +37,21 @@
 
 由于没有在线自动更新功能，更新只能手动覆盖exe文件，config目录中的config.properties可以不用覆盖
 
-***壁纸下载***
+***视频壁纸下载***
 
 链接：https://pan.baidu.com/s/119_HUU7zLoJ3E9_-tghY4g 
 
 提取码：9rb0 
+
+
+***web壁纸***
+
+默认提供的web壁纸在wallpaper/web/default目录下
+
+
+***自定义动态壁纸安装***
+
+建议将自定义的壁纸放置在 ./wallpaper/对应类型 目录中,方便管理
 
 
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/media1.png)
