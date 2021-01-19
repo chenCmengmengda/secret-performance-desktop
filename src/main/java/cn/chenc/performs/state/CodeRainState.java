@@ -193,7 +193,6 @@ public class CodeRainState extends BaseStage{
             getInstance().start();
             return ;
         }
-        System.out.println(mainStage.isShowing());
         if(!mainStage.isShowing()){
             mainStage.show();
             timeLine.play();

@@ -39,6 +39,8 @@ public class SetupController {
     private static  Stage stage;
     //动画stage
     private static StageInterface animationStage;
+    //wallpaperController
+    private BaseController wallpaperController;
     @FXML
     private GridPane rootGridPane;
     @FXML
@@ -485,10 +487,10 @@ public class SetupController {
             wallpaperTypeChoiceBox.getItems().addAll(WallpaperEnum.getValues());
         }
         String wallpaperType=ConfigPropertiesUtil.get(ConfigEnum.WALLPAPERTYPE.getKey());
-        if(StringUtil.isEmpty(wallpaperType) || wallpaperType.equals(WallpaperEnum.MEDIA.getKey())){
+        if(StringUtil.isEmpty(wallpaperType) || wallpaperType.equals(WallpaperEnum.MEDIA.getKey())){//media
             wallpaperTypeChoiceBox.setValue(WallpaperEnum.MEDIA.getValue());
             setWebHBoxVisible(false);
-        } else if(wallpaperType.equals(WallpaperEnum.WEB.getKey())){
+        } else if(wallpaperType.equals(WallpaperEnum.WEB.getKey())){//web
             wallpaperTypeChoiceBox.setValue(WallpaperEnum.WEB.getValue());
             setMediaHBoxVisible(false);
         }
@@ -498,6 +500,7 @@ public class SetupController {
         String mediaWallpapaerPathConf=ConfigPropertiesUtil.get(ConfigEnum.MEDIAWALLPAPERPATH.getKey());
         if(!StringUtil.isEmpty(mediaWallpapaerPathConf)){
             mediaPath.setText(mediaWallpapaerPathConf);
+            wallpaperController=MediaWallpaperController.getInstance();
         }
     }
 
@@ -505,6 +508,7 @@ public class SetupController {
         String webWallpapaerPathConf=ConfigPropertiesUtil.get(ConfigEnum.WEBWALLPAPERPATH.getKey());
         if(!StringUtil.isEmpty(webWallpapaerPathConf)){
             webPath.setText(webWallpapaerPathConf);
+            wallpaperController=WebWallpaperController.getInstance();
         }
     }
 
@@ -595,11 +599,12 @@ public class SetupController {
             setMediaHBoxVisible(true);
             setWebHBoxVisible(false);
             if(!StringUtil.isEmpty(mediaPath.getText())){
-                openMediaWallpaperStage();
-                //关闭其他类型动态壁纸
-                if(WebWallpaperController.getInstance()!=null) {
-                    WebWallpaperController.getInstance().close();
+                //关闭当前壁纸
+                if(wallpaperController!=null) {
+                    wallpaperController.close();
                 }
+                //打开新壁纸
+                openMediaWallpaperStage();
                 //打开其他特效窗口
                 openOtherStage();
             }
@@ -608,11 +613,12 @@ public class SetupController {
             setMediaHBoxVisible(false);
             setWebHBoxVisible(true);
             if(!StringUtil.isEmpty(webPath.getText())){
-                openWebWallpaperStage();
-                //关闭其他类型动态壁纸
-                if(MediaWallpaperController.getInstance()!=null) {
-                    MediaWallpaperController.getInstance().close();
+                //关闭当前壁纸
+                if(wallpaperController!=null) {
+                    wallpaperController.close();
                 }
+                //打开新壁纸
+                openWebWallpaperStage();
                 //打开其他特效窗口
                 openOtherStage();
             }
@@ -629,6 +635,7 @@ public class SetupController {
         } else {
             MediaWallpaperController.getInstance().show();
         }
+        wallpaperController=MediaWallpaperController.getInstance();
     }
 
     /**
@@ -640,6 +647,7 @@ public class SetupController {
         } else {
             WebWallpaperController.getInstance().show();
         }
+        wallpaperController=WebWallpaperController.getInstance();
     }
 
     /**
@@ -697,16 +705,10 @@ public class SetupController {
         fileChooser.setInitialDirectory(new File("wallpaper/media"));
         File file=fileChooser.showOpenDialog(stage);
         if(file!=null) {
-            String path = "file:/"+file.getPath().replaceAll("\\\\","/");
+            String path = file.toURI().toString();
             mediaPath.setText(path);
-            MediaWallpaperController mediaWallpaperController = MediaWallpaperController.getInstance();
-            if (mediaWallpaperController == null) {
-                MediaWallpaperStage.getInstance().show();
-                mediaWallpaperController=MediaWallpaperController.getInstance();
-            } else{
-                MediaWallpaperStage.getInstance().show();
-            }
-            mediaWallpaperController.setMedia(path);
+            openMediaWallpaperStage();
+            ((MediaWallpaperController)wallpaperController).setMedia(path);
             openOtherStage();
             ConfigPropertiesUtil.set(ConfigEnum.MEDIAWALLPAPERPATH.getKey(), path);
         }
@@ -728,16 +730,11 @@ public class SetupController {
         fileChooser.setInitialDirectory(new File("wallpaper/web"));
         File file=fileChooser.showOpenDialog(stage);
         if(file!=null) {
-            String path = "file:/"+file.getPath().replaceAll("\\\\","/");
-            mediaPath.setText(path);
-            WebWallpaperController webWallpaperController = WebWallpaperController.getInstance();
-            if (webWallpaperController == null) {
-                WebWallpaperStage.getInstance().show();
-                webWallpaperController=WebWallpaperController.getInstance();
-            } else{
-                WebWallpaperStage.getInstance().show();
-            }
-            webWallpaperController.setWeb(path);
+            String path=file.toURI().toString();
+//            String path = "file:/"+file.getPath().replaceAll("\\\\","/");
+            webPath.setText(path);
+            openWebWallpaperStage();
+            ((WebWallpaperController)wallpaperController).setWeb(path);
             openOtherStage();
             ConfigPropertiesUtil.set(ConfigEnum.WEBWALLPAPERPATH.getKey(), path);
         }
@@ -746,7 +743,7 @@ public class SetupController {
     @FXML
     private void resetWebAction(ActionEvent event){
         ConfigPropertiesUtil.set(ConfigEnum.WEBWALLPAPERPATH.getKey(),"");
-        mediaPath.setText("");
+        webPath.setText("");
         //关闭动态背景窗口
         WebWallpaperController.getInstance().close();
     }
@@ -789,6 +786,13 @@ public class SetupController {
         initAnimationType();
         initCodeRain();
         animationOpenCheckBox.setSelected(false);
+        //重置壁纸
+        if(wallpaperController!=null){
+            wallpaperController.close();
+        }
+        initWallpaperType();
+        mediaPath.setText("");
+        webPath.setText("");
     }
 
 

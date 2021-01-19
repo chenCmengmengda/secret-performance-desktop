@@ -4,10 +4,12 @@ import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.state.WebWallpaperStage;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
 import cn.chenc.performs.util.StringUtil;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 
 import java.awt.*;
 
@@ -17,10 +19,10 @@ import java.awt.*;
  * 　@date 2021/1/19 15:43
  *
  */
-public class WebWallpaperController {
+public class WebWallpaperController extends BaseController{
     private Dimension screenSize;
     private static WebWallpaperController instance;
-    private static String webWallpaperPathConf;
+    private Stage stage;
     @FXML
     private AnchorPane rootAnchorPane;
     @FXML
@@ -33,7 +35,9 @@ public class WebWallpaperController {
     @FXML
     private void initialize() {
         instance=this;
-
+        Platform.runLater(()->{
+            stage= (Stage) rootAnchorPane.getScene().getWindow();
+        });
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();//获取屏幕
         String webWallpaperPathConf= ConfigPropertiesUtil.get(ConfigEnum.WEBWALLPAPERPATH.getKey());
         initWebView();
@@ -54,13 +58,18 @@ public class WebWallpaperController {
         webEngine.load(path);
     }
 
+    @Override
     public void show(){
-        WebWallpaperStage.getInstance().show();
-        if(!StringUtil.isEmpty(webWallpaperPathConf)){
-            setWeb(webWallpaperPathConf);
+        if(!stage.isShowing()) {//没有显示
+            WebWallpaperStage.getInstance().show();
+            String webWallpaperPathConf=ConfigPropertiesUtil.get(ConfigEnum.WEBWALLPAPERPATH.getKey());
+            if (!StringUtil.isEmpty(webWallpaperPathConf)) {
+                setWeb(webWallpaperPathConf);
+            }
         }
     }
 
+    @Override
     public void close(){
         WebWallpaperStage.getInstance().close();
         //释放网页资源

@@ -4,11 +4,13 @@ import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.state.MediaWallpaperStage;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
 import cn.chenc.performs.util.StringUtil;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.stage.Stage;
 
 import java.awt.*;
 
@@ -18,10 +20,11 @@ import java.awt.*;
  * 　@date 2021/1/13 11:21
  *
  */
-public class MediaWallpaperController {
+public class MediaWallpaperController extends BaseController {
     private Dimension screenSize;
     private static MediaWallpaperController instance;
     private static String mediaWallpaperPathConf;
+    private Stage stage;
     @FXML
     private FlowPane rootFlowPane;
     @FXML
@@ -34,6 +37,9 @@ public class MediaWallpaperController {
     @FXML
     private void initialize() {
         instance=this;
+        Platform.runLater(()->{
+            stage= (Stage) rootFlowPane.getScene().getWindow();
+        });
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();//获取屏幕
         String mediaWallpaperPathConf=ConfigPropertiesUtil.get(ConfigEnum.MEDIAWALLPAPERPATH.getKey());
         initMediaView();
@@ -51,7 +57,6 @@ public class MediaWallpaperController {
     }
 
     public void setMedia(String path){
-        mediaWallpaperPathConf=path;
         Media media=new Media(path);
         //创建媒体播放器
         MediaPlayer mPlayer=new MediaPlayer(media);
@@ -63,13 +68,18 @@ public class MediaWallpaperController {
         mPlayer.setCycleCount(MediaPlayer.INDEFINITE);
     }
 
+    @Override
     public void show(){
-        MediaWallpaperStage.getInstance().show();
-        if(!StringUtil.isEmpty(mediaWallpaperPathConf)){
-            setMedia(mediaWallpaperPathConf);
+        if(!stage.isShowing()) {//没有显示
+            MediaWallpaperStage.getInstance().show();
+            String mediaWallpaperPathConf=ConfigPropertiesUtil.get(ConfigEnum.MEDIAWALLPAPERPATH.getKey());
+            if (!StringUtil.isEmpty(mediaWallpaperPathConf)) {
+                setMedia(mediaWallpaperPathConf);
+            }
         }
     }
 
+    @Override
     public void close(){
         MediaWallpaperStage.getInstance().close();
         //释放视频资源
