@@ -5,6 +5,7 @@ import cn.chenc.performs.consts.LayoutConst;
 import cn.chenc.performs.consts.StageTitleConst;
 import cn.chenc.performs.enums.AnimationEnum;
 import cn.chenc.performs.enums.ConfigEnum;
+import cn.chenc.performs.enums.WallpaperEnum;
 import cn.chenc.performs.factory.StageInterface;
 import cn.chenc.performs.state.*;
 import cn.chenc.performs.util.ColorUtil;
@@ -19,12 +20,14 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -100,7 +103,15 @@ public class SetupController {
     @FXML
     private ColorPicker codeRainTextColor;
     @FXML
+    private ChoiceBox wallpaperTypeChoiceBox;
+    @FXML
+    private HBox mediaHBox;
+    @FXML
     private TextField mediaPath;
+    @FXML
+    private HBox webHBox;
+    @FXML
+    private TextField webPath;
 
     @FXML
     private void initialize(){
@@ -136,7 +147,9 @@ public class SetupController {
         initClockConfig();
         setAnimationOpenCheckBox();
         initAnimationConfig();
-        setMediaPath();
+        initWallpaperType();
+        initMediaPath();
+        initWebPath();
     }
 
     /**
@@ -442,12 +455,6 @@ public class SetupController {
             });
     }
 
-    private void setMediaPath(){
-        String mediaWallpapaerPathConf=ConfigPropertiesUtil.get(ConfigEnum.MEDIAWALLPAPERPATH.getKey());
-        if(!StringUtil.isEmpty(mediaWallpapaerPathConf)){
-            mediaPath.setText(mediaWallpapaerPathConf);
-        }
-    }
 
     private void initAnimationType(){
         if(animationTypeChoiceBox.getItems().size()==0) {
@@ -471,6 +478,37 @@ public class SetupController {
 
     private void initCodeRain(){
         codeRainTextColor.setValue(Color.valueOf(CodeRainState.getTextColor()));
+    }
+
+    /**
+     * 初始化壁纸类型
+     */
+    private void initWallpaperType(){
+        if(wallpaperTypeChoiceBox.getItems().size()==0) {
+            wallpaperTypeChoiceBox.getItems().addAll(WallpaperEnum.getValues());
+        }
+        String wallpaperType=ConfigPropertiesUtil.get(ConfigEnum.WALLPAPERTYPE.getKey());
+        if(StringUtil.isEmpty(wallpaperType) || wallpaperType.equals(WallpaperEnum.MEDIA.getKey())){
+            wallpaperTypeChoiceBox.setValue(WallpaperEnum.MEDIA.getValue());
+            setWebHBoxVisible(false);
+        } else if(wallpaperType.equals(WallpaperEnum.WEB.getKey())){
+            wallpaperTypeChoiceBox.setValue(WallpaperEnum.WEB.getValue());
+            setMediaHBoxVisible(false);
+        }
+    }
+
+    private void initMediaPath(){
+        String mediaWallpapaerPathConf=ConfigPropertiesUtil.get(ConfigEnum.MEDIAWALLPAPERPATH.getKey());
+        if(!StringUtil.isEmpty(mediaWallpapaerPathConf)){
+            mediaPath.setText(mediaWallpapaerPathConf);
+        }
+    }
+
+    private void initWebPath(){
+        String webWallpapaerPathConf=ConfigPropertiesUtil.get(ConfigEnum.WEBWALLPAPERPATH.getKey());
+        if(!StringUtil.isEmpty(webWallpapaerPathConf)){
+            webPath.setText(webWallpapaerPathConf);
+        }
     }
 
     @FXML
@@ -553,11 +591,110 @@ public class SetupController {
         AppController.dragListener.setXY(LayoutConst.SCENEX1,LayoutConst.SCENEY1);
     }
 
+    @FXML
+    private void wallpaperTypeAction(ActionEvent event){
+        String wallpaperType=((ChoiceBox)event.getSource()).getValue().toString();
+        if(wallpaperType.equals(WallpaperEnum.MEDIA.getValue())){//media类型
+            setMediaHBoxVisible(true);
+            setWebHBoxVisible(false);
+            if(!StringUtil.isEmpty(mediaPath.getText())){
+                openMediaWallpaperStage();
+                //关闭其他类型动态壁纸
+                if(WebWallpaperController.getInstance()!=null) {
+                    WebWallpaperController.getInstance().close();
+                }
+            }
+            ConfigPropertiesUtil.set(ConfigEnum.WALLPAPERTYPE.getKey(),WallpaperEnum.MEDIA.getKey());
+        } else{//web类型
+            setMediaHBoxVisible(false);
+            setWebHBoxVisible(true);
+            if(!StringUtil.isEmpty(webPath.getText())){
+                openWebWallpaperStage();
+                //关闭其他类型动态壁纸
+                if(MediaWallpaperController.getInstance()!=null) {
+                    MediaWallpaperController.getInstance().close();
+                }
+            }
+            //打开其他特效窗口
+            openOtherStage();
+            ConfigPropertiesUtil.set(ConfigEnum.WALLPAPERTYPE.getKey(),WallpaperEnum.WEB.getKey());
+        }
+    }
+
+    /**
+     * 打开视频壁纸
+     */
+    private void openMediaWallpaperStage(){
+        if(MediaWallpaperController.getInstance()==null){
+            MediaWallpaperStage.getInstance().show();
+        } else {
+            MediaWallpaperController.getInstance().show();
+        }
+    }
+
+    /**
+     * 打开web壁纸
+     */
+    private void openWebWallpaperStage(){
+        if(WebWallpaperController.getInstance()==null){
+            WebWallpaperStage.getInstance().show();
+        } else {
+            WebWallpaperController.getInstance().show();
+        }
+    }
+
+    /**
+     * 是否显示视频壁纸设置
+     * @param b
+     */
+    public void setMediaHBoxVisible(boolean b){
+        mediaHBox.setVisible(b);
+        mediaHBox.setManaged(b);
+    }
+
+    /**
+     * 是否显示web壁纸设置
+     * @param b
+     */
+    public void setWebHBoxVisible(boolean b){
+        webHBox.setVisible(b);
+        webHBox.setManaged(b);
+    }
+
+    /**
+     * 重启其他窗口
+     */
+    private void openOtherStage(){
+        //重启主面板
+        AppController.getInstance().close();
+        AppController.getInstance().show();
+        Win32Util.setWinIconAfter(StageTitleConst.APPTITLE);
+        //重启时钟
+        if(ClockState.getStage()!=null) {
+            ClockState.getInstance().close();
+            ClockState.getInstance().show();
+            Win32Util.setWinIconAfter(StageTitleConst.CLOCKTITLE);
+        }
+        if (CodeRainState.getStage()!=null && animationStage instanceof CodeRainState) {
+            //代码雨重启
+            CodeRainState.getInstance().close();
+            CodeRainState.getInstance().show();
+        } else if (SnowState.getStage() !=null && animationStage instanceof SnowState) {
+            //雪花重启
+            SnowState.getInstance().close();
+            SnowState.getInstance().show();
+        } else if (SakuraState.getStage() != null && animationStage instanceof SakuraState) {
+            //樱花重启
+            SakuraState.getInstance().close();
+            SakuraState.getInstance().show();
+        }
+    }
 
     @FXML
-    private void checkMediaAction(ActionEvent event){
+    private void checkMediaAction(ActionEvent event) throws IOException {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
+        fileChooser.setTitle("选择视频壁纸");
+        fileChooser.setInitialDirectory(new File("wallpaper/media"));
         File file=fileChooser.showOpenDialog(stage);
         if(file!=null) {
             String path = "file:/"+file.getPath().replaceAll("\\\\","/");
@@ -570,27 +707,7 @@ public class SetupController {
                 MediaWallpaperStage.getInstance().show();
             }
             mediaWallpaperController.setMedia(path);
-            //重启主面板
-            AppController.getStage().close();
-            AppController.getStage().show();
-            Win32Util.setWinIconAfter(StageTitleConst.APPTITLE);
-            //重启时钟
-            ClockState.getInstance().close();
-            ClockState.getInstance().show();
-            Win32Util.setWinIconAfter(StageTitleConst.CLOCKTITLE);
-            if (animationStage instanceof CodeRainState) {
-                //代码雨重启
-                CodeRainState.getInstance().close();
-                CodeRainState.getInstance().show();
-            } else if (animationStage instanceof SnowState) {
-                //雪花重启
-                SnowState.getInstance().close();
-                SnowState.getInstance().show();
-            } else if (animationStage instanceof SakuraState) {
-                //樱花重启
-                SakuraState.getInstance().close();
-                SakuraState.getInstance().show();
-            }
+            openOtherStage();
             ConfigPropertiesUtil.set(ConfigEnum.MEDIAWALLPAPERPATH.getKey(), path);
         }
     }
@@ -600,7 +717,38 @@ public class SetupController {
         ConfigPropertiesUtil.set(ConfigEnum.MEDIAWALLPAPERPATH.getKey(),"");
         mediaPath.setText("");
         //关闭动态背景窗口
-        MediaWallpaperStage.getInstance().close();
+        MediaWallpaperController.getInstance().close();
+    }
+
+
+    @FXML
+    private void checkWebAction(ActionEvent event){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("选择web壁纸");
+        fileChooser.setInitialDirectory(new File("wallpaper/web"));
+        File file=fileChooser.showOpenDialog(stage);
+        if(file!=null) {
+            String path = "file:/"+file.getPath().replaceAll("\\\\","/");
+            mediaPath.setText(path);
+            WebWallpaperController webWallpaperController = WebWallpaperController.getInstance();
+            if (webWallpaperController == null) {
+                WebWallpaperStage.getInstance().show();
+                webWallpaperController=WebWallpaperController.getInstance();
+            } else{
+                WebWallpaperStage.getInstance().show();
+            }
+            webWallpaperController.setWeb(path);
+            openOtherStage();
+            ConfigPropertiesUtil.set(ConfigEnum.WEBWALLPAPERPATH.getKey(), path);
+        }
+    }
+
+    @FXML
+    private void resetWebAction(ActionEvent event){
+        ConfigPropertiesUtil.set(ConfigEnum.WEBWALLPAPERPATH.getKey(),"");
+        mediaPath.setText("");
+        //关闭动态背景窗口
+        WebWallpaperController.getInstance().close();
     }
 
 

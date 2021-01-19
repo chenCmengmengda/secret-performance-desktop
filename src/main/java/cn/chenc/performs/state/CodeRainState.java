@@ -33,7 +33,7 @@ import java.util.Random;
 public class CodeRainState extends BaseStage{
 
     private static CodeRainState instance = null;
-    private Stage mainStage;
+    private static Stage mainStage;
     Timeline timeLine;
     private Random random = new Random();
     //行高,列宽
@@ -189,13 +189,20 @@ public class CodeRainState extends BaseStage{
 
     @Override
     public void show(){
-        if(mainStage!=null) {
+        if(mainStage==null){
+            getInstance().start();
+            return ;
+        }
+        System.out.println(mainStage.isShowing());
+        if(!mainStage.isShowing()){
             mainStage.show();
             timeLine.play();
             Win32Util.setWinIconAfter(StageTitleConst.CODERAINTITLE);
-        } else{
-            getInstance().start();
         }
+    }
+
+    public static Stage getStage(){
+        return mainStage;
     }
 
     public static String getTextColor() {

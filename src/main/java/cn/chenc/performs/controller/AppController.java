@@ -5,6 +5,7 @@ import cn.chenc.performs.consts.LayoutConst;
 import cn.chenc.performs.consts.StageTitleConst;
 import cn.chenc.performs.enums.AnimationEnum;
 import cn.chenc.performs.enums.ConfigEnum;
+import cn.chenc.performs.enums.WallpaperEnum;
 import cn.chenc.performs.factory.StageInterface;
 import cn.chenc.performs.listener.DragListener;
 import cn.chenc.performs.model.AppModel;
@@ -146,11 +147,17 @@ public class AppController {
         });
         //从配置文件读取配置
         //动态壁纸
+        String wallpaperType=ConfigPropertiesUtil.get(ConfigEnum.WALLPAPERTYPE.getKey());
         String mediaWallpaperConf=ConfigPropertiesUtil.get(ConfigEnum.MEDIAWALLPAPERPATH.getKey());
-        if(!StringUtil.isEmpty(mediaWallpaperConf)) {
+        String webWallpaperConf=ConfigPropertiesUtil.get(ConfigEnum.WEBWALLPAPERPATH.getKey());
+        if((StringUtil.isEmpty(wallpaperType) || wallpaperType.equals(WallpaperEnum.MEDIA.getKey()))
+                &&!StringUtil.isEmpty(mediaWallpaperConf)) {
             MediaWallpaperStage.getInstance().show();
-            MediaWallpaperController mediaWallpaperController = MediaWallpaperController.getInstance();
-            mediaWallpaperController.setMedia(mediaWallpaperConf);
+            MediaWallpaperController.getInstance().setMedia(mediaWallpaperConf);
+        } else if(wallpaperType.equals(WallpaperEnum.WEB.getKey())
+                &&!StringUtil.isEmpty(webWallpaperConf)) {
+            WebWallpaperStage.getInstance().show();
+            WebWallpaperController.getInstance().setWeb(webWallpaperConf);
         }
         //主面板显示
         initMainPaneDisplay();
@@ -529,8 +536,10 @@ public class AppController {
     }
 
     public void show(){
-        stage.show();
-        Win32Util.setWinIconAfter(StageTitleConst.APPTITLE);
+        if(!stage.isShowing()) {
+            stage.show();
+            Win32Util.setWinIconAfter(StageTitleConst.APPTITLE);
+        }
     }
 
     public void close(){

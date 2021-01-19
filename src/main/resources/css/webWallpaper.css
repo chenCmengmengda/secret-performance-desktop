@@ -1,0 +1,7 @@
+.root{
+    -fx-background-color: rgba(0,0,0,0);
+}
+
+.media-view{
+    -fx-background:transparent;
+}

@@ -32,7 +32,9 @@ public enum ConfigEnum {
     ANIMATIONOPEN("animation-open"),
     ANIMATIONTYPE("animation-type"),
     CODERAINTEXTCOLOR("coderain-text-color"),
+    WALLPAPERTYPE("wallpaper-type"),
     MEDIAWALLPAPERPATH("media-wallpaper-path"),
+    WEBWALLPAPERPATH("web-wallpaper-path"),
     ;
 
     private String key;

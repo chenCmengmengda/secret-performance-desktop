@@ -36,7 +36,7 @@ import java.time.format.DateTimeFormatter;
 public class ClockState {
 
     private static ClockState instance = null;
-    private Stage mainStage;
+    private static Stage mainStage;
     private Timeline timeLine;
     private Canvas canvas;
     private DragListener dragListener;
@@ -356,17 +356,21 @@ public class ClockState {
     }
 
     public void close() {
-        mainStage.close();
-        timeLine.stop();
+        if(mainStage!=null) {
+            mainStage.close();
+            timeLine.stop();
+        }
     }
 
     public void show(){
-        if(mainStage!=null) {
+        if(mainStage==null){
+            getInstance().start();
+            return ;
+        }
+        if(!mainStage.isShowing()){
             mainStage.show();
             timeLine.play();
             Win32Util.setWinIconAfter(StageTitleConst.CLOCKTITLE);
-        } else{
-            getInstance().start();
         }
     }
 
@@ -381,6 +385,10 @@ public class ClockState {
                 Win32Util.setWinIconTop(StageTitleConst.CLOCKTITLE);
             }
         }
+    }
+
+    public static Stage getStage(){
+        return mainStage;
     }
 
     public void closeDrag(){

@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class SakuraState extends BaseStage{
     private static SakuraState instance = null;
-    private Stage mainStage;
+    private static Stage mainStage;
     private Timeline timeLine;
     int[] xx = new int[100];//x轴
     int[] yy = new int[100];//yz轴
@@ -157,14 +157,20 @@ public class SakuraState extends BaseStage{
         }
     }
 
+    public static Stage getStage(){
+        return mainStage;
+    }
+
     @Override
     public void show(){
-        if(mainStage!=null) {
+        if(mainStage==null){
+            getInstance().start();
+            return ;
+        }
+        if(!mainStage.isShowing()){
             mainStage.show();
             timeLine.play();
             Win32Util.setWinIconAfter(StageTitleConst.SAKURATITLE);
-        } else{
-            getInstance().start();
         }
     }
 

@@ -1,6 +1,7 @@
 package cn.chenc.performs.controller;
 
 import cn.chenc.performs.enums.ConfigEnum;
+import cn.chenc.performs.state.MediaWallpaperStage;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
 import cn.chenc.performs.util.StringUtil;
 import javafx.fxml.FXML;
@@ -20,6 +21,7 @@ import java.awt.*;
 public class MediaWallpaperController {
     private Dimension screenSize;
     private static MediaWallpaperController instance;
+    private static String mediaWallpaperPathConf;
     @FXML
     private FlowPane rootFlowPane;
     @FXML
@@ -49,6 +51,7 @@ public class MediaWallpaperController {
     }
 
     public void setMedia(String path){
+        mediaWallpaperPathConf=path;
         Media media=new Media(path);
         //创建媒体播放器
         MediaPlayer mPlayer=new MediaPlayer(media);
@@ -58,5 +61,18 @@ public class MediaWallpaperController {
         //自动循环播放
         mPlayer.setAutoPlay(true);
         mPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+    }
+
+    public void show(){
+        MediaWallpaperStage.getInstance().show();
+        if(!StringUtil.isEmpty(mediaWallpaperPathConf)){
+            setMedia(mediaWallpaperPathConf);
+        }
+    }
+
+    public void close(){
+        MediaWallpaperStage.getInstance().close();
+        //释放视频资源
+        mediaView.getMediaPlayer().dispose();
     }
 }
