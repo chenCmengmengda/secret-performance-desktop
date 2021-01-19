@@ -43,6 +43,8 @@
 
 提取码：9rb0 
 
+![avatar](http://secretOpen.gitee.io/secret-performance-desktop/media1.png)
+
 
 ***web壁纸***
 
@@ -52,9 +54,6 @@
 ***自定义动态壁纸安装***
 
 建议将自定义的壁纸放置在 ./wallpaper/对应类型 目录中,方便管理
-
-
-![avatar](http://secretOpen.gitee.io/secret-performance-desktop/media1.png)
 
 ### 核心依赖
 |  组件   | 版本  |
