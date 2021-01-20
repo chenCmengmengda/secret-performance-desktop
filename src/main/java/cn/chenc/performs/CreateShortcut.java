@@ -83,8 +83,10 @@ public class CreateShortcut {
     }
 
     /**
+     * 流方式，目标路径长度超过70则生成失败，弃用
      * @param path 生成快捷方式前缀路径
      */
+    @Deprecated
     public void start(String path){
         for(String k:pathAndName.keySet()){
             String v=pathAndName.get(k);
