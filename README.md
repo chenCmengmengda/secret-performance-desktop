@@ -27,9 +27,9 @@
 ### 使用方法
 下载可执行文件:
 
-**目前版本:v1.6.1**
+**目前版本:v1.7.0**
 
-* [点击下载windows最新版本](https://gitee.com/SecretOpen/secret-performance-desktop/attach_files/585602/download/secret-performance-desktop-1.6.1.rar)
+* [点击下载windows最新版本](https://gitee.com/SecretOpen/secret-performance-desktop/attach_files/593462/download/secret-performance-desktop-1.7.0.rar)
 
 * [更多历史发行版本下载](https://gitee.com/SecretOpen/secret-performance-desktop/releases)
 
@@ -92,6 +92,7 @@ maven 执行 package
 ### 联系作者
 <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1029693356&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1029693356:41" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>
 
+qq:1029693356
 
 ### 致谢
 
