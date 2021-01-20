@@ -28,6 +28,7 @@
 /*cpu图表css*/
 #cpuChart{
     -fx-background:transparent;
+    -fx-legend-visible:false
 }
 
 .default-color0.chart-series-line {
@@ -55,6 +56,7 @@
 /*内存图表css*/
 #ramChart{
     -fx-background:transparent;
+    -fx-legend-visible:false
 }
 
 .default-color1.chart-series-area-line {
@@ -74,7 +76,4 @@
 .default-color1.chart-area-symbol {
     -fx-background-color: transparent;
 }
-
-
-
 

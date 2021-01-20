@@ -431,6 +431,7 @@ public class AppController {
         //声明两条轴
         ramXAxis = (NumberAxis) ramChart.getXAxis();
         ramYAxis = (NumberAxis) ramChart.getYAxis();
+
         ramXAxis.setTickLabelFill(null);
         ramXAxis.setAutoRanging(false);
         ramXAxis.setLowerBound((double) beforeTimeInMilli);
@@ -448,19 +449,16 @@ public class AppController {
         ramYAxis.setTickLabelsVisible(false);
         ramYAxis.setTickMarkVisible(false);
 
-//        yAxis.setAnimated(true);
-
-
         long ramtoLong= (long) (ram*100);
         series2.getData().add(new XYChart.Data<>(currentTimeMillis, ramtoLong));
         if(series2.getData().size()>60){
             series2.getData().remove(0);
         }
-
         //显示图表
         if(this.ramChart.getData().size()==0) {
             this.ramChart.getData().add(series2);
         }
+
     }
 
     private static String formatByte(long byteNumber){

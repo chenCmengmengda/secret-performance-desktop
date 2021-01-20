@@ -46,7 +46,7 @@
         <VBox fx:id="cpuVBox" maxHeight="250">
             <Label fx:id="cpuName" />
             <Label fx:id="CPU" />
-            <AreaChart fx:id="cpuChart" id="cpuChart" maxWidth="350" maxHeight="200" >
+            <AreaChart fx:id="cpuChart" id="cpuChart" maxWidth="350" maxHeight="150" >
                 <xAxis >
                     <NumberAxis side="BOTTOM" />
                 </xAxis>
@@ -57,7 +57,7 @@
         </VBox>
         <VBox fx:id="ramVBox" maxHeight="250">
             <Label fx:id="RAM" />
-            <AreaChart fx:id="ramChart" id="ramChart"  maxWidth="350" maxHeight="200" >
+            <AreaChart fx:id="ramChart" id="ramChart"  maxWidth="350" maxHeight="150" >
                 <xAxis>
                     <NumberAxis side="BOTTOM" />
                 </xAxis>
