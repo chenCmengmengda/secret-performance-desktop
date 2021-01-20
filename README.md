@@ -48,7 +48,7 @@
 
 ***web壁纸***
 
-默认提供的web壁纸在wallpaper/web/default目录下
+默认提供的web壁纸在wallpaper/web目录下
 
 
 ***自定义动态壁纸安装***
@@ -61,6 +61,12 @@
 | javafx  | 15.0.1 |
 | oshi-core  | 5.3.7 |
 | jna  | 5.6.0 |
+
+
+### 源码打包说明
+maven 执行 package
+
+使用exe4j 将jar包打为exe文件，exe4j配置在doc/exe4j目录下
 
 ### 截图
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img1.png)
