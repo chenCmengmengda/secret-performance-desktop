@@ -71,8 +71,6 @@ maven 执行 package
 ### 截图
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img1.png)
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img2.png)
-![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img3.png)
-![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img4.png)
 
 ### 局限性
 * 窗口置于底层不兼容部分系统
