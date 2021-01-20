@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
@@ -51,10 +52,19 @@ public class WebWallpaperController extends BaseController{
     private void initWebView(){
         webView.setMinSize(screenSize.getWidth(),screenSize.getHeight());
         webView.setMaxSize(screenSize.getWidth(),screenSize.getHeight());
+        //设置最大历史记录数0,不记录任何历史记录
+        WebHistory webHistory =webView.getEngine().getHistory();
+        webHistory.setMaxSize(0);
     }
 
     public void setWeb(String path){
         WebEngine webEngine=webView.getEngine();
+        //alert调试
+//        webEngine.setOnAlert((WebEvent<String> wEvent) -> {
+//            System.out.println("JS alert() message: " + wEvent.getData());
+//        });
+        //先跳转到空页面，立即释放部分内存
+        webEngine.load(null);
         webEngine.load(path);
     }
 
