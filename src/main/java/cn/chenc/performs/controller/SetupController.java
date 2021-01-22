@@ -500,7 +500,8 @@ public class SetupController {
         String mediaWallpapaerPathConf=ConfigPropertiesUtil.get(ConfigEnum.MEDIAWALLPAPERPATH.getKey());
         if(!StringUtil.isEmpty(mediaWallpapaerPathConf)){
             mediaPath.setText(mediaWallpapaerPathConf);
-            wallpaperController=MediaWallpaperController.getInstance();
+//            wallpaperController=MediaWallpaperController.getInstance();
+            wallpaperController=VlcWallpaperController.getInstance();
         }
     }
 
@@ -630,12 +631,16 @@ public class SetupController {
      * 打开视频壁纸
      */
     private void openMediaWallpaperStage(){
-        if(MediaWallpaperController.getInstance()==null){
-            MediaWallpaperStage.getInstance().show();
+//        if(MediaWallpaperController.getInstance()==null){
+        if(VlcWallpaperController.getInstance()==null){
+//            MediaWallpaperStage.getInstance().show();
+            VlcWallpaperStage.getInstance().show();
         } else {
-            MediaWallpaperController.getInstance().show();
+//            MediaWallpaperController.getInstance().show();
+            VlcWallpaperController.getInstance().show();
         }
-        wallpaperController=MediaWallpaperController.getInstance();
+//        wallpaperController=MediaWallpaperController.getInstance();
+        wallpaperController=VlcWallpaperController.getInstance();
     }
 
     /**
@@ -672,25 +677,28 @@ public class SetupController {
      * 重启其他窗口
      */
     private void openOtherStage(){
+        //其他面板为显示状态才需要重启
         //重启主面板
-        AppController.getInstance().close();
-        AppController.getInstance().show();
-        Win32Util.setWinIconAfter(StageTitleConst.APPTITLE);
+        if(AppController.getStage().isShowing()) {
+            AppController.getInstance().close();
+            AppController.getInstance().show();
+            Win32Util.setWinIconAfter(StageTitleConst.APPTITLE);
+        }
         //重启时钟
-        if(ClockState.getStage()!=null) {
+        if(ClockState.getStage()!=null && ClockState.getStage().isShowing()) {
             ClockState.getInstance().close();
             ClockState.getInstance().show();
             Win32Util.setWinIconAfter(StageTitleConst.CLOCKTITLE);
         }
-        if (CodeRainState.getStage()!=null && animationStage instanceof CodeRainState) {
+        if (CodeRainState.getStage()!=null && CodeRainState.getStage().isShowing() && animationStage instanceof CodeRainState) {
             //代码雨重启
             CodeRainState.getInstance().close();
             CodeRainState.getInstance().show();
-        } else if (SnowState.getStage() !=null && animationStage instanceof SnowState) {
+        } else if (SnowState.getStage() !=null && SnowState.getStage().isShowing() && animationStage instanceof SnowState) {
             //雪花重启
             SnowState.getInstance().close();
             SnowState.getInstance().show();
-        } else if (SakuraState.getStage() != null && animationStage instanceof SakuraState) {
+        } else if (SakuraState.getStage() != null && SnowState.getStage().isShowing() && animationStage instanceof SakuraState) {
             //樱花重启
             SakuraState.getInstance().close();
             SakuraState.getInstance().show();
@@ -705,10 +713,12 @@ public class SetupController {
         fileChooser.setInitialDirectory(new File("wallpaper/media"));
         File file=fileChooser.showOpenDialog(stage);
         if(file!=null) {
-            String path = file.toURI().toString();
+//            String path = file.toURI().toString();
+            String path=file.getPath();
             mediaPath.setText(path);
             openMediaWallpaperStage();
-            ((MediaWallpaperController)wallpaperController).setMedia(path);
+//            ((MediaWallpaperController)wallpaperController).setMedia(path);
+            ((VlcWallpaperController)wallpaperController).setMedia(path);
             openOtherStage();
             ConfigPropertiesUtil.set(ConfigEnum.MEDIAWALLPAPERPATH.getKey(), path);
         }
@@ -719,7 +729,8 @@ public class SetupController {
         ConfigPropertiesUtil.set(ConfigEnum.MEDIAWALLPAPERPATH.getKey(),"");
         mediaPath.setText("");
         //关闭动态背景窗口
-        MediaWallpaperController.getInstance().close();
+//        MediaWallpaperController.getInstance().close();
+        VlcWallpaperController.getInstance().close();
     }
 
 

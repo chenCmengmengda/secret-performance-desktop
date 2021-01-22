@@ -23,7 +23,6 @@ import java.awt.*;
 public class MediaWallpaperController extends BaseController {
     private Dimension screenSize;
     private static MediaWallpaperController instance;
-    private static String mediaWallpaperPathConf;
     private Stage stage;
     @FXML
     private FlowPane rootFlowPane;

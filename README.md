@@ -22,16 +22,29 @@
 * 雪花飘落
 * 樱花飘落
 * 窗口显示在桌面与图标之间
-* 动态壁纸 wallpaper(支持mp4视频、web)
+* 动态壁纸 wallpaper(支持视频、web)
 
 ### 使用方法
-下载可执行文件:
+下载exe可执行文件:
 
 **目前版本:v1.7.0**
 
 * [点击下载windows最新版本](https://gitee.com/SecretOpen/secret-performance-desktop/attach_files/593462/download/secret-performance-desktop-1.7.0.rar)
 
 * [更多历史发行版本下载](https://gitee.com/SecretOpen/secret-performance-desktop/releases)
+
+**视频壁纸说明**
+
+从2.0.0开始，视频壁纸使用vlc播放器内核，vlc播放器支持的视频格式可使用，
+且性能相比javafx自带媒体引擎有很大提升，本项目提供vlc下载
+
+当前发行版使用的vlc下载地址:
+
+* [当前使用vlc-3.0.12-win64](https://gitee.com/SecretOpen/secret-performance-desktop/attach_files/596124/download)
+
+* [历史版本所对应vlc下载](https://gitee.com/SecretOpen/secret-performance-desktop/attach_files)
+
+
 
 **更新说明**
 
@@ -61,9 +74,17 @@
 | javafx  | 15.0.1 |
 | oshi-core  | 5.3.7 |
 | jna  | 5.6.0 |
+| vlcj-javafx  | 1.0.2 |
 
 
-### 源码打包说明
+### 源码说明
+**源码运行说明**
+
+从2.0.0开始，运行视频壁纸功能需要先安装vlc播放器
+（播放器对应版本及地址上方均已给出）。
+
+**打包说明**
+
 maven 执行 package
 
 使用exe4j 将jar包打为exe文件，exe4j配置在doc/exe4j目录下
@@ -95,5 +116,6 @@ qq:1029693356
 ### 致谢
 
 本项目有参考他人的代码，感谢各位大神的付出！
-* 广大的开源爱好者
+* 广大的开源开发者
 * [Oshi](https://github.com/oshi/oshi) OSHI是Java的免费的基于JNA的（本机）操作系统和硬件信息库。
+* [vlcj](https://capricasoftware.co.uk/projects/vlcj) vlcj是对VLC的一个Java封装。

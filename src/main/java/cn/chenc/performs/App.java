@@ -80,7 +80,7 @@ public class App extends Application {
         //循环计数
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.play();
-        /*
+/*
         AppTask appTask = new AppTask(controller,root);
         //获取当前系统cpu核心数
         HardwareAbstractionLayer hal = new SystemInfo().getHardware();

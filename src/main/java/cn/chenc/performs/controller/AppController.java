@@ -134,11 +134,13 @@ public class AppController {
             if(newVal){
                 dragListener.enableDrag(rootFlowPane);//开启监听
                 Win32Util.setWinIconTop(StageTitleConst.APPTITLE);
-            } else{
+            } else {//显示状态才重启
                 dragListener.closeDrag(rootFlowPane);//关闭监听
-                stage.close();
-                stage.show();
-                Win32Util.setWinIconAfter(StageTitleConst.APPTITLE);
+                if(stage.isShowing()) {
+                    stage.close();
+                    stage.show();
+                    Win32Util.setWinIconAfter(StageTitleConst.APPTITLE);
+                }
             }
         });
         //layout-type
@@ -152,8 +154,11 @@ public class AppController {
         String webWallpaperConf=ConfigPropertiesUtil.get(ConfigEnum.WEBWALLPAPERPATH.getKey());
         if((StringUtil.isEmpty(wallpaperType) || wallpaperType.equals(WallpaperEnum.MEDIA.getKey()))
                 &&!StringUtil.isEmpty(mediaWallpaperConf)) {
-            MediaWallpaperStage.getInstance().show();
-            MediaWallpaperController.getInstance().setMedia(mediaWallpaperConf);
+//            MediaWallpaperStage.getInstance().show();
+//            MediaWallpaperController.getInstance().setMedia(mediaWallpaperConf);
+            VlcWallpaperStage.getInstance().show();
+//            Platform.runLater(()->VlcWallpaperController.getInstance().setMedia(mediaWallpaperConf));
+//            VlcWallpaperController.getInstance().setMedia(mediaWallpaperConf);
         } else if(!StringUtil.isEmpty(wallpaperType) && wallpaperType.equals(WallpaperEnum.WEB.getKey())
                 &&!StringUtil.isEmpty(webWallpaperConf)) {
             WebWallpaperStage.getInstance().show();

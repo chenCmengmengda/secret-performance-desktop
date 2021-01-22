@@ -11,6 +11,8 @@ module cn.chenc.performs {
     requires javafx.web;
     requires com.sun.jna;
     requires com.sun.jna.platform;
+    requires uk.co.caprica.vlcj;
+    requires uk.co.caprica.vlcj.javafx;
 
     requires java.desktop;
 
