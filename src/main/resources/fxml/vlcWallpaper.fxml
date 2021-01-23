@@ -2,9 +2,11 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.canvas.Canvas?>
 <AnchorPane fx:id="rootAnchorPane" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="cn.chenc.performs.controller.VlcWallpaperController"
              >
-    <ImageView fx:id="imageView"></ImageView>
+<!--    <ImageView fx:id="imageView"></ImageView>-->
+    <Canvas fx:id="canvas"></Canvas>
 </AnchorPane>

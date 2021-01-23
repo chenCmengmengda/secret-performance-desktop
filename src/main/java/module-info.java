@@ -25,5 +25,6 @@ module cn.chenc.performs {
     exports cn.chenc.performs.task;
     exports cn.chenc.performs.util;
     exports cn.chenc.performs.factory;
+    exports cn.chenc.performs.vlcj;
 
 }
