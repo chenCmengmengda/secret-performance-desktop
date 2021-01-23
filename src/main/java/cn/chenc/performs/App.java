@@ -73,9 +73,9 @@ public class App extends Application {
         }
         mainStage.setScene(scene);
         AppController controller=fxmlLoader.getController();
-//        controller.startGetSystemInfo(root);
+//        controller.startGetSystemInfo();
         //创建定时任务
-        EventHandler<ActionEvent> eventHandler= event -> {controller.startGetSystemInfo(root);};
+        EventHandler<ActionEvent> eventHandler= event -> {controller.startGetSystemInfo();};
         Timeline animation=new Timeline(new KeyFrame(Duration.millis(1000),eventHandler));
         //循环计数
         animation.setCycleCount(Timeline.INDEFINITE);

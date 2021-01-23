@@ -17,6 +17,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -129,6 +130,8 @@ public class VlcWallpaperController extends BaseController{
     }
 
     public void setMedia(String path){
+        //停止计时器
+        stopTimer();
         embeddedMediaPlayer.media().play(path);
         //循环播放
         embeddedMediaPlayer.controls().setRepeat(true);
@@ -153,6 +156,12 @@ public class VlcWallpaperController extends BaseController{
         }
     }
 
+    protected void stopTimer() {
+        if (timeline.getStatus() != Animation.Status.STOPPED) {
+            timeline.stop();
+        }
+    }
+
     @Override
     public void close(){
         VlcWallpaperStage.getInstance().close();
@@ -168,32 +177,28 @@ public class VlcWallpaperController extends BaseController{
         double height = canvas.getHeight();
 
         //颜色填充画布
+        g.setFill(new Color(0, 0, 0, 1));
         g.fillRect(0, 0, width, height);
-        if(img==null){
-            img=JavaFxVideoSurface.getImg();
-        }
+        img=JavaFxVideoSurface.getImg();
         if (img != null) {
             double imageWidth = img.getWidth();
             double imageHeight = img.getHeight();
 
+            //图片与屏幕比例
             double sx = width / imageWidth;
             double sy = height / imageHeight;
 
-            double sf = Math.min(sx, sy);
-
-            double scaledW = imageWidth * sf;
-            double scaledH = imageHeight * sf;
 
             Affine ax = g.getTransform();
 
-            g.translate(
-                    (width - scaledW) / 2,
-                    (height - scaledH) / 2
-            );
 
-            if (sf != 1.0) {
-                g.scale(sf, sf);
+            //渲染起点坐标，从左上角开始
+            g.translate(0,0);
+            //缩放比例,如果图片与屏幕比例一样，则不需要缩放
+            if(sx!=1.0 && sy!=1.0) {
+                g.scale(sx, sy);
             }
+            //渲染图片
             g.drawImage(img, 0, 0);
             g.setTransform(ax);
         }

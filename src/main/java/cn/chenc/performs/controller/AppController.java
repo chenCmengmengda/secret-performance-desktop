@@ -13,7 +13,6 @@ import cn.chenc.performs.state.*;
 import cn.chenc.performs.util.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -79,6 +78,7 @@ public class AppController {
     XYChart.Series<Number, Number> series1 = new XYChart.Series<>();//cpu图表数据
     XYChart.Series<Number, Number> series2 = new XYChart.Series<>();//内存图表数据
 
+
     //oshi相关
     private static  SystemInfo systemInfo;
     private static CentralProcessor processor;
@@ -120,8 +120,10 @@ public class AppController {
             stage= (Stage) rootFlowPane.getScene().getWindow();
             dragListener=new DragListener(stage,ConfigEnum.SCENEX,ConfigEnum.SCENEY);
         });
-        //初始化cpu信息
-        startGetSystemInfo(null);
+        //初始化cpu,内存信息
+        initCpuChart();
+        initRamChart();
+        startGetSystemInfo();
         //监听绑定的数据模型
         //logo
         SystemLogo.imageProperty().bindBidirectional(model.getImageObjProperty());
@@ -296,19 +298,19 @@ public class AppController {
 
 
 
-    public void startGetSystemInfo(Parent root) {
+    public void startGetSystemInfo() {
         Platform.runLater(()->{
             //更新JavaFX的主线程的代码放在此处
             try {
-                printlnCpuInfo(root);
-                printlnRamInfo(root);
+                printlnCpuInfo();
+                printlnRamInfo();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });
     }
 
-    public void printlnCpuInfo(Parent root) throws InterruptedException{
+    public void printlnCpuInfo() throws InterruptedException{
 //        CentralProcessor processor = systemInfo.getHardware().getProcessor();
 //        Sensors sensors = systemInfo.getHardware().getSensors();
         if(prevTicks==null) {
@@ -348,16 +350,13 @@ public class AppController {
         CPU.setText("CPU("+totalCpuStr+")");
 
         //调用cpuchar图
-        this.printlnCpuChart(root,currentTimeMillis,cpuDouble);
+        this.printlnCpuChart(currentTimeMillis,cpuDouble);
     }
 
-    private void printlnCpuChart(Parent root,long currentTimeMillis,double cpu){
-
-        //60秒前时间戳
-        long beforeTimeInMilli =currentTimeMillis-(1000*60);
-
-//        this.cpuChart=(AreaChart) root.lookup("#cpuChart");
-//        cpuChart.setStyle("-fx-background:transparent;");
+    /**
+     * 初始化cpu图表
+     */
+    private void initCpuChart(){
         //声明两条轴
         cpuXAxis = (NumberAxis) cpuChart.getXAxis();
         cpuYAxis = (NumberAxis) cpuChart.getYAxis();
@@ -365,9 +364,6 @@ public class AppController {
         cpuXAxis.setTickLabelFill(null);
         //取消自动坐标上限
         cpuXAxis.setAutoRanging(false);
-        //设置x轴上下限
-        cpuXAxis.setLowerBound((double) beforeTimeInMilli);
-        cpuXAxis.setUpperBound((double)currentTimeMillis);
         //设置x轴间隔单位
         cpuXAxis.setTickUnit(1000);
         //x轴动画
@@ -375,6 +371,7 @@ public class AppController {
         //关闭x轴刻度和刻度线
         cpuXAxis.setTickLabelsVisible(false);
         cpuXAxis.setTickMarkVisible(false);
+
         cpuYAxis.setTickLabelFill(null);
         cpuYAxis.setLowerBound(0);
         cpuYAxis.setUpperBound(100);
@@ -384,11 +381,21 @@ public class AppController {
         cpuYAxis.setTickLabelsVisible(false);
         cpuYAxis.setTickMarkVisible(false);
 
-//        yAxis.setAnimated(true);
+    }
 
+    private void printlnCpuChart(long currentTimeMillis,double cpu){
+
+        //60秒前时间戳
+        long beforeTimeInMilli =currentTimeMillis-(1000*60);
+
+        //设置x轴上下限
+        cpuXAxis.setLowerBound((double) beforeTimeInMilli);
+        cpuXAxis.setUpperBound((double)currentTimeMillis);
 
         long cputoLong= (long) (cpu*100);
+        //添加当前的数据
         series1.getData().add(new XYChart.Data<>(currentTimeMillis, cputoLong));
+        //如果数据超过60个，则移除第一个
         if(series1.getData().size()>60){
             series1.getData().remove(0);
         }
@@ -399,7 +406,7 @@ public class AppController {
         }
     }
 
-    public void printlnRamInfo(Parent root){
+    public void printlnRamInfo(){
         GlobalMemory memory = systemInfo.getHardware().getMemory();
         long currentTimeMillis=System.currentTimeMillis();
         //总内存
@@ -421,26 +428,17 @@ public class AppController {
         RAM.setText("内存("+useRamDecimal+")");
 
         //内存图表
-        printlnRamChart(root,currentTimeMillis,ramDouble);
+        printlnRamChart(currentTimeMillis,ramDouble);
 
     }
 
-    //打印内存图表
-    private void printlnRamChart(Parent root,long currentTimeMillis,double ram){
-
-        //60秒前时间戳
-        long beforeTimeInMilli =currentTimeMillis-(1000*60);
-
-//        this.ramChart=(AreaChart) root.lookup("#ramChart");
-//        cpuChart.setStyle("-fx-background:transparent;");
+    private void initRamChart(){
         //声明两条轴
         ramXAxis = (NumberAxis) ramChart.getXAxis();
         ramYAxis = (NumberAxis) ramChart.getYAxis();
 
         ramXAxis.setTickLabelFill(null);
         ramXAxis.setAutoRanging(false);
-        ramXAxis.setLowerBound((double) beforeTimeInMilli);
-        ramXAxis.setUpperBound((double)currentTimeMillis);
         ramXAxis.setTickUnit(1000);
         ramXAxis.setAnimated(true);
         ramXAxis.setTickLabelsVisible(false);
@@ -453,6 +451,36 @@ public class AppController {
         ramYAxis.setAnimated(true);
         ramYAxis.setTickLabelsVisible(false);
         ramYAxis.setTickMarkVisible(false);
+    }
+
+    //打印内存图表
+    private void printlnRamChart(long currentTimeMillis,double ram){
+
+        //60秒前时间戳
+        long beforeTimeInMilli =currentTimeMillis-(1000*60);
+
+//        this.ramChart=(AreaChart) root.lookup("#ramChart");
+//        cpuChart.setStyle("-fx-background:transparent;");
+        //声明两条轴
+//        ramXAxis = (NumberAxis) ramChart.getXAxis();
+//        ramYAxis = (NumberAxis) ramChart.getYAxis();
+
+//        ramXAxis.setTickLabelFill(null);
+//        ramXAxis.setAutoRanging(false);
+        ramXAxis.setLowerBound((double) beforeTimeInMilli);
+        ramXAxis.setUpperBound((double)currentTimeMillis);
+//        ramXAxis.setTickUnit(1000);
+//        ramXAxis.setAnimated(true);
+//        ramXAxis.setTickLabelsVisible(false);
+//        ramXAxis.setTickMarkVisible(false);
+//        ramYAxis.setTickLabelFill(null);
+//        ramYAxis.setLowerBound(0);
+//        ramYAxis.setUpperBound(100);
+//        ramYAxis.setTickUnit(20);
+//        ramYAxis.setAutoRanging(false);
+//        ramYAxis.setAnimated(true);
+//        ramYAxis.setTickLabelsVisible(false);
+//        ramYAxis.setTickMarkVisible(false);
 
         long ramtoLong= (long) (ram*100);
         series2.getData().add(new XYChart.Data<>(currentTimeMillis, ramtoLong));

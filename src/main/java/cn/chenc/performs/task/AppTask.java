@@ -30,7 +30,7 @@ public class AppTask extends ScheduledService<Void> {
         return new Task<Void>() {
             @Override
             protected Void call() {
-                appController.startGetSystemInfo(root);
+                appController.startGetSystemInfo();
                 return null;
             }
         };
