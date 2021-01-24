@@ -153,8 +153,8 @@ public class SetupController {
         setAnimationOpenCheckBox();
         initAnimationConfig();
         initWallpaperType();
-        initMediaWallpaperFps();
         initMediaPath();
+        initMediaWallpaperFps();
         initWebPath();
     }
 
@@ -514,9 +514,11 @@ public class SetupController {
         if(StringUtil.isEmpty(wallpaperType) || wallpaperType.equals(WallpaperEnum.MEDIA.getKey())){//media
             wallpaperTypeChoiceBox.setValue(WallpaperEnum.MEDIA.getValue());
             setWebHBoxVisible(false);
+            wallpaperController=VlcWallpaperController.getInstance();
         } else if(wallpaperType.equals(WallpaperEnum.WEB.getKey())){//web
             wallpaperTypeChoiceBox.setValue(WallpaperEnum.WEB.getValue());
             setMediaHBoxVisible(false);
+            wallpaperController=WebWallpaperController.getInstance();
         }
     }
 
@@ -526,7 +528,7 @@ public class SetupController {
         if(!StringUtil.isEmpty(mediaWallpapaerPathConf)){
             mediaPath.setText(mediaWallpapaerPathConf);
 //            wallpaperController=MediaWallpaperController.getInstance();
-            wallpaperController=VlcWallpaperController.getInstance();
+//            wallpaperController=VlcWallpaperController.getInstance();
         }
     }
 
@@ -544,7 +546,7 @@ public class SetupController {
         String webWallpapaerPathConf=ConfigPropertiesUtil.get(ConfigEnum.WEBWALLPAPERPATH.getKey());
         if(!StringUtil.isEmpty(webWallpapaerPathConf)){
             webPath.setText(webWallpapaerPathConf);
-            wallpaperController=WebWallpaperController.getInstance();
+//            wallpaperController=WebWallpaperController.getInstance();
         }
     }
 

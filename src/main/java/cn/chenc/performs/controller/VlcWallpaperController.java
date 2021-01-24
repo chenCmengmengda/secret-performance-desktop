@@ -178,6 +178,7 @@ public class VlcWallpaperController extends BaseController{
         VlcWallpaperStage.getInstance().close();
         //关闭当前播放的媒体
         embeddedMediaPlayer.controls().stop();
+        stopTimer();
     }
 
     protected final void renderFrame() {
