@@ -311,13 +311,9 @@ public class AppController {
     }
 
     public void printlnCpuInfo() throws InterruptedException{
-//        CentralProcessor processor = systemInfo.getHardware().getProcessor();
-//        Sensors sensors = systemInfo.getHardware().getSensors();
         if(prevTicks==null) {
             prevTicks = processor.getSystemCpuLoadTicks();
         }
-        // 睡眠1s
-//        TimeUnit.SECONDS.sleep(1);
         long[] ticks = processor.getSystemCpuLoadTicks();
         long nice = ticks[CentralProcessor.TickType.NICE.getIndex()] - prevTicks[CentralProcessor.TickType.NICE.getIndex()];
         long irq = ticks[CentralProcessor.TickType.IRQ.getIndex()] - prevTicks[CentralProcessor.TickType.IRQ.getIndex()];
@@ -332,8 +328,16 @@ public class AppController {
 //        System.out.println("----------------cpu信息----------------");
 
         long currentTimeMillis=System.currentTimeMillis();
+        //当前cpu利用率:1.0-空闲/总量
         double cpuDouble = 1.0 - (idle * 1.0 / totalCpu);
         String totalCpuStr = new DecimalFormat("#.##%").format(cpuDouble);
+//        if(totalCpu==0){
+//            totalCpuStr="100%";
+//        }
+//        System.out.println("cpu核数:" + processor.getLogicalProcessorCount());
+//        System.out.println("cpu系统使用率:" + new DecimalFormat("#.##%").format(cSys * 1.0 / totalCpu));
+//        System.out.println("cpu用户使用率:" + new DecimalFormat("#.##%").format(user * 1.0 / totalCpu));
+//        System.out.println("cpu当前等待率:" + new DecimalFormat("#.##%").format(iowait * 1.0 / totalCpu));
 //        System.out.println("cpu当前使用率:" + totalCpuStr);
         //无法监测cpu温度
 //        String cpuTemperature=String.format("%.1f°C",sensors.getCpuTemperature());
@@ -459,28 +463,8 @@ public class AppController {
         //60秒前时间戳
         long beforeTimeInMilli =currentTimeMillis-(1000*60);
 
-//        this.ramChart=(AreaChart) root.lookup("#ramChart");
-//        cpuChart.setStyle("-fx-background:transparent;");
-        //声明两条轴
-//        ramXAxis = (NumberAxis) ramChart.getXAxis();
-//        ramYAxis = (NumberAxis) ramChart.getYAxis();
-
-//        ramXAxis.setTickLabelFill(null);
-//        ramXAxis.setAutoRanging(false);
         ramXAxis.setLowerBound((double) beforeTimeInMilli);
         ramXAxis.setUpperBound((double)currentTimeMillis);
-//        ramXAxis.setTickUnit(1000);
-//        ramXAxis.setAnimated(true);
-//        ramXAxis.setTickLabelsVisible(false);
-//        ramXAxis.setTickMarkVisible(false);
-//        ramYAxis.setTickLabelFill(null);
-//        ramYAxis.setLowerBound(0);
-//        ramYAxis.setUpperBound(100);
-//        ramYAxis.setTickUnit(20);
-//        ramYAxis.setAutoRanging(false);
-//        ramYAxis.setAnimated(true);
-//        ramYAxis.setTickLabelsVisible(false);
-//        ramYAxis.setTickMarkVisible(false);
 
         long ramtoLong= (long) (ram*100);
         series2.getData().add(new XYChart.Data<>(currentTimeMillis, ramtoLong));

@@ -128,6 +128,10 @@
                     <Label fx:id="codeRainTextLabel" text="代码雨颜色" minWidth="100" alignment="CENTER" ></Label>
                     <ColorPicker fx:id="codeRainTextColor"  minWidth="150" maxWidth="200"></ColorPicker>
                 </HBox>
+                <HBox minHeight="30">
+                    <Label text="动画帧数" minWidth="100" alignment="CENTER" ></Label>
+                    <Slider fx:id="animationFps" onMouseDragged="#animationFpsAction" onMouseClicked="#animationFpsAction" min="1" max="100" blockIncrement="1" minWidth="150"></Slider>
+                </HBox>
                 <Label text="动态壁纸"></Label>
                 <HBox minHeight="40">
                     <Label text="壁纸类型" minWidth="100" alignment="CENTER" ></Label>
@@ -139,11 +143,17 @@
                         </items>
                     </ChoiceBox>
                 </HBox>
-                <HBox fx:id="mediaHBox" minHeight="30" >
-                    <Button onAction="#checkMediaAction" text="选择壁纸" minWidth="100"></Button>
-                    <TextField fx:id="mediaPath" minWidth="150" maxWidth="150" prefWidth="30" disable="true"></TextField>
-                    <Button fx:id="resetMedia" onAction="#resetMediaAction" text="清空" minWidth="40"></Button>
-                </HBox>
+                <VBox fx:id="mediaBox" >
+                    <HBox minHeight="30" >
+                        <Button onAction="#checkMediaAction" text="选择壁纸" minWidth="100"></Button>
+                        <TextField fx:id="mediaPath" minWidth="150" maxWidth="150" prefWidth="30" disable="true"></TextField>
+                        <Button fx:id="resetMedia" onAction="#resetMediaAction" text="清空" minWidth="40"></Button>
+                    </HBox>
+                    <HBox minHeight="30">
+                        <Label text="视频帧数" minWidth="100" alignment="CENTER" ></Label>
+                        <Slider fx:id="mediaFps" onMouseDragged="#mediaFpsAction" onMouseClicked="#mediaFpsAction" min="1" max="100" blockIncrement="1" minWidth="150"></Slider>
+                    </HBox>
+                </VBox>
                 <HBox fx:id="webHBox" minHeight="30" >
                     <Button onAction="#checkWebAction" text="选择壁纸" minWidth="100"></Button>
                     <TextField fx:id="webPath" minWidth="150" maxWidth="150" prefWidth="30" disable="true"></TextField>

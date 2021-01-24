@@ -70,6 +70,10 @@ public class CommonConst {
     public static final String TIMECOLOR="#F5F5F5";
     //代码雨文字颜色
     public static final String CODERAINTEXTCOLOR="#00ff00";
+    //动画帧数
+    public static final double ANIMATIONFPS=10.0;
+    //视频壁纸帧数
+    public static final double MEDIAWALLPAPERFPS=60.0;
 
 
 }

@@ -1,12 +1,18 @@
 package cn.chenc.performs.state;
 
+import cn.chenc.performs.consts.CommonConst;
 import cn.chenc.performs.consts.StageTitleConst;
+import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.factory.BaseStage;
 import cn.chenc.performs.factory.SingletonFactory;
+import cn.chenc.performs.util.ConfigPropertiesUtil;
 import cn.chenc.performs.util.Win32Util;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -30,7 +36,9 @@ import java.awt.*;
 public class SnowState extends BaseStage{
     private static SnowState instance = null;
     private static Stage mainStage;
+    private static double FPS= CommonConst.ANIMATIONFPS;
     private Timeline timeLine;
+    GraphicsContext gc;
     int[] xx = new int[100];
     int[] yy = new int[100];
     int[] vx=new int[100];//x轴移动速度
@@ -39,6 +47,21 @@ public class SnowState extends BaseStage{
     int[] rv=new int[100];//初始化角度增量
     double[] fonts = new double[100];
     private Dimension screenSize;
+
+    //动画事件
+    private final EventHandler<ActionEvent> eventHandler = e->{
+        // 刷新操作
+        gc.clearRect(0,0,screenSize.getWidth(),screenSize.getHeight());
+        snow(gc);
+    };
+
+    static{
+        //初始化fps
+        Double fpsConfig= ConfigPropertiesUtil.getDouble(ConfigEnum.ANIMATIONFPS.getKey());
+        if(fpsConfig!=null){
+            FPS=fpsConfig;
+        }
+    }
 
     //调用单例工厂
     public static SnowState getInstance() {
@@ -82,19 +105,15 @@ public class SnowState extends BaseStage{
             this.fonts[i]=10+(int)(Math.random() * 8);//字体大小[10,18)
         }
         // 获取画板对象
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc = canvas.getGraphicsContext2D();
         // 创建时间轴
         timeLine = new Timeline();
         // 获取时间轴的帧列表
         ObservableList<KeyFrame> keyFrames = timeLine.getKeyFrames();
         // 添加关键帧
-        keyFrames.add(new KeyFrame(Duration.seconds(0.1), e->{
-            // 刷新操作
-            gc.clearRect(0,0,screenSize.getWidth(),screenSize.getHeight());
-            snow(gc);
-        }));
+        keyFrames.add(new KeyFrame(Duration.millis(1000/FPS), eventHandler));
         // 设置时间轴播放次数为无限
-        timeLine.setCycleCount(-1);
+        timeLine.setCycleCount(Timeline.INDEFINITE);
         // 播放时间轴
         timeLine.play();
 
@@ -128,6 +147,26 @@ public class SnowState extends BaseStage{
         }
         // 恢复现场
         gc.restore();
+    }
+
+    @Override
+    public void setFps(double fps){
+        FPS=fps;
+        timeLine.getKeyFrames().set(0,new KeyFrame(Duration.millis(1000/FPS), eventHandler));
+        stopTimer();
+        startTimer();
+    }
+
+    protected void startTimer() {
+        if (timeLine.getStatus() != Animation.Status.RUNNING) {
+            timeLine.play();
+        }
+    }
+
+    protected void stopTimer() {
+        if (timeLine.getStatus() != Animation.Status.STOPPED) {
+            timeLine.stop();
+        }
     }
 
     @Override

@@ -1,12 +1,18 @@
 package cn.chenc.performs.state;
 
+import cn.chenc.performs.consts.CommonConst;
 import cn.chenc.performs.consts.StageTitleConst;
+import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.factory.BaseStage;
 import cn.chenc.performs.factory.SingletonFactory;
+import cn.chenc.performs.util.ConfigPropertiesUtil;
 import cn.chenc.performs.util.Win32Util;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -32,7 +38,9 @@ import java.util.List;
 public class SakuraState extends BaseStage{
     private static SakuraState instance = null;
     private static Stage mainStage;
+    private static double FPS= CommonConst.ANIMATIONFPS;
     private Timeline timeLine;
+    GraphicsContext gc;
     int[] xx = new int[100];//x轴
     int[] yy = new int[100];//yz轴
     double[] size = new double[100];//大小
@@ -44,6 +52,20 @@ public class SakuraState extends BaseStage{
     List<Image> imageList=new ArrayList<Image>();
     private Dimension screenSize;
 
+    //动画事件
+    private final EventHandler<ActionEvent> eventHandler = e->{
+        // 刷新操作
+        gc.clearRect(0,0,screenSize.getWidth(),screenSize.getHeight());
+        sakura(gc);
+    };
+
+    static{
+        //初始化fps
+        Double fpsConfig= ConfigPropertiesUtil.getDouble(ConfigEnum.ANIMATIONFPS.getKey());
+        if(fpsConfig!=null){
+            FPS=fpsConfig;
+        }
+    }
 
     //调用单例工厂
     public static SakuraState getInstance() {
@@ -76,8 +98,6 @@ public class SakuraState extends BaseStage{
         mainStage.show();
         //置于图标下层
         Win32Util.setWinIconAfter(StageTitleConst.SAKURATITLE);
-        //设置窗口位置
-        Win32Util.setWinIconAfter("sakura");
 
         //初始化樱花坐标，大小
         for(int i = 0; i < 100; ++i) {
@@ -102,19 +122,15 @@ public class SakuraState extends BaseStage{
             }
         }
         // 获取画板对象
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc = canvas.getGraphicsContext2D();
         // 创建时间轴
         timeLine = new Timeline();
         // 获取时间轴的帧列表
         ObservableList<KeyFrame> keyFrames = timeLine.getKeyFrames();
         // 添加关键帧
-        keyFrames.add(new KeyFrame(Duration.seconds(0.1), e->{
-            // 刷新操作
-            gc.clearRect(0,0,screenSize.getWidth(),screenSize.getHeight());
-            sakura(gc);
-        }));
+        keyFrames.add(new KeyFrame(Duration.millis(1000/FPS), eventHandler));
         // 设置时间轴播放次数为无限
-        timeLine.setCycleCount(-1);
+        timeLine.setCycleCount(Timeline.INDEFINITE);
         // 播放时间轴
         timeLine.play();
     }
@@ -159,6 +175,26 @@ public class SakuraState extends BaseStage{
 
     public static Stage getStage(){
         return mainStage;
+    }
+
+    @Override
+    public void setFps(double fps){
+        FPS=fps;
+        timeLine.getKeyFrames().set(0,new KeyFrame(Duration.millis(1000/FPS), eventHandler));
+        stopTimer();
+        startTimer();
+    }
+
+    protected void startTimer() {
+        if (timeLine.getStatus() != Animation.Status.RUNNING) {
+            timeLine.play();
+        }
+    }
+
+    protected void stopTimer() {
+        if (timeLine.getStatus() != Animation.Status.STOPPED) {
+            timeLine.stop();
+        }
     }
 
     @Override

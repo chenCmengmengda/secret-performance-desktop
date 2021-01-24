@@ -1,5 +1,6 @@
 package cn.chenc.performs.controller;
 
+import cn.chenc.performs.consts.CommonConst;
 import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.state.VlcWallpaperStage;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
@@ -52,7 +53,7 @@ public class VlcWallpaperController extends BaseController{
     /**
      *
      */
-    private static final double FPS = 20.0;
+    private static double FPS = CommonConst.MEDIAWALLPAPERFPS;
 
 
     @FXML
@@ -62,24 +63,28 @@ public class VlcWallpaperController extends BaseController{
     @FXML
     private Canvas canvas;
 
-    public static VlcWallpaperController getInstance(){
-        return instance;
-    }
-
-    /**
-     *
-     */
     private Timeline timeline;
 
-    /**
-     *
-     */
     private final EventHandler<ActionEvent> nextFrameHandler = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent t) {
             renderFrame();
         }
     };
+
+    static{
+        //初始化fps
+        Double fpsConfig=ConfigPropertiesUtil.getDouble(ConfigEnum.MEDIAWALLPAPERFPS.getKey());
+        if(fpsConfig!=null){
+            FPS=fpsConfig;
+        }
+    }
+
+    public static VlcWallpaperController getInstance(){
+        return instance;
+    }
+
+
 
     public void initialize() {
         timeline = new Timeline();
@@ -130,12 +135,18 @@ public class VlcWallpaperController extends BaseController{
     }
 
     public void setMedia(String path){
-        //停止计时器
-        stopTimer();
+        //关闭计时器
         embeddedMediaPlayer.media().play(path);
         //循环播放
         embeddedMediaPlayer.controls().setRepeat(true);
         //开始计时器
+        startTimer();
+    }
+
+    public void setFps(double fps){
+        FPS=fps;
+        timeline.getKeyFrames().set(0,new KeyFrame(Duration.millis(1000/FPS), nextFrameHandler));
+        stopTimer();
         startTimer();
     }
 

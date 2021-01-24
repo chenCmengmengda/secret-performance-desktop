@@ -1,5 +1,6 @@
 package cn.chenc.performs.state;
 
+import cn.chenc.performs.consts.CommonConst;
 import cn.chenc.performs.consts.StageTitleConst;
 import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.factory.BaseStage;
@@ -7,9 +8,12 @@ import cn.chenc.performs.factory.SingletonFactory;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
 import cn.chenc.performs.util.StringUtil;
 import cn.chenc.performs.util.Win32Util;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -34,7 +38,9 @@ public class CodeRainState extends BaseStage{
 
     private static CodeRainState instance = null;
     private static Stage mainStage;
+    private static double FPS= CommonConst.ANIMATIONFPS;
     Timeline timeLine;
+    GraphicsContext gc;
     private Random random = new Random();
     //行高,列宽
     private final static int gap = 10;
@@ -46,7 +52,15 @@ public class CodeRainState extends BaseStage{
     //列数
     private int columns;
     //文字颜色
-    private static String textColor="#00ff00";
+    private static String textColor=CommonConst.CODERAINTEXTCOLOR;
+
+    //动画事件
+    private final EventHandler<ActionEvent> eventHandler = e->{
+        // 刷新操作
+        gc.clearRect(0,0,screenSize.getWidth(),screenSize.getHeight());
+
+        codeRain(gc);
+    };
 
     static{
         //获取配置
@@ -54,6 +68,11 @@ public class CodeRainState extends BaseStage{
         String textColorConf= ConfigPropertiesUtil.get(ConfigEnum.CODERAINTEXTCOLOR.getKey());
         if(!StringUtil.isEmpty(textColorConf)){
             textColor=textColorConf;
+        }
+        //fps
+        Double fpsConfig=ConfigPropertiesUtil.getDouble(ConfigEnum.ANIMATIONFPS.getKey());
+        if(fpsConfig!=null){
+            FPS=fpsConfig;
         }
     }
 
@@ -103,20 +122,15 @@ public class CodeRainState extends BaseStage{
         }
 
         // 获取画板对象
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc = canvas.getGraphicsContext2D();
         // 创建时间轴
         timeLine = new Timeline();
         // 获取时间轴的帧列表
         ObservableList<KeyFrame> keyFrames = timeLine.getKeyFrames();
         // 添加关键帧
-        keyFrames.add(new KeyFrame(Duration.seconds(0.1), e->{
-            // 刷新操作
-            gc.clearRect(0,0,screenSize.getWidth(),screenSize.getHeight());
-
-            codeRain(gc);
-        }));
+        keyFrames.add(new KeyFrame(Duration.millis(1000/FPS), eventHandler));
         // 设置时间轴播放次数为无限
-        timeLine.setCycleCount(-1);
+        timeLine.setCycleCount(Timeline.INDEFINITE);
         // 播放时间轴
         timeLine.play();
     }
@@ -197,6 +211,26 @@ public class CodeRainState extends BaseStage{
             mainStage.show();
             timeLine.play();
             Win32Util.setWinIconAfter(StageTitleConst.CODERAINTITLE);
+        }
+    }
+
+    @Override
+    public void setFps(double fps){
+        FPS=fps;
+        timeLine.getKeyFrames().set(0,new KeyFrame(Duration.millis(1000/FPS), eventHandler));
+        stopTimer();
+        startTimer();
+    }
+
+    protected void startTimer() {
+        if (timeLine.getStatus() != Animation.Status.RUNNING) {
+            timeLine.play();
+        }
+    }
+
+    protected void stopTimer() {
+        if (timeLine.getStatus() != Animation.Status.STOPPED) {
+            timeLine.stop();
         }
     }
 

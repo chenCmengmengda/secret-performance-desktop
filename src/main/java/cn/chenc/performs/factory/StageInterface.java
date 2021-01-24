@@ -12,4 +12,6 @@ public interface StageInterface {
 
     void show();
 
+    void setFps(double fps);
+
 }

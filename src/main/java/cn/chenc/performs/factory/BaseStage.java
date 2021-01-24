@@ -31,4 +31,9 @@ public class BaseStage implements StageInterface{
     public void show() {
         stage.show();
     }
+
+    @Override
+    public void setFps(double fps){
+
+    }
 }

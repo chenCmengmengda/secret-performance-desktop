@@ -16,8 +16,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -102,11 +104,15 @@ public class SetupController {
     @FXML
     private ColorPicker codeRainTextColor;
     @FXML
+    private Slider animationFps;
+    @FXML
     private ChoiceBox wallpaperTypeChoiceBox;
     @FXML
-    private HBox mediaHBox;
+    private VBox mediaBox;
     @FXML
     private TextField mediaPath;
+    @FXML
+    private Slider mediaFps;
     @FXML
     private HBox webHBox;
     @FXML
@@ -147,6 +153,7 @@ public class SetupController {
         setAnimationOpenCheckBox();
         initAnimationConfig();
         initWallpaperType();
+        initMediaWallpaperFps();
         initMediaPath();
         initWebPath();
     }
@@ -406,7 +413,7 @@ public class SetupController {
                 } else if(animationTypeChoiceBox.getValue().equals(AnimationEnum.SNOW.getValue())){
                     animationStage = SnowState.getInstance();
                 } else if(animationTypeChoiceBox.getValue().equals(AnimationEnum.SAKURA.getValue())){
-                    animationStage = SnowState.getInstance();
+                    animationStage = SakuraState.getInstance();
                 }
                 if(new_val) {//设置是否开启动画监听
                     animationStage.show();
@@ -430,6 +437,8 @@ public class SetupController {
     public void initAnimationConfig(){
         //动画类型初始化
         initAnimationType();
+        //初始化动画fps
+        initAnimationFps();
         //代码雨初始化配置
         initCodeRain();
         //雪花飘落初始化
@@ -475,8 +484,23 @@ public class SetupController {
         }
     }
 
+    //初始化帧数
+    private void initAnimationFps(){
+        Double fpsConfig=ConfigPropertiesUtil.getDouble(ConfigEnum.ANIMATIONFPS.getKey());
+        if(fpsConfig!=null){
+            animationFps.setValue(fpsConfig);
+        } else {
+            animationFps.setValue(CommonConst.ANIMATIONFPS);
+        }
+    }
+
     private void initCodeRain(){
-        codeRainTextColor.setValue(Color.valueOf(CodeRainState.getTextColor()));
+        String codeRainTextConf=ConfigPropertiesUtil.get(ConfigEnum.CODERAINTEXTCOLOR.getKey());
+        if(!StringUtil.isEmpty(codeRainTextConf)) {
+            codeRainTextColor.setValue(Color.valueOf(codeRainTextConf));
+        } else {
+            codeRainTextColor.setValue(Color.valueOf(CommonConst.CODERAINTEXTCOLOR));
+        }
     }
 
     /**
@@ -496,6 +520,7 @@ public class SetupController {
         }
     }
 
+    //初始化视频壁纸
     private void initMediaPath(){
         String mediaWallpapaerPathConf=ConfigPropertiesUtil.get(ConfigEnum.MEDIAWALLPAPERPATH.getKey());
         if(!StringUtil.isEmpty(mediaWallpapaerPathConf)){
@@ -504,6 +529,16 @@ public class SetupController {
             wallpaperController=VlcWallpaperController.getInstance();
         }
     }
+
+    private void initMediaWallpaperFps(){
+        Double mediaWallpaperFpsConfig=ConfigPropertiesUtil.getDouble(ConfigEnum.MEDIAWALLPAPERFPS.getKey());
+        if(mediaWallpaperFpsConfig!=null){
+            mediaFps.setValue(mediaWallpaperFpsConfig);
+        } else{
+            mediaFps.setValue(CommonConst.MEDIAWALLPAPERFPS);
+        }
+    }
+
 
     private void initWebPath(){
         String webWallpapaerPathConf=ConfigPropertiesUtil.get(ConfigEnum.WEBWALLPAPERPATH.getKey());
@@ -594,6 +629,13 @@ public class SetupController {
     }
 
     @FXML
+    private void animationFpsAction(MouseEvent event){
+        Slider slider=(Slider) (event.getSource());
+        animationStage.setFps(slider.getValue());
+        ConfigPropertiesUtil.set(ConfigEnum.ANIMATIONFPS.getKey(),String.valueOf(slider.getValue()));
+    }
+
+    @FXML
     private void wallpaperTypeAction(ActionEvent event){
         String wallpaperType=((ChoiceBox)event.getSource()).getValue().toString();
         if(wallpaperType.equals(WallpaperEnum.MEDIA.getValue())){//media类型
@@ -660,8 +702,8 @@ public class SetupController {
      * @param b
      */
     public void setMediaHBoxVisible(boolean b){
-        mediaHBox.setVisible(b);
-        mediaHBox.setManaged(b);
+        mediaBox.setVisible(b);
+        mediaBox.setManaged(b);
     }
 
     /**
@@ -698,7 +740,7 @@ public class SetupController {
             //雪花重启
             SnowState.getInstance().close();
             SnowState.getInstance().show();
-        } else if (SakuraState.getStage() != null && SnowState.getStage().isShowing() && animationStage instanceof SakuraState) {
+        } else if (SakuraState.getStage() != null && SakuraState.getStage().isShowing() && animationStage instanceof SakuraState) {
             //樱花重启
             SakuraState.getInstance().close();
             SakuraState.getInstance().show();
@@ -731,6 +773,17 @@ public class SetupController {
         //关闭动态背景窗口
 //        MediaWallpaperController.getInstance().close();
         VlcWallpaperController.getInstance().close();
+    }
+
+    /**
+     * 视频fps
+     * @param event
+     */
+    @FXML
+    private void mediaFpsAction(MouseEvent event){
+        Slider slider=(Slider)(event.getSource());
+        VlcWallpaperController.getInstance().setFps(slider.getValue());
+        ConfigPropertiesUtil.set(ConfigEnum.MEDIAWALLPAPERFPS.getKey(), String.valueOf(slider.getValue()));
     }
 
 

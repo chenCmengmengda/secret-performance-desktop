@@ -31,9 +31,11 @@ public enum ConfigEnum {
     TIMECOLOR("time-color"),
     ANIMATIONOPEN("animation-open"),
     ANIMATIONTYPE("animation-type"),
+    ANIMATIONFPS("animation-fps"),
     CODERAINTEXTCOLOR("coderain-text-color"),
     WALLPAPERTYPE("wallpaper-type"),
     MEDIAWALLPAPERPATH("media-wallpaper-path"),
+    MEDIAWALLPAPERFPS("media-wallpaper-fps"),
     WEBWALLPAPERPATH("web-wallpaper-path"),
     ;
 
