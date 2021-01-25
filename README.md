@@ -27,9 +27,9 @@
 ### 使用方法
 下载exe可执行文件:
 
-**目前版本:v1.7.0**
+**目前版本:v2.0.0**
 
-* [点击下载windows最新版本](https://gitee.com/SecretOpen/secret-performance-desktop/attach_files/593462/download/secret-performance-desktop-1.7.0.rar)
+* [点击下载windows最新版本](https://gitee.com/SecretOpen/secret-performance-desktop/attach_files/597643/download/secret-performance-desktop-2.0.0.rar)
 
 * [更多历史发行版本下载](https://gitee.com/SecretOpen/secret-performance-desktop/releases)
 
