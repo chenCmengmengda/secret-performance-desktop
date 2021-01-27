@@ -3,7 +3,7 @@ package cn.chenc.performs.state;
 import cn.chenc.performs.consts.StageTitleConst;
 import cn.chenc.performs.factory.BaseStage;
 import cn.chenc.performs.factory.SingletonFactory;
-import cn.chenc.performs.util.Win32Util;
+import cn.chenc.performs.util.OsUtil;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -49,14 +49,14 @@ public class WebWallpaperStage extends BaseStage {
         FXMLLoader fxmlLoader = new FXMLLoader(url);
         Parent root = fxmlLoader.load();
         root.getStylesheets().add(getClass().getResource("/css/webWallpaper.css").toExternalForm());
-
+        root.setMouseTransparent(true);
         Scene scene=new Scene(root,screenSize.getWidth(),screenSize.getHeight());
         stage.setX(0);
         stage.setY(0);
         stage.setTitle(StageTitleConst.WEBWALLPAPERTITLE);
         stage.setScene(scene);
         stage.show();
-        Win32Util.setWinIconAfter(StageTitleConst.WEBWALLPAPERTITLE);
+        OsUtil.setWinIconAfter(StageTitleConst.WEBWALLPAPERTITLE);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class WebWallpaperStage extends BaseStage {
     public void show(){
         if(mainStage!=null) {
             mainStage.show();
-            Win32Util.setWinIconAfter(StageTitleConst.WEBWALLPAPERTITLE);
+            OsUtil.setWinIconAfter(StageTitleConst.WEBWALLPAPERTITLE);
         } else{
             try {
                 getInstance().start();

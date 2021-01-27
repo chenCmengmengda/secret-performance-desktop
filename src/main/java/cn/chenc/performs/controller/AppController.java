@@ -135,13 +135,13 @@ public class AppController {
         model.getDragProperty().addListener((obs, oldVal, newVal) -> {
             if(newVal){
                 dragListener.enableDrag(rootFlowPane);//开启监听
-                Win32Util.setWinIconTop(StageTitleConst.APPTITLE);
+                OsUtil.setWinIconTop(StageTitleConst.APPTITLE);
             } else {//显示状态才重启
                 dragListener.closeDrag(rootFlowPane);//关闭监听
                 if(stage.isShowing()) {
                     stage.close();
                     stage.show();
-                    Win32Util.setWinIconAfter(StageTitleConst.APPTITLE);
+                    OsUtil.setWinIconAfter(StageTitleConst.APPTITLE);
                 }
             }
         });
@@ -501,7 +501,8 @@ public class AppController {
         //获取系统信息
         OperatingSystem operatingSystem=systemInfo.getOperatingSystem();
         String manufacturer=operatingSystem.getManufacturer();//供应商
-        String family=System.getProperty("os.name");//操作系统名称
+        String family= operatingSystem.getFamily();
+//        String family=System.getProperty("os.name");//操作系统名称
 //        String version = operatingSystem.getVersionInfo().getVersion();//系统版本
 //        version = String.format("%.0f",Double.parseDouble(version));
         String codeName=operatingSystem.getVersionInfo().getCodeName();//代码名称  eg:Home/Pro
@@ -553,7 +554,7 @@ public class AppController {
     public void show(){
         if(!stage.isShowing()) {
             stage.show();
-            Win32Util.setWinIconAfter(StageTitleConst.APPTITLE);
+            OsUtil.setWinIconAfter(StageTitleConst.APPTITLE);
         }
     }
 

@@ -4,9 +4,10 @@ import cn.chenc.performs.consts.LayoutConst;
 import cn.chenc.performs.consts.StageTitleConst;
 import cn.chenc.performs.controller.AppController;
 import cn.chenc.performs.enums.ConfigEnum;
+import cn.chenc.performs.enums.OsEnum;
 import cn.chenc.performs.factory.BaseStage;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
-import cn.chenc.performs.util.Win32Util;
+import cn.chenc.performs.util.OsUtil;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -39,6 +40,9 @@ public class App extends Application {
         primaryStage.initStyle(StageStyle.UTILITY);
         // 设置父级透明度为0
         primaryStage.setOpacity(0);
+        //让该窗口移出屏幕(经测试ubuntu20.04/GNOME上，该窗口会显示)
+        primaryStage.setX(-1000);
+        primaryStage.setY(-1000);
 
         Stage mainStage = new Stage();
         // 将 primaryStage 设置为归属对象，即父级窗口
@@ -96,7 +100,9 @@ public class App extends Application {
 */
 //        LineChart cpuChart = (LineChart) root.lookup("#cpuChart");
 //        controller.printlnCpuChart(cpuChart);
-        MySystemTray.getInstance(mainStage);
+        if(OsUtil.decideOs(OsEnum.WINDOWS.getKey())) {
+            MySystemTray.getInstance(mainStage);
+        }
         //显示窗口
         primaryStage.show();
         Boolean mainPaneConfig=ConfigPropertiesUtil.getBoolean(ConfigEnum.MAINPANEDISPLAY.getKey());
@@ -104,7 +110,7 @@ public class App extends Application {
             mainStage.show();
         }
         //设置窗口位置
-        Win32Util.setWinIconAfter(StageTitleConst.APPTITLE);
+        OsUtil.setWinIconAfter(StageTitleConst.APPTITLE);
     }
 
     public static void main(String[] args) {

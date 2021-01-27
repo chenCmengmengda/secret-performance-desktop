@@ -6,10 +6,7 @@ import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.factory.BaseStage;
 import cn.chenc.performs.factory.SingletonFactory;
 import cn.chenc.performs.listener.DragListener;
-import cn.chenc.performs.util.ColorUtil;
-import cn.chenc.performs.util.ConfigPropertiesUtil;
-import cn.chenc.performs.util.Win32Util;
-import cn.chenc.performs.util.StringUtil;
+import cn.chenc.performs.util.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
@@ -211,7 +208,7 @@ public class ClockState {
         stage.show();
         mainStage.show();
         //设置窗口位置
-        Win32Util.setWinIconAfter(StageTitleConst.CLOCKTITLE);
+        OsUtil.setWinIconAfter(StageTitleConst.CLOCKTITLE);
         // 获取画板对象
         GraphicsContext gc = canvas.getGraphicsContext2D();
         // 创建时间轴
@@ -219,7 +216,7 @@ public class ClockState {
         // 获取时间轴的帧列表
         ObservableList<KeyFrame> keyFrames = timeLine.getKeyFrames();
         // 添加关键帧
-        keyFrames.add(new KeyFrame(Duration.seconds(0.1), e->{
+        keyFrames.add(new KeyFrame(Duration.seconds(1), e->{
             // 刷新操作
             gc.clearRect(0,0,screenSize.getWidth(),screenSize.getHeight());
             // 绘制表盘
@@ -370,7 +367,7 @@ public class ClockState {
         if(!mainStage.isShowing()){
             mainStage.show();
             timeLine.play();
-            Win32Util.setWinIconAfter(StageTitleConst.CLOCKTITLE);
+            OsUtil.setWinIconAfter(StageTitleConst.CLOCKTITLE);
         }
     }
 
@@ -379,10 +376,10 @@ public class ClockState {
             if (dragListener == null) {
                 dragListener = new DragListener(mainStage, ConfigEnum.CLOCKX, ConfigEnum.CLOCKY);
                 dragListener.enableDrag(mainStage.getScene().getRoot());
-                Win32Util.setWinIconTop(StageTitleConst.CLOCKTITLE);
+                OsUtil.setWinIconTop(StageTitleConst.CLOCKTITLE);
             } else {
                 dragListener.enableDrag(mainStage.getScene().getRoot());
-                Win32Util.setWinIconTop(StageTitleConst.CLOCKTITLE);
+                OsUtil.setWinIconTop(StageTitleConst.CLOCKTITLE);
             }
         }
     }
@@ -396,7 +393,7 @@ public class ClockState {
             dragListener.closeDrag(mainStage.getScene().getRoot());
             mainStage.close();
             mainStage.show();
-            Win32Util.setWinIconAfter(StageTitleConst.CLOCKTITLE);
+            OsUtil.setWinIconAfter(StageTitleConst.CLOCKTITLE);
         }
     }
 

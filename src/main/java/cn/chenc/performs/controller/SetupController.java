@@ -726,13 +726,13 @@ public class SetupController {
         if(AppController.getStage().isShowing()) {
             AppController.getInstance().close();
             AppController.getInstance().show();
-            Win32Util.setWinIconAfter(StageTitleConst.APPTITLE);
+            OsUtil.setWinIconAfter(StageTitleConst.APPTITLE);
         }
         //重启时钟
         if(ClockState.getStage()!=null && ClockState.getStage().isShowing()) {
             ClockState.getInstance().close();
             ClockState.getInstance().show();
-            Win32Util.setWinIconAfter(StageTitleConst.CLOCKTITLE);
+            OsUtil.setWinIconAfter(StageTitleConst.CLOCKTITLE);
         }
         if (CodeRainState.getStage()!=null && CodeRainState.getStage().isShowing() && animationStage instanceof CodeRainState) {
             //代码雨重启

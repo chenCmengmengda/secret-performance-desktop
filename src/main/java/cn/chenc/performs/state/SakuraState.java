@@ -6,7 +6,7 @@ import cn.chenc.performs.enums.ConfigEnum;
 import cn.chenc.performs.factory.BaseStage;
 import cn.chenc.performs.factory.SingletonFactory;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
-import cn.chenc.performs.util.Win32Util;
+import cn.chenc.performs.util.OsUtil;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -97,7 +97,7 @@ public class SakuraState extends BaseStage{
         stage.show();
         mainStage.show();
         //置于图标下层
-        Win32Util.setWinIconAfter(StageTitleConst.SAKURATITLE);
+        OsUtil.setWinIconAfter(StageTitleConst.SAKURATITLE);
 
         //初始化樱花坐标，大小
         for(int i = 0; i < 100; ++i) {
@@ -206,7 +206,7 @@ public class SakuraState extends BaseStage{
         if(!mainStage.isShowing()){
             mainStage.show();
             timeLine.play();
-            Win32Util.setWinIconAfter(StageTitleConst.SAKURATITLE);
+            OsUtil.setWinIconAfter(StageTitleConst.SAKURATITLE);
         }
     }
 

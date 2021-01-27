@@ -3,7 +3,7 @@ package cn.chenc.performs.state;
 import cn.chenc.performs.consts.StageTitleConst;
 import cn.chenc.performs.factory.BaseStage;
 import cn.chenc.performs.factory.SingletonFactory;
-import cn.chenc.performs.util.Win32Util;
+import cn.chenc.performs.util.OsUtil;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -57,7 +57,7 @@ public class VlcWallpaperStage extends BaseStage {
         stage.setTitle(StageTitleConst.MEDIAWALLPAPERTITLE);
         stage.setScene(scene);
         stage.show();
-        Win32Util.setWinIconAfter(StageTitleConst.MEDIAWALLPAPERTITLE);
+        OsUtil.setWinIconAfter(StageTitleConst.MEDIAWALLPAPERTITLE);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class VlcWallpaperStage extends BaseStage {
     public void show(){
         if(mainStage!=null) {
             mainStage.show();
-            Win32Util.setWinIconAfter(StageTitleConst.MEDIAWALLPAPERTITLE);
+            OsUtil.setWinIconAfter(StageTitleConst.MEDIAWALLPAPERTITLE);
         } else{
             try {
                 getInstance().start();

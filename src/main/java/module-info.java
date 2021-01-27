@@ -13,7 +13,6 @@ module cn.chenc.performs {
     requires com.sun.jna.platform;
     requires uk.co.caprica.vlcj;
     requires uk.co.caprica.vlcj.javafx;
-
     requires java.desktop;
 
     opens cn.chenc.performs to javafx.fxml;
