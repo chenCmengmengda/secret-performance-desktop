@@ -14,10 +14,18 @@ module cn.chenc.performs {
     requires uk.co.caprica.vlcj;
     requires uk.co.caprica.vlcj.javafx;
     requires java.desktop;
+    requires org.apache.logging.log4j;
+    requires org.apache.logging.log4j.core;
+    requires org.slf4j;
+    requires org.slf4j.simple;
+    requires hutool.core;
+    requires secret.plugin;
 
     opens cn.chenc.performs to javafx.fxml;
     opens cn.chenc.performs.controller to javafx.fxml;
     opens cn.chenc.performs.state;
+    opens cn.chenc.performs.factory;
+    opens cn.chenc.performs.plugins;
     exports cn.chenc.performs;
     exports cn.chenc.performs.controller;
     exports cn.chenc.performs.state;
@@ -25,5 +33,7 @@ module cn.chenc.performs {
     exports cn.chenc.performs.util;
     exports cn.chenc.performs.factory;
     exports cn.chenc.performs.vlcj;
+    exports cn.chenc.performs.plugins;
+    exports cn.chenc.performs.model;
 
 }

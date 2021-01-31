@@ -30,6 +30,16 @@ public class CommonConst {
     public static final String WINLOGOPATH="/images/win-logo.png";
 
     /**
+     * 内置插件所在包
+     */
+    public static String PLUGINPACKAGE="cn.chenc.performs.plugins";
+
+    /**
+     * 外部插件所在路径
+     */
+    public static String PLUGINPATH ="plugins";
+
+    /**
      * logo默认透明度
      */
     public static final double LOGOOPACITY=0.3;

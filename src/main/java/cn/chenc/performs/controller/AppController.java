@@ -118,7 +118,7 @@ public class AppController {
         Platform.runLater(()->{
             //鼠标拖拽
             stage= (Stage) rootFlowPane.getScene().getWindow();
-            dragListener=new DragListener(stage,ConfigEnum.SCENEX,ConfigEnum.SCENEY);
+            dragListener=new DragListener(stage, ConfigEnum.SCENEX,ConfigEnum.SCENEY);
         });
         //初始化cpu,内存信息
         initCpuChart();
@@ -501,8 +501,8 @@ public class AppController {
         //获取系统信息
         OperatingSystem operatingSystem=systemInfo.getOperatingSystem();
         String manufacturer=operatingSystem.getManufacturer();//供应商
-        String family= operatingSystem.getFamily();
-//        String family=System.getProperty("os.name");//操作系统名称
+//        String family= operatingSystem.getFamily();
+        String family=System.getProperty("os.name");//操作系统名称
 //        String version = operatingSystem.getVersionInfo().getVersion();//系统版本
 //        version = String.format("%.0f",Double.parseDouble(version));
         String codeName=operatingSystem.getVersionInfo().getCodeName();//代码名称  eg:Home/Pro

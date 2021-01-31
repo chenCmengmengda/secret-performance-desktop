@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    status : 这个用于设置log4j2自身内部的信息输出,可以不设置,当设置成trace时,会看到log4j2内部各种详细输出。
+    因此我们直接设置成OFF
+ -->
+<Configuration status="OFF">
+    <!-- 配置输出端  -->
+    <Appenders>
+        <!-- 输出到控制台  -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%-level]%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %logger{36} - %msg%n"/>
+        </Console>
+        <!-- 输出到文件 -->
+        <!--
+            name:           输出端的名字
+            fileName:       指定当前日志文件的位置和文件名称
+            filePattern:    指定当发生自动封存日志时，文件的转移和重命名规则
+            这个filePatten结合下面的TimeBasedTriggeringPolicy一起使用，可以实现控制日志按天生成文件.
+            自动封存日志的策略可以设置时间策略和文件大小策略（见下面的Policies配置）
+            时间策略：
+                文件名_%d{yyyy-MM-dd}_%i.log  这里%d表示自动封存日志的单位是天
+                如果下面的TimeBasedTriggeringPolicy的interval设为1,
+                表示每天自动封存日志一次;那么就是一天生成一个文件。
+            文件大小策略：
+                如果你设置了SizeBasedTriggeringPolicy的size的话，
+                超过了这个size就会再生成一个文件，这里的%i用来区分的
+            %d{yyyy-MM-dd}会自动替代为日期，如2017-06-30
+        -->
+        <RollingFile name="RollingFileInfo" fileName="log/secret-performance-desktop_info.log"
+        filePattern="log/%d{yyyy-MM-dd}/secret-performance-desktop_%d{yyyy-MM-dd}_%i.log">
+        <!-- 只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
+        <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+        <!-- 输出的格式  -->
+        <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+        <!--
+            Policies：自动封存日志策略，表示日志什么时候应该产生新日志，
+            可以有时间策略和大小策略等，并且：只有满足一个策略，就好生成一个新的文件。
+            这里使用的是时间和大小都使用了，每隔1天产生新的日志文件
+            如果果今天的文件大小到了设定的size，则会新生成一个文件，上面的%i就表示今天的第几个文件
+         -->
+        <Policies>
+            <TimeBasedTriggeringPolicy interval="1"/>
+            <SizeBasedTriggeringPolicy size="20MB"/>
+        </Policies>
+        <!--
+            DefaultRolloverStrategy属性如不设置，
+            则默认为最多同一文件夹下7个文件，这里设置了20
+         -->
+        <DefaultRolloverStrategy max="20"/>
+    </RollingFile>
+</Appenders>
+        <!-- 配置Loggers  -->
+<Loggers>
+<!--
+    Logger： 用于指定部分包的日志级别
+        日志级别局部的会覆盖全局的
+        比如这里hibernate的级别设为debug，而控制台没有设级别，那么控制台会打印debug级别的日志
+        而输出到文件这个输出端设置了info级别，那么hibernate的debug级别的日志还是看不了。
+        所以最终输出的级别和输出端设置的级别是有关系的。
+    name: 包名
+    level：日志级别
+    additivity：是否冒泡，既在当前logger的输出端输出日志后
+                     是否需要在父输出端上输出该日志，默认为 true。
+                     如果设为false，则必须配置AppendRef。
+ -->
+
+<Logger name="org.hibernate" level="debug" additivity="true"/>
+<!-- 这个root是配置全局日志级别和输出端功能和老版的log4j中根的配置是一样的 -->
+<Root level="info">
+    <!-- 这里引用上面定义的输出端，千万不要漏了。 -->
+    <AppenderRef ref="Console"/>
+    <AppenderRef ref="RollingFileInfo"/>
+</Root>
+</Loggers>
+</Configuration>

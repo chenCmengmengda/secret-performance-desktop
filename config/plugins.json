@@ -1,0 +1,9 @@
+[ {
+  "className" : "cn.chenc.performs.plugins.TestPlugin",
+  "name" : "test",
+  "enabled" : true
+}, {
+  "className" : "cn.chenc.performs.plugins.TestPlugin2",
+  "name" : "test2",
+  "enabled" : true
+} ]
