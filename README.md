@@ -36,7 +36,6 @@
 
 * 下载windows最新版本:
 [蓝奏云](https://secretc.lanzous.com/b01zwjn2d)
-密码:9t35
 
 * [更多历史发行版本下载](https://gitee.com/SecretOpen/secret-performance-desktop/releases)
 
