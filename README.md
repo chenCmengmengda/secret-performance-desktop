@@ -26,14 +26,18 @@
 * 插件扩展
 
 ***内置插件:***
+
 鼠标跟随-彩色粒子特效
 
 ### 使用方法
 下载exe可执行文件:
 
-**目前版本:v2.0.0**
+**目前版本:v2.1.0**
 
-* [点击下载windows最新版本](https://gitee.com/SecretOpen/secret-performance-desktop/attach_files/597643/download/secret-performance-desktop-2.0.0.rar)
+* 下载windows最新版本:
+链接：https://pan.baidu.com/s/1Xxsguq8xHYaRj1RVSpbSJw 
+提取码：rvui 
+复制这段内容后打开百度网盘手机App，操作更方便哦
 
 * [更多历史发行版本下载](https://gitee.com/SecretOpen/secret-performance-desktop/releases)
 
@@ -81,10 +85,13 @@
 
 鼠标跟随-彩色粒子特效
 
-插件开发详见：[secret-plugin](https://gitee.com/SecretOpen/secret-plugin)
-
 截图：
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img3.png)
+
+
+***插件开发***
+
+详见：[secret-plugin](https://gitee.com/SecretOpen/secret-plugin)
 
 
 ### 核心依赖
