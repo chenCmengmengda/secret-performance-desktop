@@ -35,12 +35,8 @@
 **目前版本:v2.1.0**
 
 * 下载windows最新版本:
-
-链接：https://pan.baidu.com/s/1Xxsguq8xHYaRj1RVSpbSJw 
-
-提取码：rvui 
-
-复制这段内容后打开百度网盘手机App，操作更方便哦
+[蓝奏云](https://secretc.lanzous.com/b01zwjn2d)
+密码:9t35
 
 * [更多历史发行版本下载](https://gitee.com/SecretOpen/secret-performance-desktop/releases)
 
