@@ -87,9 +87,9 @@
 ![avatar](http://secretOpen.gitee.io/secret-performance-desktop/img3.png)
 
 
-***插件开发***
+### 插件开发
 
-详见：[secret-plugin](https://gitee.com/SecretOpen/secret-plugin)
+***详见：[secret-plugin](https://gitee.com/SecretOpen/secret-plugin)***
 
 
 ### 核心依赖
