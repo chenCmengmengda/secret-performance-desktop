@@ -72,11 +72,13 @@
 建议将自定义的壁纸放置在 ./wallpaper/对应类型 目录中,方便管理
 
 ***插件安装***
+
 将插件jar包放入plugins目录下,退出程序重启，新安装的插件默认为打开状态。
 
 点击托盘中的插件扩展可以管理插件。
 
 目前提供默认插件：
+
 鼠标跟随-彩色粒子特效
 
 插件开发详见：[secret-plugin](https://gitee.com/SecretOpen/secret-plugin)
