@@ -1,5 +1,6 @@
 package cn.chenc.performs;
 
+import cn.chenc.performs.consts.CommonConst;
 import cn.chenc.performs.consts.LayoutConst;
 import cn.chenc.performs.consts.StageTitleConst;
 import cn.chenc.performs.controller.AppController;
@@ -8,6 +9,9 @@ import cn.chenc.performs.enums.OsEnum;
 import cn.chenc.performs.factory.BaseStage;
 import cn.chenc.performs.util.ConfigPropertiesUtil;
 import cn.chenc.performs.util.OsUtil;
+import com.gitee.secretopen.plugin.SecretPluginFactory;
+import com.gitee.secretopen.plugin.config.SecretPluginConfig;
+import com.gitee.secretopen.plugin.model.PluginModel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -20,7 +24,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.net.URL;
 
 /**
@@ -111,6 +118,13 @@ public class App extends Application {
         }
         //设置窗口位置
         OsUtil.setWinIconAfter(StageTitleConst.APPTITLE);
+        //加载插件
+        SecretPluginConfig config = SecretPluginConfig.getInstance(true);
+        SecretPluginFactory factory=new SecretPluginFactory(CommonConst.PLUGINPACKAGE,new File(CommonConst.PLUGINPATH));
+        PluginModel pluginModel=SecretPluginFactory.getPluginModelList().get(0);
+        Logger logger = LogManager.getLogger(App.class.getName());;
+        logger.info("{插件启动成功}"+pluginModel.getClassName());
+
     }
 
     public static void main(String[] args) {

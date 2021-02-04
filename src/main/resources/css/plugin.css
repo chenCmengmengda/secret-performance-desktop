@@ -1,0 +1,31 @@
+.root{
+    -fx-background-color: rgb(0, 0, 0);
+    -fx-fill: null;
+}
+
+.scroll-pane{
+    -fx-fit-to-width: true;
+    -fx-fit-to-height: true;
+}
+
+.scroll-pane .viewport{
+    -fx-background-color: #000000;
+}
+
+.label{
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14;
+}
+
+.jfx-toggle-button{
+    -fx-text-fill: #ffffff;
+}
+
+
+.jfx-button {
+
+    -fx-font-size: 14px;
+    -jfx-button-type: RAISED;
+    -fx-background-color: rgb(77, 200, 204);
+    -fx-text-fill: WHITE;
+}

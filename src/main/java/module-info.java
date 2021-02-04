@@ -20,6 +20,7 @@ module cn.chenc.performs {
     requires org.slf4j.simple;
     requires hutool.core;
     requires secret.plugin;
+    requires com.jfoenix;
 
     opens cn.chenc.performs to javafx.fxml;
     opens cn.chenc.performs.controller to javafx.fxml;

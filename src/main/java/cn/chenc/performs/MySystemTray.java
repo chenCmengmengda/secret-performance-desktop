@@ -1,5 +1,6 @@
 package cn.chenc.performs;
 
+import cn.chenc.performs.state.PluginStage;
 import cn.chenc.performs.state.SetupState;
 import cn.chenc.performs.util.FileUtil;
 import javafx.application.Platform;
@@ -25,11 +26,13 @@ public class MySystemTray {
     private static MenuItem exitItem;
     private static CheckboxMenuItem autoStartItem;//开机自启设置
     private static MenuItem setupItem;//打开设置窗口
+    private static MenuItem pluginItem;//打开插件扩展窗口
     private static TrayIcon trayIcon;
     private static ActionListener showListener;
     private static ActionListener exitListener;
     private static ItemListener autoStartListener;
     private static ActionListener setupListener;
+    private static ActionListener pluginListener;
     private static MouseListener mouseListener;
 
     private static String autoStartPath=System.getProperty("user.home")+"\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\";
@@ -50,6 +53,7 @@ public class MySystemTray {
         exitItem = new MenuItem("退出");
         autoStartItem = new CheckboxMenuItem("开机自动启动");
         setupItem = new MenuItem("设置");
+        pluginItem = new MenuItem("插件扩展");
 
         if(FileUtil.exists(autoStartPath+exeName+".lnk")){//如果存在开机启动快捷链接，则勾选
             autoStartItem.setState(true);
@@ -65,6 +69,7 @@ public class MySystemTray {
         exitListener = e -> {};
         autoStartListener = e -> {};
         setupListener = e -> {};
+        pluginListener = e -> {};
         mouseListener = new MouseAdapter() {};
     }
 
@@ -90,6 +95,7 @@ public class MySystemTray {
             final PopupMenu popup = new PopupMenu();
             popup.add(showItem);
             popup.add(setupItem);
+            popup.add(pluginItem);
             popup.add(exitItem);
             popup.add(autoStartItem);
             trayIcon.setPopupMenu(popup);
@@ -110,7 +116,7 @@ public class MySystemTray {
         //防止报空指针异常
         if(showListener == null || exitListener == null || autoStartListener == null || setupListener == null
                 || mouseListener == null || showItem == null || exitItem == null || setupItem == null
-                || autoStartItem==null || trayIcon == null){
+                || autoStartItem==null || trayIcon == null || pluginItem == null){
             return;
         }
         //移除原来的事件
@@ -118,6 +124,7 @@ public class MySystemTray {
         exitItem.removeActionListener(exitListener);
         autoStartItem.removeItemListener(autoStartListener);
         setupItem.removeActionListener(setupListener);
+        pluginItem.removeActionListener(pluginListener);
         trayIcon.removeMouseListener(mouseListener);
         //行为事件: 点击"打开"按钮,显示窗口
         showListener = e -> Platform.runLater(() -> showStage(stage));
@@ -149,18 +156,20 @@ public class MySystemTray {
         setupListener = e -> {
             SetupState setupState= SetupState.getInstance();
 
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    //更新JavaFX的主线程的代码放在此处
-                    try {
-                       setupState.show();
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
-
+            Platform.runLater(()->{
+                //更新JavaFX的主线程的代码放在此处
+                try {
+                    setupState.show();
+                } catch (Exception exception) {
+                    exception.printStackTrace();
                 }
-
+            });
+        };
+        //插件扩展点击
+        pluginListener = e -> {
+            PluginStage state= PluginStage.getInstance();
+            Platform.runLater(()->{
+                state.show();
             });
         };
         //鼠标行为事件: 单机显示stage
@@ -178,6 +187,7 @@ public class MySystemTray {
         exitItem.addActionListener(exitListener);
         autoStartItem.addItemListener(autoStartListener);
         setupItem.addActionListener(setupListener);
+        pluginItem.addActionListener(pluginListener);
         //给系统托盘添加鼠标响应事件
         trayIcon.addMouseListener(mouseListener);
     }

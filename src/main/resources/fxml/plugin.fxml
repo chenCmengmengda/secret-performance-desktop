@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<ScrollPane fx:id="root" fx:controller="cn.chenc.performs.controller.PluginController"
+            xmlns:fx="http://javafx.com/fxml" >
+    <VBox fx:id="vBox">
+
+    </VBox>
+
+</ScrollPane>
