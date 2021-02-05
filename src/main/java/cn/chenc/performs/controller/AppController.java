@@ -578,7 +578,7 @@ public class AppController {
     }
 
     public void getDateTime(){
-        String[] weekArr=new String[]{"星期六","星期天","星期一","星期二","星期三","星期四","星期五"};
+        String[] weekArr=new String[]{"星期天","星期一","星期二","星期三","星期四","星期五","星期六"};
         //当前时间
         Date date = DateUtil.date();
         //获取时间
@@ -587,7 +587,7 @@ public class AppController {
         String formatDate = DateUtil.format(date, "yyyy/MM/dd");
         //星期
         int week=DateUtil.dayOfWeek(date);
-        String formatWeek=weekArr[week];
+        String formatWeek=weekArr[week-1];
         timeLabel.setText(formatTime);
         dateLabel.setText(formatDate);
         weekLabel.setText(formatWeek);
