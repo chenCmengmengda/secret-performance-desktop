@@ -8,6 +8,21 @@
     -fx-font-weight: bold;
 }
 
+#timeLabel{
+    -fx-font-size: 20;
+    -fx-font-family: "Microsoft YaHei UI Light";
+}
+
+#dateLabel{
+    -fx-font-size: 24;
+    -fx-font-family: "Microsoft YaHei UI Light";
+}
+
+#weekLabel{
+    -fx-font-size: 44;
+    -fx-font-family: "Microsoft YaHei UI Light";
+}
+
 #SystemInfo{
     -fx-font-size: 14;
 }

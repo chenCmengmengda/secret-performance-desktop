@@ -64,7 +64,7 @@ public class BubbleCorsorController extends BaseController {
 
         //时间轴动画
         timeline=new Timeline();
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(1000/1000.0), e->{
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(1000/60.0), e->{
 
             Point point = java.awt.MouseInfo.getPointerInfo().getLocation();
             if(point.x!=preX && point.y!=preY) {
@@ -80,7 +80,7 @@ public class BubbleCorsorController extends BaseController {
 
     protected final void renderFrame(double x,double y) {
         //随机色
-        Circle circle = new Circle(1,Color.rgb((int)(Math.random()*255),(int)(Math.random()*255),(int)(Math.random()*255)));
+        Circle circle = new Circle(1,Color.rgb((int)(Math.random()*255),(int)(Math.random()*255),(int)(Math.random()*255)).brighter());
         circle.setTranslateX(x+10);
         circle.setTranslateY(y+10);
         root.getChildren().add(circle);

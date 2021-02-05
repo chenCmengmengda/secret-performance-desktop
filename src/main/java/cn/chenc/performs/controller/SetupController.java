@@ -52,6 +52,8 @@ public class SetupController {
     @FXML
     private CheckBox logoDisplay;
     @FXML
+    private CheckBox datetimeDisplay;
+    @FXML
     private CheckBox systemInfoDisplay;
     @FXML
     private CheckBox cpuInfoDisplay;
@@ -174,6 +176,12 @@ public class SetupController {
             logoDisplay.setSelected(ConfigPropertiesUtil.getBoolean(ConfigEnum.LOGODISPLAY.getKey()));
         } else{
             logoDisplay.setSelected(true);
+        }
+        //日期时间
+        if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.DATETIMEDISPLAY.getKey()))) {
+            datetimeDisplay.setSelected(ConfigPropertiesUtil.getBoolean(ConfigEnum.LOGODISPLAY.getKey()));
+        } else{
+            datetimeDisplay.setSelected(true);
         }
         //系统信息
         if(!StringUtil.isEmpty(ConfigPropertiesUtil.get(ConfigEnum.SYSTEMINFODISPLAY.getKey()))) {
@@ -566,6 +574,13 @@ public class SetupController {
         boolean b=((CheckBox)event.getSource()).isSelected();
         AppController.getInstance().setSystemLogoVisible(b);
         ConfigPropertiesUtil.set(ConfigEnum.LOGODISPLAY.getKey(), String.valueOf(b));
+    }
+
+    @FXML
+    public void openDatetimeDisplay(ActionEvent event){
+        boolean b=((CheckBox)event.getSource()).isSelected();
+        AppController.getInstance().setDatetimeVisible(b);
+        ConfigPropertiesUtil.set(ConfigEnum.DATETIMEDISPLAY.getKey(), String.valueOf(b));
     }
 
     @FXML

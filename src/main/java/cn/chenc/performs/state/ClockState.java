@@ -73,7 +73,7 @@ public class ClockState {
     private static double[] clockPointY3 = new double[]{0,12,0,-12};
     //日期
     private static int dateSize=30;
-    private static int dateX=-60;
+    private static int dateX=-70;
     private static int dateY=80;
     //时间
     private static int timeSize=60;
@@ -497,20 +497,27 @@ public class ClockState {
         //数字时间
         if(size>=400){
             dateSize=30;
-            dateX=-(dateSize*2);
+            dateX=-(dateSize*2+10);
             dateY=clockr/2-20;
             timeSize=60;
             timeX=-(timeSize*2);
         } else if(size>=300) {
             dateSize=15;
-            dateX=-(dateSize*2);
+            dateX=-(dateSize*2+5);
             dateY=clockr/2-10;
             timeSize=30;
             timeX=-(timeSize*2);
             timeY=10;
+        } else if(size>=225) {
+            dateSize=15;
+            dateX=-(dateSize*2+5);
+            dateY=clockr/2-10;
+            timeSize=25;
+            timeX=-(timeSize*2);
+            timeY=5;
         } else {
             dateSize=9;
-            dateX=-(dateSize*2);
+            dateX=-(dateSize*2+3);
             dateY=clockr/2-5;
             timeSize=15;
             timeX=-(timeSize*2);

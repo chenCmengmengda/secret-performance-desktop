@@ -24,6 +24,11 @@
                     <CheckBox fx:id="logoDisplay" prefWidth="5" onAction="#openLogoDisplay"  alignment="CENTER_RIGHT"></CheckBox>
                 </HBox>
                 <HBox minHeight="30">
+                    <Label  text="显示日期时间" minWidth="100" alignment="CENTER" ></Label>
+                    <AnchorPane minWidth="130"></AnchorPane>
+                    <CheckBox fx:id="datetimeDisplay" prefWidth="5" onAction="#openDatetimeDisplay" alignment="CENTER_RIGHT"></CheckBox>
+                </HBox>
+                <HBox minHeight="30">
                     <Label  text="显示系统信息" minWidth="100" alignment="CENTER" ></Label>
                     <AnchorPane minWidth="130"></AnchorPane>
                     <CheckBox fx:id="systemInfoDisplay" prefWidth="5" onAction="#openSystemInfoDisplay"  alignment="CENTER_RIGHT"></CheckBox>

@@ -11,6 +11,7 @@ import cn.chenc.performs.listener.DragListener;
 import cn.chenc.performs.model.AppModel;
 import cn.chenc.performs.state.*;
 import cn.chenc.performs.util.*;
+import cn.hutool.core.date.DateUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.chart.AreaChart;
@@ -34,6 +35,7 @@ import oshi.software.os.OperatingSystem;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.Date;
 
 public class AppController {
 
@@ -48,6 +50,14 @@ public class AppController {
     private FlowPane rootFlowPane;
     @FXML
     private HBox systemInfoHbox;
+    @FXML
+    private VBox datetimeVbox;
+    @FXML
+    private Label timeLabel;
+    @FXML
+    private Label dateLabel;
+    @FXML
+    private Label weekLabel;
     @FXML
     private ImageView SystemLogo;
     @FXML
@@ -120,6 +130,8 @@ public class AppController {
             stage= (Stage) rootFlowPane.getScene().getWindow();
             dragListener=new DragListener(stage, ConfigEnum.SCENEX,ConfigEnum.SCENEY);
         });
+        //初始化时间显示
+        getDateTime();
         //初始化cpu,内存信息
         initCpuChart();
         initRamChart();
@@ -228,6 +240,10 @@ public class AppController {
         if(logoDisplayConfig!=null && logoDisplayConfig.equals(false)){
             setSystemLogoVisible(false);
         }
+        Boolean datetimeDisplayConfig=ConfigPropertiesUtil.getBoolean(ConfigEnum.DATETIMEDISPLAY.getKey());
+        if(datetimeDisplayConfig!=null && datetimeDisplayConfig.equals(false)){
+            setDatetimeVisible(false);
+        }
         Boolean systemInfoDisplayConfig=ConfigPropertiesUtil.getBoolean(ConfigEnum.SYSTEMINFODISPLAY.getKey());
         if(systemInfoDisplayConfig!=null && systemInfoDisplayConfig.equals(false)){
             setSystemInfoVisible(false);
@@ -258,6 +274,11 @@ public class AppController {
         SystemLogo.setManaged(b);
     }
 
+    public void setDatetimeVisible(boolean b){
+        datetimeVbox.setVisible(b);
+        datetimeVbox.setManaged(b);
+    }
+
     public void setSystemInfoVisible(boolean b){
         SystemInfo.setVisible(b);
         SystemInfo.setManaged(b);
@@ -276,6 +297,9 @@ public class AppController {
     public void setThemeColor(String color){
         if(StringUtil.isEmpty(color)) {//传入颜色为空，直接取默认配置
             String themeColor = CommonConst.THEMECOLOR;
+            timeLabel.setTextFill(Color.valueOf(themeColor));
+            dateLabel.setTextFill(Color.valueOf(themeColor));
+            weekLabel.setTextFill(Color.valueOf(themeColor));
             SystemInfo.setTextFill(Color.valueOf(themeColor));
             cpuName.setTextFill(Color.valueOf(themeColor));
             CPU.setTextFill(Color.valueOf(themeColor));
@@ -285,6 +309,9 @@ public class AppController {
             ramChart.lookup(".chart-series-area-line").setStyle("-fx-stroke:"+themeColor+";");
             ramChart.lookup(".chart-series-area-fill").setStyle("-fx-fill:"+themeColor+"33;");
         } else{ //监听颜色设置
+            timeLabel.setTextFill(Color.valueOf(color));
+            dateLabel.setTextFill(Color.valueOf(color));
+            weekLabel.setTextFill(Color.valueOf(color));
             SystemInfo.setTextFill(Color.valueOf(color));
             cpuName.setTextFill(Color.valueOf(color));
             CPU.setTextFill(Color.valueOf(color));
@@ -302,6 +329,7 @@ public class AppController {
         Platform.runLater(()->{
             //更新JavaFX的主线程的代码放在此处
             try {
+                timeUpdate();
                 printlnCpuInfo();
                 printlnRamInfo();
             } catch (InterruptedException e) {
@@ -501,18 +529,19 @@ public class AppController {
         //获取系统信息
         OperatingSystem operatingSystem=systemInfo.getOperatingSystem();
         String manufacturer=operatingSystem.getManufacturer();//供应商
-//        String family= operatingSystem.getFamily();
-        String family=System.getProperty("os.name");//操作系统名称
-//        String version = operatingSystem.getVersionInfo().getVersion();//系统版本
-//        version = String.format("%.0f",Double.parseDouble(version));
+        String family= operatingSystem.getFamily();
+        String osName=System.getProperty("os.name");//操作系统名称
+        String version = operatingSystem.getVersionInfo().getVersion();//系统版本
         String codeName=operatingSystem.getVersionInfo().getCodeName();//代码名称  eg:Home/Pro
-//        String buildNumber=operatingSystem.getVersionInfo().getBuildNumber();//内部版本号
+        String buildNumber=operatingSystem.getVersionInfo().getBuildNumber();//内部版本号
 
         String osArch = System.getProperty("os.arch"); //系统架构
 
-        String info=family+" "+codeName+"\n"
-                +"系统架构:"+osArch+"\n"
-                +"分辨率:"+ HardwareUtil.getScreenToString();
+//        String info=family+" "+codeName+"\n"
+//                +"系统架构:"+osArch+"\n"
+//                +"分辨率:"+ HardwareUtil.getScreenToString();
+        String info = osName+ " "+codeName+"\n"
+                +"系统架构:"+osArch+" 分辨率:"+ HardwareUtil.getScreenToString();
         SystemInfo.setText(info);
     }
 
@@ -538,6 +567,30 @@ public class AppController {
             model.setLogoOpacity(opacity);
             Platform.runLater(() -> model.setImageObj(wImage));
         }
+    }
+
+    public void timeUpdate(){
+        //当前时间
+        Date date = DateUtil.date();
+        //获取时间
+        String formatTime = DateUtil.formatTime(date);
+        timeLabel.setText(formatTime);
+    }
+
+    public void getDateTime(){
+        String[] weekArr=new String[]{"星期六","星期天","星期一","星期二","星期三","星期四","星期五"};
+        //当前时间
+        Date date = DateUtil.date();
+        //获取时间
+        String formatTime = DateUtil.formatTime(date);
+        //年月日
+        String formatDate = DateUtil.format(date, "yyyy/MM/dd");
+        //星期
+        int week=DateUtil.dayOfWeek(date);
+        String formatWeek=weekArr[week];
+        timeLabel.setText(formatTime);
+        dateLabel.setText(formatDate);
+        weekLabel.setText(formatWeek);
     }
 
     //设置布局款式
