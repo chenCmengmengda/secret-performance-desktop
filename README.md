@@ -32,7 +32,7 @@
 ### 使用方法
 下载exe可执行文件:
 
-**目前版本:v2.1.0**
+**目前版本:v2.1.1**
 
 * 下载windows最新版本:
 [蓝奏云](https://secretc.lanzous.com/b01zwjn2d)
