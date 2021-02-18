@@ -114,6 +114,8 @@ public class SetupController {
     @FXML
     private TextField mediaPath;
     @FXML
+    private CheckBox mediaPauseCheckBox;
+    @FXML
     private Slider mediaFps;
     @FXML
     private HBox webHBox;
@@ -156,6 +158,7 @@ public class SetupController {
         initAnimationConfig();
         initWallpaperType();
         initMediaPath();
+        initMediaPause();
         initMediaWallpaperFps();
         initWebPath();
     }
@@ -540,6 +543,13 @@ public class SetupController {
         }
     }
 
+    private void initMediaPause(){
+        Boolean mediaWallpapaerPauseConf=ConfigPropertiesUtil.getBoolean(ConfigEnum.MEDIAWALLPAPERPAUSE.getKey());
+        if(mediaWallpapaerPauseConf!=null){
+            mediaPauseCheckBox.setSelected(mediaWallpapaerPauseConf);
+        }
+    }
+
     private void initMediaWallpaperFps(){
         Double mediaWallpaperFpsConfig=ConfigPropertiesUtil.getDouble(ConfigEnum.MEDIAWALLPAPERFPS.getKey());
         if(mediaWallpaperFpsConfig!=null){
@@ -793,13 +803,34 @@ public class SetupController {
     }
 
     /**
+     * 暂停视频
+     */
+    @FXML
+    public void mediaPauseAction(ActionEvent event){
+        CheckBox checkBox=(CheckBox)(event.getSource());
+        boolean b=checkBox.isSelected();
+        ConfigPropertiesUtil.set(ConfigEnum.MEDIAWALLPAPERPAUSE.getKey(), String.valueOf(b));
+        if(VlcWallpaperController.getInstance()==null){
+            return;
+        }
+        if(b){//暂停
+            VlcWallpaperController.getInstance().pausePlayer();
+        } else {
+            VlcWallpaperController.getInstance().play();
+        }
+
+    }
+
+    /**
      * 视频fps
      * @param event
      */
     @FXML
     private void mediaFpsAction(MouseEvent event){
         Slider slider=(Slider)(event.getSource());
-        VlcWallpaperController.getInstance().setFps(slider.getValue());
+        if(VlcWallpaperController.getInstance()!=null) {
+            VlcWallpaperController.getInstance().setFps(slider.getValue());
+        }
         ConfigPropertiesUtil.set(ConfigEnum.MEDIAWALLPAPERFPS.getKey(), String.valueOf(slider.getValue()));
     }
 
@@ -874,6 +905,8 @@ public class SetupController {
         initWallpaperType();
         mediaPath.setText("");
         webPath.setText("");
+        mediaPauseCheckBox.setSelected(false);
+        mediaFps.setValue(CommonConst.MEDIAWALLPAPERFPS);
     }
 
 

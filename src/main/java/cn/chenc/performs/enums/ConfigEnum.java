@@ -36,6 +36,7 @@ public enum ConfigEnum {
     CODERAINTEXTCOLOR("coderain-text-color"),
     WALLPAPERTYPE("wallpaper-type"),
     MEDIAWALLPAPERPATH("media-wallpaper-path"),
+    MEDIAWALLPAPERPAUSE("media-wallpaper-pause"),
     MEDIAWALLPAPERFPS("media-wallpaper-fps"),
     WEBWALLPAPERPATH("web-wallpaper-path"),
     ;

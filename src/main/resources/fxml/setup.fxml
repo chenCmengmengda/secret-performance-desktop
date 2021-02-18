@@ -155,6 +155,11 @@
                         <Button fx:id="resetMedia" onAction="#resetMediaAction" text="清空" minWidth="40"></Button>
                     </HBox>
                     <HBox minHeight="30">
+                        <Label fx:id="mediaPauseLabel" text="暂停播放" minWidth="100" alignment="CENTER" ></Label>
+                        <AnchorPane minWidth="130"></AnchorPane>
+                        <CheckBox fx:id="mediaPauseCheckBox" prefWidth="5" onAction="#mediaPauseAction" alignment="CENTER_RIGHT"></CheckBox>
+                    </HBox>
+                    <HBox minHeight="30">
                         <Label text="视频帧数" minWidth="100" alignment="CENTER" ></Label>
                         <Slider fx:id="mediaFps" onMouseDragged="#mediaFpsAction" onMouseClicked="#mediaFpsAction" min="1" max="100" blockIncrement="1" minWidth="150"></Slider>
                     </HBox>

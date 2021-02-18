@@ -103,9 +103,10 @@ public class VlcWallpaperController extends BaseController{
         canvas.setHeight(screenSize.getHeight());
 
         //创建vlc媒体工厂
-        mediaPlayerFactory = new MediaPlayerFactory("--gain","0");
+        mediaPlayerFactory = new MediaPlayerFactory();
         //获得新媒体
         embeddedMediaPlayer = mediaPlayerFactory.mediaPlayers().newEmbeddedMediaPlayer();
+
 //        embeddedMediaPlayer.videoSurface().set(ImageViewVideoSurfaceFactory.videoSurfaceForImageView(imageView));
         embeddedMediaPlayer.videoSurface().set(JavaFxVideoSurface.videoSurfaceForImageView());
 
@@ -131,16 +132,33 @@ public class VlcWallpaperController extends BaseController{
         if(!StringUtil.isEmpty(mediaWallpaperPathConf)) {
             setMedia(mediaWallpaperPathConf);
         }
-
     }
 
     public void setMedia(String path){
         //关闭计时器
-        embeddedMediaPlayer.media().play(path);
+        embeddedMediaPlayer.media().play(path
+                ,":no-audio"
+                ,":rtsp=tcp"
+                ,":codec=ffmpeg"
+                ,":vout=any"
+                ,":avcodec-threads=1"
+                ,":avcodec-hw=any"
+                ,":network-caching=200"
+                ,":prefetch-buffer-size=1024"
+                ,":prefetch-read-size=65535"
+                ,":file-caching=1000"
+        );
         //循环播放
         embeddedMediaPlayer.controls().setRepeat(true);
         //开始计时器
         startTimer();
+        //判断是否暂停
+        Boolean mediaWallpapaerPauseConf=ConfigPropertiesUtil.getBoolean(ConfigEnum.MEDIAWALLPAPERPAUSE.getKey());
+        if(mediaWallpapaerPauseConf!=null && mediaWallpapaerPauseConf.equals(true)){
+            Platform.runLater(()-> {
+                pausePlayer();
+            });
+        }
     }
 
     public void setFps(double fps){
@@ -171,6 +189,23 @@ public class VlcWallpaperController extends BaseController{
         if (timeline.getStatus() != Animation.Status.STOPPED) {
             timeline.stop();
         }
+    }
+
+    /**
+     * 播放
+     */
+    public void play(){
+        embeddedMediaPlayer.controls().play();
+        startTimer();
+    }
+
+    /**
+     * 暂停
+     */
+    public void pausePlayer(){
+        //关闭当前播放的媒体
+        embeddedMediaPlayer.controls().pause();
+        stopTimer();
     }
 
     @Override
