@@ -132,6 +132,9 @@ maven 执行 package
 
 实现原理:[Draw Behind Desktop Icons in Windows 8+](https://www.codeproject.com/articles/856020/draw-behind-desktop-icons-in-windows)
 
+### 互动交流
+互动交流qq群:635508577
+
 ### 联系作者
 <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1029693356&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1029693356:41" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>
 
