@@ -12,7 +12,7 @@
         <jdk.version>11</jdk.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javafx.version>15.0.1</javafx.version>
-        <log4j2.version>2.12.1</log4j2.version>
+        <log4j2.version>2.14.0</log4j2.version>
         <jackson.version>2.12.1</jackson.version>
     </properties>
 
